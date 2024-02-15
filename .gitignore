@@ -11,6 +11,7 @@
 *.dll
 *.lib
 *.s
+**/obj
 
 # Qt locals
 *.pro.user
@@ -25,4 +26,4 @@ Makefile
 
 # local archives
 local
-libFAUDES_for_libVIODES
+libFAUDES_for_VIODES
