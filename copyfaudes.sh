@@ -12,7 +12,7 @@
 FAUDES_SRC=../libFAUDES
 
 # do not change the libfaudes destination
-FAUDES_DST=libFAUDES_for_viodes
+FAUDES_DST=libFAUDES_for_VIODES
 
 
 ############################################################################
@@ -97,7 +97,7 @@ if [ ! -f ${FAUDES_DST}/bin/luafaudes ]; then
     return
 fi
 
-echo "done ... inspect results in " $(pwd)$FAUDES_DST
+echo "done ... inspect results in " $(pwd)/$FAUDES_DST
 
 # update version
 VIODES_BASE=$(pwd)/../libviodes 

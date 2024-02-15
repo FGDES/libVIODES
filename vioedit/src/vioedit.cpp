@@ -146,15 +146,12 @@ void VioWindow::ImportFaudes() {
   fdiag->restoreState(settings.value("stateFaudesFileDialog").toByteArray());
 
   // open dialog: vio files
-  QStringList filters; filters 
-    << "FAUDES generator files (*.gen)"
-    << "Any File (*.*)";
-  fdiag->setFilters(filters);
+  fdiag->setNameFilter("FAUDES generator files (*.gen);;Any File (*.*)");
   fdiag->setFileMode(QFileDialog::ExistingFile);
   fdiag->setWindowTitle(QString("Import FAUDES File"));
   fdiag->setAcceptMode(QFileDialog::AcceptOpen);
   fdiag->setLabelText(QFileDialog::Accept,"Import");
-  fdiag->setConfirmOverwrite(false);
+  fdiag->setOption(QFileDialog::DontConfirmOverwrite,true);
   fdiag->setDefaultSuffix("gen");
 
   // open dialog: run and save settings
@@ -219,15 +216,12 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
   fdiag->restoreState(settings.value("stateFileDialog").toByteArray());
 
   // open dialog: vio files
-  QStringList filters; filters 
-    << "VioDES files (*.vio)"
-    << "Any File (*.*)";
-  fdiag->setFilters(filters);
+  fdiag->setNameFilter("VioDES files (*.vio);;Any File (*.*)");
   fdiag->setFileMode(QFileDialog::ExistingFile);
   fdiag->setWindowTitle(QString("Open VioDES File"));
   fdiag->setAcceptMode(QFileDialog::AcceptOpen);
   fdiag->setLabelText(QFileDialog::Accept,"Open");
-  fdiag->setConfirmOverwrite(false);
+  fdiag->setOption(QFileDialog::DontConfirmOverwrite,true);
   fdiag->setDefaultSuffix("vio");
 
   // open dialog: run and save settings
@@ -289,7 +283,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
      nwin = new VioWindow();
     //QSettings settings("Faudes", "vioDiag");
     nwin->restoreGeometry(settings.value("geometry").toByteArray());
-    nwin->move(nwin->pos()+QPoint((int) (30.0*qrand()/RAND_MAX),(int) (30.0*qrand()/RAND_MAX)));
+    nwin->move(nwin->pos()+QPoint((int) (30.0*rand()/RAND_MAX),(int) (30.0*rand()/RAND_MAX)));
     nwin->show();
   }
 
@@ -313,15 +307,11 @@ void VioWindow::SaveAs() {
   fdiag->restoreState(settings.value("stateFileDialog").toByteArray());
 
   // save dialog: vio files
-  QStringList filters; filters 
-    << "VioDES files (*.vio)"
-    << "Any File (*.*)";
-  fdiag->setFilters(filters);
+  fdiag->setNameFilter("VioDES files (*.vio);;Any File (*.*)");
   fdiag->setFileMode(QFileDialog::AnyFile);
   fdiag->setWindowTitle(QString("Save Document as VioDES File"));
   fdiag->setAcceptMode(QFileDialog::AcceptSave);
   fdiag->setLabelText(QFileDialog::Accept,"Save");
-  fdiag->setConfirmOverwrite(true);
   fdiag->setDefaultSuffix("vio");
 
   // open dialog: run and save settings
@@ -349,15 +339,11 @@ void VioWindow::ExportFaudes() {
   fdiag->restoreState(settings.value("stateFaudesFileDialog").toByteArray());
 
   // save dialog: vio files
-  QStringList filters; filters 
-    << "FAUDES generator files (*.gen)"
-    << "Any File (*.*)";
-  fdiag->setFilters(filters);
+  fdiag->setNameFilter("VioDES files (*.vio);;Any File (*.*)");
   fdiag->setFileMode(QFileDialog::AnyFile);
   fdiag->setWindowTitle(QString("Save Document as FAUDES File"));
   fdiag->setAcceptMode(QFileDialog::AcceptSave);
   fdiag->setLabelText(QFileDialog::Accept,"Export");
-  fdiag->setConfirmOverwrite(true);
   fdiag->setDefaultSuffix("gen"); // todo: have suffix
 
   // open dialog: run and save settings
@@ -433,7 +419,7 @@ void VioWindow::OpenRecent() {
     nwin = new VioWindow();
     QSettings settings("Faudes", "vioDiag");
     nwin->restoreGeometry(settings.value("geometry").toByteArray());
-    nwin->move(nwin->pos()+QPoint((int) (30.0*qrand()/RAND_MAX),(int) (30.0*qrand()/RAND_MAX)));
+    nwin->move(nwin->pos()+QPoint((int) (30.0*rand()/RAND_MAX),(int) (30.0*rand()/RAND_MAX)));
     nwin->show();
   }
 
@@ -637,9 +623,10 @@ void VioWindow::InstallViewMenu(void) {
   mViewMenu->clear();
   mViewMenu->setEnabled(false);
   // get action from current widget
-  if(mVioWidget)
+  if(mVioWidget) {
     foreach(QAction* vaction,mVioWidget->View()->ViewActions()) 
       mViewMenu->addAction(vaction);
+  }
   // ennable (relevant if called programmatically)
   if(mVioWidget)
      mViewMenu->setEnabled(mVioWidget->View()->ViewActions().size()!=0);

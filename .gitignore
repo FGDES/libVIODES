@@ -10,12 +10,18 @@
 *.dylib
 *.dll
 *.lib
+*.s
 
 # Qt locals
 *.pro.user
+Makefile
+.qmake.stash
+
 
 # osx irritations
 **/.DS_Store
+*.app
+
 
 # local archive
 local

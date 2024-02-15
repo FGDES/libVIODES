@@ -66,6 +66,7 @@ void VioNameSetData::DoWrite(faudes::TokenWriter& rTw, const QString& ftype) con
 // token io: write
 void VioNameSetData::DoWriteCore(faudes::TokenWriter& rTw, const QString& ftype) const {
   FD_DQN("VioNameSetData::DoWriteCore()");
+  (void) ftype;
   // bail out on missing faudes object
   faudes::NameSet* nset=dynamic_cast<faudes::NameSet*>(mFaudesObject);
   if(!nset) return;
@@ -184,7 +185,7 @@ int VioNameSetData::FromMime(const QMimeData* pMime) {
   Clear();
   int res=0;
   // convert to std string (can we avoid the copy somehow??)
-  std::string tstr=pMime->text().toAscii().constData();
+  std::string tstr=pMime->text().toLatin1().constData();
   // convert to token stream
   faudes::TokenReader rTr(faudes::TokenReader::String, tstr);
   // read nameset data from token stream
@@ -586,7 +587,7 @@ QString VioNameSetModel::UniqueSymbol(const QString& name) {
 // sorting
 void VioNameSetModel::SortAscending(void) {
   FD_DQN("VioNameSetModel::SortAscendingEv()");
-  qStableSort(mpNameSetData->mList.begin(), mpNameSetData->mList.end(), VioStringOrder::mLessThan);
+  std::stable_sort(mpNameSetData->mList.begin(), mpNameSetData->mList.end(), VioStringOrder::mLessThan);
   DoFixRowMap();
   emit NotifyChange();
   FD_DQN("VioNameSetModel::SortAscendingEv(): done");
@@ -595,7 +596,7 @@ void VioNameSetModel::SortAscending(void) {
 // sorting
 void VioNameSetModel::SortDescending(void) {
   FD_DQN("VioNameSetModel::SortDescending()");
-  qStableSort(mpNameSetData->mList.begin(), mpNameSetData->mList.end(), VioStringOrder::mGreaterThan);
+  std::stable_sort(mpNameSetData->mList.begin(), mpNameSetData->mList.end(), VioStringOrder::mGreaterThan);
   DoFixRowMap();
   emit NotifyChange();
   FD_DQN("VioNameSetModel::SortDescending(): done");
@@ -979,13 +980,13 @@ void VioNameSetView::DoVioAllocate(void) {
   if(pNameSetStyle->mLayoutFlags & VioNameSetStyle::Decorate) {
     QGroupBox* gb1 = new QGroupBox(pNameSetStyle->mHeader);
     QVBoxLayout* vb1 = new QVBoxLayout(gb1);
-    vb1->setMargin(0);
+    vb1->setContentsMargins(0,0,0,0);
     vb1->addWidget(mListView);
     mSplitter->addWidget(gb1);
     if(mPropView) {
       QGroupBox* gb2 = new QGroupBox("Properties");
       QVBoxLayout* vb2 = new QVBoxLayout(gb2);
-      vb2->setMargin(0);
+      vb2->setContentsMargins(0,0,0,0);
       vb2->addWidget(mPropView);
       mSplitter->addWidget(gb2);
     }
@@ -1037,7 +1038,7 @@ void VioNameSetView::DoVioUpdate(void) {
   // have my item model
   if(mListModel) mListModel->deleteLater();
   mListModel =new LioNameSetModel(pNameSetModel);
-  mListView->setModel(mListModel);
+  mListView->setLioModel(mListModel);
   // set propertyview
   if(mPropView) mPropView->Model(pNameSetModel);
 #ifdef FAUDES_DEBUG_VIO_WIDGETS

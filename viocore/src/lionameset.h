@@ -34,7 +34,7 @@
  */
 
 
-class LioNameSetModel : public QAbstractTableModel { 
+class LioNameSetModel : public QAbstractTableModel { //pre2024: was QAbstractTableModel 
  
 Q_OBJECT
 
@@ -162,7 +162,7 @@ public:
   virtual ~LioNameSetView(void);
 
   // reimplement: set model
-  virtual void setModel(LioNameSetModel* model);
+  virtual void setLioModel(LioNameSetModel* model);
 
   // be more compatible to treeview
   QHeaderView* header(void) { return horizontalHeader(); };

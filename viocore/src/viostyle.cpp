@@ -389,7 +389,7 @@ void VioStyle::StatesQStrList(QList<QString>& states, const fGenerator* pGen) {
     std::string name=pGen->StateName(*sit); 
     if(name!="") states.append(VioStyle::QStrFromStr(name));
   }
-  qSort(states);
+  std::sort(states.begin(),states.begin());
 }
 
 // alphabet as qstrings 
@@ -400,7 +400,7 @@ void VioStyle::EventsQStrList(QList<QString>& events, const faudes::EventSet* pA
     std::string name=pAlph->SymbolicName(*eit); 
     if(name!="") events.append(VioStyle::QStrFromStr(name));
   }
-  qSort(events);
+  std::sort(events.begin(),events.begin());
 }
 
 // alphabet as qstrings 
@@ -480,9 +480,9 @@ QString VioStyle::SortName(const QString& str){
     for(;miss>0;miss--) res.append('0');
     for(;numstart<numstop; numstart++) res.append(str[numstart]);
   }
-  // fix prefic #
+  // fix prefix #
   if(res.size()>=1) 
-  if(res[0]=='#') res[0]=127;
+    if(res[0]=='#') res[0]='z';  // pre2024: was 127
   FD_DQ("VioStyle::SortName("<< str << "): " << res);
   return res;
 }
@@ -822,7 +822,7 @@ void VioStyle::TextCR(QRectF& drect, const QRectF& rect, const QString& text) {
 
 // operator << for qstrings
 std::ostream& operator<<(std::ostream& o, const QString& qstr) {
-  return (o << std::string(qstr.toAscii().constData())); 
+  return (o << std::string(qstr.toLatin1().constData())); 
 }
 
 /*

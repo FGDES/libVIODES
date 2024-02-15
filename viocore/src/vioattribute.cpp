@@ -257,7 +257,7 @@ void VioAttributeView::DoVioAllocate(void) {
 #endif
   // my checkboxes
   mCheckBoxes = new QVBoxLayout();
-  mCheckBoxes->setMargin(0);
+  mCheckBoxes->setContentsMargins(0,0,0,0);
   mCheckBoxes->setSpacing(2);
   mVbox->addLayout(mCheckBoxes);
   mCheckBoxList.clear();

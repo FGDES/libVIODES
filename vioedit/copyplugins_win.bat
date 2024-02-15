@@ -1,4 +1,5 @@
 REM ================================== copy all viodiag libs
+REM (this is obviously outdated and needs adaptation to Qt6 --- tmoor 2024)
 
 
 REM ========= copy qt libs

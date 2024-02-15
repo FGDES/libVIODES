@@ -1,5 +1,5 @@
 #
-# project file for core libVIODES, tmoor 2016
+# project file for core libVIODES, tmoor 2024
 #
 #
 
@@ -10,7 +10,7 @@ VIODES_TARGET = viodes
 # derive libVIODES configuration
 # load common configuration
 ! include( $${VIODES_BASE}/viodes.pri ) {
-    error("### error: libVIODES target configuration file not found" )
+    error("==== error: libVIODES target configuration file not found")
 }
 
 

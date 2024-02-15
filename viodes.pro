@@ -1,6 +1,6 @@
 # ##########################################
 # libVIODES project file 
-# tmoor 201602
+# tmoor 202401 transitioning to Qt6
 # ##########################################
 
 # figure version
@@ -11,20 +11,21 @@ isEmpty( VIODES_VERSION_MINOR ): error("=== error: libVIODES minor version not c
 
 # say hello
 message("=== libVIODES applications project file")
-message("=== using Qt at " $${QMAKE_LIBDIR_QT})
-message("=== builing version "$${VIODES_VERSION_MAJOR}"."$${VIODES_VERSION_MINOR})
+message("=== using Qt at "$$[QT_INSTALL_PREFIX])
+#message("=== using Qt at "$${QMAKE_LIBDIR_QT})
+message("=== building version "$${VIODES_VERSION_MAJOR}"."$${VIODES_VERSION_MINOR})
 
 # do subdirs
 CONFIG += ordered
 TEMPLATE = subdirs
 SUBDIRS  = ./viocore  \
-           ./plugins/viogen/qtspline3 \ 
-           ./plugins/viogen \ 
-           ./plugins/viohio \
-           ./plugins/viomtc \
-           ./plugins/viosim \
-           ./plugins/viodiag \
-           ./plugins/violua 
+#           ./plugins/viogen/qtspline3 \ 
+#           ./plugins/viogen \ 
+#           ./plugins/viohio \
+#           ./plugins/viomtc \
+#           ./plugins/viosim \
+#           ./plugins/viodiag \
+#           ./plugins/violua 
 
 unix:SUBDIRS += ./vioedit
 

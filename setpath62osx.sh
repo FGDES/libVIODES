@@ -1,6 +1,7 @@
-echo ==================== set qt path (wher relevant resides)
+echo ==================== "select qt release"
 
 export PATH=~/Qt/6.6.2/macos/bin:$PATH
+echo using "$(which qmake)"
 
 echo ==================== set version in qmake database
 

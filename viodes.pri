@@ -12,7 +12,7 @@
 #
 # Referenced variables, to be set in the main project file
 # - VIODES_TARGET          target name, e.g., viocore, viogen etc.
-# - VIODES_BASE            base dir of libVIODES, must contain ./libfaudes_for_viodes
+# - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_libVIODES
 #
 # tmoor 201602
 # ##########################################
@@ -31,7 +31,7 @@ message("=== libVIODES version" $${VIODES_VERSION})
 message("=== using Qt at" $${QMAKE_LIBDIR_QT})
 
 # libVIODES directory layout
-VIODES_LIBFAUDES = $$VIODES_BASE/libfaudes_for_viodes
+VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
 VIODES_INCLUDE = $$VIODES_BASE/include
 
 # qmake target setting
@@ -40,7 +40,7 @@ CONFIG += shared plugin
 TARGET = $$VIODES_TARGET
 DESTDIR = $$VIODES_BASE
 LANGUAGE = C++
-QT += core gui svg
+QT += core gui svg widgets
 
 
 

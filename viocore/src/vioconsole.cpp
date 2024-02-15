@@ -62,10 +62,11 @@ void VioFaudesLogger::Destruct(void) {
 // faudes hook ...
 // ... is rather fragile due to interference between logging and loop call back
 // ... dont use debugging macros FD_xxx here, they will mess up logging
-void VioFaudesLogger::DoWrite(const std::string& message,long int cntnow, long int cntdone) {
+void VioFaudesLogger::DoWrite(const std::string& message,long int cntnow, long int cntdone, int verb) {
+  (void) verb;
   // initialize my statics
   static bool doinit=true;
-  static QTime recent;
+  static QElapsedTimer recent;
   if(doinit) {
     recent.start();
     doinit=false;
@@ -123,29 +124,26 @@ VioConsoleHighlighter::VioConsoleHighlighter(QTextDocument *parent)
   : QSyntaxHighlighter(parent)
 {
 
-  mLabelFormat.setForeground(VioStyle::Color(VioGrey).light(200));
+  mLabelFormat.setForeground(VioStyle::Color(VioGrey).lighter(200));
   mRedFormat.setForeground(VioStyle::Color(VioRed));
   mPromptFormat.setForeground(VioStyle::Color(VioBlue));
 
   HighlightingRule rule;
 
-  rule.pattern = QRegExp("FAUDES_.*:");
-  rule.pattern.setMinimal(true);
+  rule.pattern = QRegularExpression("FAUDES_.*:");
+  //rule.pattern.setMinimal(true); // pre2024 ... need to update for Qt6
   rule.format = mLabelFormat;
   mHighlightingRules.append(rule);
 
-  rule.pattern = QRegExp("FAUDES_WARN:");
-  rule.pattern.setMinimal(true);
+  rule.pattern = QRegularExpression("FAUDES_WARN:");
   rule.format = mRedFormat;
   mHighlightingRules.append(rule);
 
-  rule.pattern = QRegExp("FAUDES_EXCEPTION:");
-  rule.pattern.setMinimal(true);
+  rule.pattern = QRegularExpression("FAUDES_EXCEPTION:");
   rule.format = mRedFormat;
   mHighlightingRules.append(rule);
 
-  rule.pattern = QRegExp("^> ");
-  rule.pattern.setMinimal(true);
+  rule.pattern = QRegularExpression("^> ");
   rule.format = mPromptFormat;
   mHighlightingRules.append(rule);
 
@@ -156,12 +154,13 @@ void VioConsoleHighlighter::highlightBlock(const QString &text) {
 
   // test rules for std highlighting
   foreach(const HighlightingRule &rule, mHighlightingRules) {
-    QRegExp expression(rule.pattern);
-    int index = expression.indexIn(text);
-    while (index >= 0) {
-      int length = expression.matchedLength();
+    QRegularExpression expression(rule.pattern);
+    QRegularExpressionMatchIterator mit = expression.globalMatch(text);
+    while (mit.hasNext()) {
+      QRegularExpressionMatch match = mit.next();
+      int index = match.capturedStart();
+      int length = match.capturedLength();
       setFormat(index, length, rule.format);
-      index = expression.indexIn(text, index + length);
     }
   }
 
@@ -195,7 +194,7 @@ VioConsoleWidget::VioConsoleWidget(QWidget* parent) : QWidget(parent) {
   // my find dialog
   mFindDialog = new VioFindDialog(this);
   mFindPattern="";
-  mFindFlags=0;
+  mFindFlags=QFlags<QTextDocument::FindFlag>(0);
   // text appearance
   QFont font;
   font.setFamily("Courier");
@@ -206,7 +205,7 @@ VioConsoleWidget::VioConsoleWidget(QWidget* parent) : QWidget(parent) {
   (void) highlighter;
   // my layout
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(5);
   mVbox->addWidget(mConsoleText);
   // appearance
@@ -237,7 +236,7 @@ void VioConsoleWidget::BufferSize(int max) {
 void VioConsoleWidget::Clear(void) {
   mConsoleText->clear();
   mFindPattern="";
-  mFindFlags=0;
+  mFindFlags=QFlags<QTextDocument::FindFlag>(0);
   mConsoleText->appendPlainText("libFAUDES console");
   mPrePrompt=mConsoleText->textCursor();
   mPostPrompt=mConsoleText->textCursor();
@@ -322,7 +321,7 @@ void VioConsoleWidget::Execute(void) {
   //cmd=cmd.simplified();
   QString scmd;
   for(int i=0; i< cmd.size(); i++) {
-    char ch = cmd.at(i).toAscii();
+    char ch = cmd.at(i).toLatin1();
     if(ch!=0) { scmd.append(ch); continue; }
     scmd.append(" ");
   }
@@ -353,7 +352,7 @@ void VioConsoleWidget::Execute(void) {
 void VioConsoleWidget::Complete(void) {
   // figure last word
   QString line = mConsoleText->textCursor().block().text();
-  int wpos=line.indexOf(QRegExp("[a-zA-Z0-9_.:]+$"));
+  int wpos=QRegularExpression("[a-zA-Z0-9_.:]+$").match(line).capturedStart();
   QString word="";
   if(wpos>=0) word=line.mid(wpos);
   // get list of completions
@@ -566,7 +565,7 @@ VioFindDialog::VioFindDialog(QWidget *parent) : QDialog(parent) {
 
   // my main layout
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(5);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(5);
 
   // pattern line
@@ -574,7 +573,7 @@ VioFindDialog::VioFindDialog(QWidget *parent) : QDialog(parent) {
   mPatternEdit = new QLineEdit;
   label->setBuddy(mPatternEdit);
   QHBoxLayout* hbox1= new QHBoxLayout();
-  hbox1->setMargin(2);
+  hbox1->setContentsMargins(2,2,2,2);
   hbox1->setSpacing(5);
   hbox1->addWidget(label);
   hbox1->addWidget(mPatternEdit);
@@ -586,7 +585,7 @@ VioFindDialog::VioFindDialog(QWidget *parent) : QDialog(parent) {
   label->setBuddy(mReplaceEdit);
   mReplaceLine= new QWidget();
   QHBoxLayout* hbox4 = new QHBoxLayout(mReplaceLine);
-  hbox4->setMargin(2);
+  hbox4->setContentsMargins(2,2,2,2);
   hbox4->setSpacing(5);
   hbox4->addWidget(rlabel);
   hbox4->addWidget(mReplaceEdit);
@@ -599,7 +598,7 @@ VioFindDialog::VioFindDialog(QWidget *parent) : QDialog(parent) {
   mFromStartCheck = new QCheckBox(tr("From Start"));
   mBackwardCheck = new QCheckBox(tr("Backward Search"));
   QHBoxLayout* hbox2= new QHBoxLayout();
-  hbox2->setMargin(2);
+  hbox2->setContentsMargins(2,2,2,2);
   hbox2->setSpacing(10);
   hbox2->addWidget(mCaseCheck);
   hbox2->addWidget(mFromStartCheck);
@@ -618,7 +617,7 @@ VioFindDialog::VioFindDialog(QWidget *parent) : QDialog(parent) {
   bbox->addButton(mReplaceButton,QDialogButtonBox::ApplyRole); 
   bbox->addButton(mCancelButton,QDialogButtonBox::RejectRole);
   QHBoxLayout* hbox3= new QHBoxLayout();
-  hbox3->setMargin(2);
+  hbox3->setContentsMargins(2,2,2,2);
   hbox3->setSpacing(5);
   hbox3->addWidget(bbox);
   mVbox->addLayout(hbox3);
@@ -683,7 +682,7 @@ bool VioFindDialog::Backward(void) {
 
 // access 
 QTextDocument::FindFlags VioFindDialog::Flags(void) {
-  QTextDocument::FindFlags res=0;
+  QTextDocument::FindFlags res= QFlags<QTextDocument::FindFlag>(0);;
   if(CaseSensitive()) res |= QTextDocument::FindCaseSensitively;
   if(Backward()) res |= QTextDocument::FindBackward;
   if(FromStart()) res |= (QTextDocument::FindFlag) 0x1000;
@@ -733,7 +732,7 @@ QString VioConsoleEvaluate::Execute(void) {
   progress.setWindowModality(Qt::ApplicationModal);
   progress.setValue(0);
   QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-  QApplication::flush();
+  QApplication::sendPostedEvents();// Qt6
   // clear global break flag
   VioStyle::FaudesBreakClr(); 
   // run my extra thread
@@ -742,13 +741,13 @@ QString VioConsoleEvaluate::Execute(void) {
   long int i=100; 
   while(isRunning() && (--i)>0) {
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,10);
-    QApplication::flush();
+    QApplication::sendPostedEvents();// Qt6
     wait(10);
   }
   bool canceled=false;
   while(isRunning()) {
     QApplication::processEvents(QEventLoop::AllEvents,10);
-    QApplication::flush();
+    QApplication::sendPostedEvents();// Qt6
     if(progress.wasCanceled() && !canceled) {
        VioStyle::FaudesBreakSet(); 
        canceled=true;

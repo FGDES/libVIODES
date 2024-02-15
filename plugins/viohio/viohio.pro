@@ -10,7 +10,7 @@ VIODES_TARGET = viohio
 # derive libVIODES configuration
 # load common configuration
 ! include( $${VIODES_BASE}/viodes.pri ) {
-    error("### error: libVIODES target configuration file not found" )
+    error("==== error: libVIODES target configuration file not found" )
 }
 
 # depends on viogen

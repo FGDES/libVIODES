@@ -89,11 +89,11 @@ for testing ant debugging.
 To compile libVIODES, you will need Qt series 4 with minimum version 4.4.2. For Linux, you will need to install the Qt developper packages. For Mac OS X and Windows there exsist installer for Qt 4.8.5. For Windows, make sure that you choose the same compiler for Qt as you use for libFAUDES. Also make sure that the Qt toolset is within the PATH environment variable. 
 
 You will also need a configured and compiled copy of libFAUDES. This
-is expected to be located in `./libVIODES/libFAUDES_for_viodes`. For POSIX systems, we provide a skript `copyfaudes.sh` that performs this step:
+is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems, we provide a skript `copyfaudes.sh` that performs this step:
 
     ./libVIOEDS> . ./copyfaudes.sh
 
-The script expects a plain libFAUDES next to `./libVIODES`, copies the sources to `./libVIODES/libFAUDES_for_viodes`, sets configuration options and compiles libFAUDES using the libFAUDES `makefile`. The script is meant as a documentation on which configuration options are recommended, please inspect carefully before execution.  
+The script expects a plain libFAUDES next to `./libVIODES`, copies the sources to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES using the libFAUDES `makefile`. The script is meant as a documentation on which configuration options are recommended, please inspect carefully before execution.  
 
 Once you are set, 
 compiling libVIODES is controlled by the Qt project `./libviodes/viodes.pro`. 

@@ -23,7 +23,7 @@
 // parse block of tokens
 void VioTokenParser(const QTextBlock& block, VioTokenHighlighter::BlockData* newstate, int position=-1) {
   // search regex (is static ok ??)
-  static QRegExp mTagExpression("<[^>]*>");
+  static QRegularExpression mTagExpression("<[^>]*>");
   // have an accumulator, initialise with previous state
   VioTokenHighlighter::BlockData* state = 0;
   state = dynamic_cast< VioTokenHighlighter::BlockData* >( block.previous().userData() );
@@ -37,14 +37,16 @@ void VioTokenParser(const QTextBlock& block, VioTokenHighlighter::BlockData* new
   QString text= block.text();
   int offset=block.position();
   FD_DQ("VioTokenParser(): block " << block.blockNumber() << " text " << VioStyle::StrFromQStr(text));
-  int index = mTagExpression.indexIn(text);
-  while(index >= 0) {
-    int length = mTagExpression.matchedLength();
-    QString match = text.mid(index,length);        
+  QRegularExpressionMatchIterator mit = mTagExpression.globalMatch(text);
+  while (mit.hasNext()) {
+    QRegularExpressionMatch match = mit.next();
+    int index = match.capturedStart();
+    int length = match.capturedLength();
+    QString capstr  = match.captured();
     // end section tag 
     if(length>3) 
-    if(match.at(1)==QChar('/')) {
-      QString label = text.mid(index+2,length-3);         
+    if(capstr.at(1)==QChar('/')) {
+      QString label = capstr.mid(2,length-3);         
       FD_DQ("VioTokenParser(): end " << VioStyle::StrFromQStr(label) << " tag at " << 
         index << " (#" << length <<")");
       if(position >= offset+index)
@@ -65,8 +67,8 @@ void VioTokenParser(const QTextBlock& block, VioTokenHighlighter::BlockData* new
     }
     // begin section tag 
     if(length>2) 
-    if(match.at(1)!=QChar('/')) {
-      QString label = text.mid(index+1,length-2);         
+    if(capstr.at(1)!=QChar('/')) {
+      QString label = capstr.mid(1,length-2);         
       FD_DQ("VioTokenParser(): begin " << VioStyle::StrFromQStr(label) << " tag at " << 
         index << " (#" << length <<")");
       VioTokenHighlighter::SectionInfo sinfo;
@@ -75,8 +77,6 @@ void VioTokenParser(const QTextBlock& block, VioTokenHighlighter::BlockData* new
       sinfo.mLength=length;
       state->mSectionVector.push_back(sinfo);
     }
-    // proceed with next match
-    index = mTagExpression.indexIn(text, index + length);
   }
 }
 
@@ -99,29 +99,29 @@ VioTokenHighlighter::VioTokenHighlighter(QTextDocument *parent)
   HighlightingRule rule;
 
   mCommentFormat.setForeground(VioStyle::Color(VioRed));
-  rule.pattern = QRegExp("%[^\n]*");
+  rule.pattern = QRegularExpression("%[^\n]*");
   rule.format = mCommentFormat;
   mHighlightingRules.append(rule);
 
   mSectionFormat.setForeground(VioStyle::Color(VioBlue));
-  rule.pattern = QRegExp("<.*>");
+  rule.pattern = QRegularExpression("<.*>");
   rule.format = mSectionFormat;
   mHighlightingRules.append(rule);
 
 
   mStringFormat.setFontItalic(true);
   mStringFormat.setForeground(VioStyle::Color(VioGreen));
-  rule.pattern = QRegExp("\".*[^\\\\]\"");
+  rule.pattern = QRegularExpression("\".*[^\\\\]\"");
   rule.format = mStringFormat;
   //mHighlightingRules.append(rule);
 
   mBinaryFormat.setFontItalic(true);
   mBinaryFormat.setForeground(VioStyle::Color(VioGrey));
-  rule.pattern = QRegExp("=.*=(?!=)");
+  rule.pattern = QRegularExpression("=.*=(?!=)");
   rule.format = mBinaryFormat;
   mHighlightingRules.append(rule);
 
-  mTagExpression = QRegExp("<[^>]*>");
+  mTagExpression = QRegularExpression("<[^>]*>");
 
 }
 
@@ -130,12 +130,13 @@ void VioTokenHighlighter::highlightBlock(const QString &text) {
 
   // test rules for std highlighting
   foreach(const HighlightingRule &rule, mHighlightingRules) {
-    QRegExp expression(rule.pattern);
-    int index = expression.indexIn(text);
-    while (index >= 0) {
-      int length = expression.matchedLength();
+    QRegularExpression expression(rule.pattern);
+    QRegularExpressionMatchIterator mit = expression.globalMatch(text);
+    while (mit.hasNext()) {
+      QRegularExpressionMatch match = mit.next();
+      int index = match.capturedStart();
+      int length = match.capturedLength();
       setFormat(index, length, rule.format);
-      index = expression.indexIn(text, index + length);
     }
   }
 
@@ -172,9 +173,9 @@ VioTokenEditor::VioTokenEditor(QWidget *parent) :
   font.setFamily("Courier");
   font.setFixedPitch(true);
   setFont(font);
-  mTagMatchFormat.setBackground(VioStyle::Color(VioGreen).light(300));
+  mTagMatchFormat.setBackground(VioStyle::Color(VioGreen).lighter(300));
   mTagMatchFormat.setForeground(VioStyle::Color(VioBlack));
-  mTagMissFormat.setBackground(VioStyle::Color(VioRed).light(300));
+  mTagMissFormat.setBackground(VioStyle::Color(VioRed).lighter(300));
   mTagMissFormat.setForeground(VioStyle::Color(VioBlack));
 
   // dont want the std context menu
@@ -214,7 +215,7 @@ int VioTokenEditor::lineNumberAreaWidth() {
     max /= 10;
     ++digits;
   }
-  int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+  int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
   return space;
 }
 

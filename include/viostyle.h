@@ -18,10 +18,11 @@
 #include <string>
 #include <iostream>
 #include <bitset>
+#include <algorithm>
 
 #include "libfaudes.h"
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QPalette>
 
 // win32 dll symbol export/import
@@ -398,7 +399,7 @@ Q_OBJECT
 
 public:
   // constructors and destructors
-  VioAlternateLayout(QWidget *parent=0) : QVBoxLayout(parent) {setMargin(0); setSpacing(0);};
+ VioAlternateLayout(QWidget *parent=0) : QVBoxLayout(parent) {setContentsMargins(0,0,0,0); setSpacing(0);};
   ~VioAlternateLayout() {};
 
   // track recent widget

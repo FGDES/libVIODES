@@ -109,7 +109,7 @@ VioSymbolEdit::VioSymbolEdit(QWidget *parent) :
   mStack->addWidget(mComboBox);
   mStack->addWidget(mLineEdit);
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(0);
   mVbox->addWidget(mStack);
   // have focus (will pass it to proxy anyway)
@@ -976,7 +976,7 @@ void VioSymbolTableWidget::userDelSelection(void) {
   }
   FD_DQ("VioSymbolTableWidget::userDelSelection(): #" << selectedrows.size());
   if(selectedrows.size()==0) return;
-  qSort(selectedrows);
+  std::sort(selectedrows.begin(),selectedrows.end());
   int off=0;
   QList<int>::iterator rit=selectedrows.begin();
   for(;rit!=selectedrows.end();rit++) {

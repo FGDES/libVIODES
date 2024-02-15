@@ -117,6 +117,7 @@ void VioData::DoWrite(faudes::TokenWriter& rTw, const QString& ftype) const {
 
 // token io: write
 void VioData::DoWriteCore(faudes::TokenWriter& rTw, const QString& ftype) const {
+  (void) ftype;
   FD_DQT("VioData::DoWriteCore()");
   // bail out on missing faudes object
   if(!mFaudesObject) return;
@@ -130,7 +131,7 @@ void VioData::DoWriteCore(faudes::TokenWriter& rTw, const QString& ftype) const 
 
   // write binary
   rTw.WriteBegin("VioTokenText");
-  QByteArray buff = mText.toAscii();
+  QByteArray buff = mText.toLatin1();
   rTw.WriteBinary(buff.constData(),buff.size()); 
   rTw.WriteEnd("VioTokenText");
   // done
@@ -164,6 +165,7 @@ void VioData::DoRead(faudes::TokenReader& rTr, const QString& ftype) {
 // token io: read
 void VioData::DoReadCore(faudes::TokenReader& rTr, const QString& section) {
   FD_DQT("VioData::DoReadCore()");
+  (void) section;
   // bail out on missing faudes object
   if(!mFaudesObject) return;
   // read faudes object
@@ -173,7 +175,7 @@ void VioData::DoReadCore(faudes::TokenReader& rTr, const QString& section) {
     rTr.ReadBegin("VioTokenText");
     std::string rstr;
     rTr.ReadBinary(rstr);
-    mText= QString::fromAscii(rstr.c_str(),rstr.size());
+    mText= QString::fromLatin1(rstr.c_str(),rstr.size());
     rTr.ReadEnd("VioTokenText");
   } 
 }
@@ -535,7 +537,7 @@ void VioModel::DoVioUpdate(void) {
 // token io: vio data
 void VioModel::DoVioWrite(faudes::TokenWriter& rTw) const {
   FD_DQT("VioModel::DoVioWrite()");
-  QByteArray buff = mData->mText.toAscii();
+  QByteArray buff = mData->mText.toLatin1();
   rTw.WriteBinary(buff.constData(),buff.size()); 
 }
 
@@ -549,7 +551,7 @@ void VioModel::DoVioRead(faudes::TokenReader& rTr) {
   if(token.Type()==faudes::Token::Binary) {
     std::string rstr;
     rTr.ReadBinary(rstr);
-    mData->mText= QString::fromAscii(rstr.c_str(),rstr.size());
+    mData->mText= QString::fromLatin1(rstr.c_str(),rstr.size());
   } else {
     mData->mText= VioStyle::QStrFromStr(mData->FaudesObject()->ToText());   // fake it for derived debugging functionality
   }
@@ -642,7 +644,7 @@ void VioModel::Select(const VioElement& elem, bool on) {
   // do it
   if(contained && !on) mSelection.removeAll(elem);
   if(!contained && on) mSelection.append(elem);
-  if(!contained && on) qSort(mSelection);
+  if(!contained && on) std::sort(mSelection.begin(),mSelection.end());
   // emit
   if(changed) emit NotifySelectionElement(elem,on);
 }
@@ -931,7 +933,7 @@ VioView::VioView(QWidget* parent, VioStyle* config, bool alloc) :
   setContentsMargins(-6,0,-6,0);              // margin issue cheap fix: compensate offset
 #endif
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(0);
   mVbox->setContentsMargins(0,0,0,0);
   // allocate further data
@@ -1016,10 +1018,10 @@ void VioView::UpdateModel(void) {
   if(err!="") {
     // figre line
     int line=-1;
-    QRegExp rex("\\(#.*\\)");
-    int pos= rex.indexIn(err);
+    QRegularExpressionMatch mex=QRegularExpression("\\(#.*\\)").match(err);
+    int pos= mex.capturedStart();
     if(pos>=0) {
-      int len=rex.matchedLength();
+      int len=mex.capturedLength();
       FD_DQT("VioView::UpdateModel(): interpret err str: match: " << pos << "/" << len);
       QString numstr=err.mid(pos+2,len-3);
       bool nsok;
@@ -1381,7 +1383,7 @@ VioWidget::VioWidget(QWidget* parent, VioStyle* config, bool alloc) :
   setContentsMargins(0,0,0,0);
   mVbox = new QVBoxLayout(this);
   mVbox->setSpacing(0);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
    // allocate model and view
   if(alloc) DoVioAllocate();
   // fix modified flag

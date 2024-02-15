@@ -115,7 +115,7 @@ private:
 protected:
 
   // reimplement faudes dowrite
-  void DoWrite(const std::string& message, long int cntnow, long int cntdone);
+  void DoWrite(const std::string& message, long int cntnow, long int cntdone, int verb=0);
 
   // single instance
   static VioFaudesLogger* mpVInstance;
@@ -154,7 +154,7 @@ private:
 
   // my highlighting rules
   struct HighlightingRule {
-    QRegExp pattern;
+    QRegularExpression pattern;
     QTextCharFormat format;
   };
   QVector<HighlightingRule> mHighlightingRules;
@@ -211,7 +211,7 @@ public slots:
   void Paste(void);
 
   // find
-  void Find(const QString& pattern, QTextDocument::FindFlags flags = 0);
+  void Find(const QString& pattern, QTextDocument::FindFlags flags = QFlags<QTextDocument::FindFlag>(0));
   void FindAgain(void);
   void FindDialog(void);
 

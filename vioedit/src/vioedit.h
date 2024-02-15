@@ -4,8 +4,8 @@
 #ifndef FAUDES_VIODIAG_H
 #define FAUDES_VIODIAG_H
 
-#include <QApplication>
-#include <QtGui>
+#include <QtWidgets>
+#include <QtWidgets/QApplication>
 #include "libviodes.h"
 
 

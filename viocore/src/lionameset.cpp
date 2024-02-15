@@ -148,8 +148,10 @@ void LioNameSetModel::UpdateResize(void) {
   if(rowCount()!=0 && rowCount()==mUpdateOldRows && !mUpdateChanged)
     return;
   // empty or content changed: force reset
+  bool rst=false;
   if(rowCount()<=0) {
-    reset();
+    beginResetModel();
+    rst=true;
   }
   // sense resize: grow
   if(rowCount()>mUpdateOldRows && mUpdateOldRows>=0) {
@@ -169,6 +171,8 @@ void LioNameSetModel::UpdateResize(void) {
   // clear pending
   mUpdateOldRows=rowCount();
   mUpdateChanged=false;
+  // finish up
+  if(rst) endResetModel();
 }
 
 // resize hook: update all
@@ -184,10 +188,11 @@ void LioNameSetModel::UpdateAll(void) {
 // clear all
 void LioNameSetModel::UpdateReset(void) {
   FD_DQN("LioNameSetModel::UpdateReset()");
-  reset();
+  beginResetModel();
   mUpdateOldRows=-1;
   mUpdateChanged=false;
   UpdateAll();
+  endResetModel();
 }
 
 // resize hook: update row
@@ -221,11 +226,12 @@ void LioNameSetModel::UpdateSymbolChange(QString name) {
 // tablemodel: sort
 void LioNameSetModel::sort(int column, Qt::SortOrder order) {
   FD_DQN("LioNameSetModel::sort(...)");
+  beginResetModel();
   if(column==0) {
     if(order==Qt::AscendingOrder) pVioNameSetModel->SortAscending();
     else pVioNameSetModel->SortDescending();
   }
-  reset();
+  endResetModel();
   // track user edit
   Modified(true);
 }
@@ -447,9 +453,10 @@ bool LioNameSetModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
       }
     }
     // sort and doit
-    qSort(sourcelist);
+    beginResetModel();
+    std::sort(sourcelist.begin(),sourcelist.end());
     UserInternalMove(sourcelist,row);
-    reset();
+    endResetModel();
     return true;
   }
   return false;
@@ -586,8 +593,8 @@ VioNameSetModel* LioNameSetView::VioModel(void) {
 };
 
 // reimplement: set model
-void LioNameSetView::setModel(LioNameSetModel* liomodel) {
-  FD_DQN("LioNameSetView::setModel()");
+void LioNameSetView::setLioModel(LioNameSetModel* liomodel) {
+  FD_DQN("LioNameSetView::setLioModel()");
   // bail out ob double call
   if(model()==liomodel) return;
   // disconnect
@@ -614,11 +621,11 @@ void LioNameSetView::setModel(LioNameSetModel* liomodel) {
   //QObject::connect(pList,SIGNAL(Changed(bool)),
   //this, SIGNAL(Changed(bool)));
   // layout header after setting model
-  header()->setResizeMode(0,QHeaderView::Stretch);
+  header()->setSectionResizeMode(0,QHeaderView::Stretch);
   for(int col=1; col<pLioModel->columnCount(); col++)
-    header()->setResizeMode(col,QHeaderView::ResizeToContents);
+    header()->setSectionResizeMode(col,QHeaderView::ResizeToContents);
   SetSortEnabled(1);
-  FD_DQN("LioNameSetView::setModel(): done");
+  FD_DQN("LioNameSetView::setLioModel(): done");
 }
 
 
@@ -705,7 +712,7 @@ QList<int> LioNameSetView::SelectedRows(void) {
     selectedrows.append(index.row());
   }
   FD_DQN("LioNameSetView::SelectedRows(): rows #" << selectedrows.size());
-  qSort(selectedrows);
+  std::sort(selectedrows.begin(),selectedrows.end());
   return selectedrows;
 }
 
@@ -1058,7 +1065,7 @@ PioNameSetView::PioNameSetView(QWidget* parent, VioStyle* config) : QWidget(pare
 
   // overall layout
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(0);
   mVbox->addLayout(hbox);
   mVbox->addSpacing(10);
