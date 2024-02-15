@@ -23,5 +23,6 @@ Makefile
 *.app
 
 
-# local archive
+# local archives
 local
+libFAUDES_for_libVIODES
