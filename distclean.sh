@@ -11,7 +11,7 @@ rm plugins/*/Makefile*
 rm plugins/*/*/Makefile*
 rm vioedit/Makefile*
 
-echo ========= deleting dlls
+echo ========= deleting libraries
 rm libvio*.so
 rm libvio*.dylib
 rm libvio*.a
