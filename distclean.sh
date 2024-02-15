@@ -1,6 +1,8 @@
+# this just collects the larger bulk
+
 echo ========= make clean
 make clean
-make -C tutorial clean
+make -C vioedit clean
 
 echo ========= deleting makefiles
 rm Makefile*
