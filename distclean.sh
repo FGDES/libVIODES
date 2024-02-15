@@ -1,4 +1,4 @@
-# this just collects the larger bulk
+# delete larger bulk for easy rsync
 
 echo ========= make clean
 make clean
@@ -21,3 +21,8 @@ rm plugins/viogen/qtspline3/lib*.a
 echo ========= deleting tutorial bins
 rm -rf vioedit/Vio*.app
 rm -rf vioedit/lib/*
+
+echo ========= deleting local copy of libfaudes
+rm -rf libFAUDES_for_VIODES
+
+
