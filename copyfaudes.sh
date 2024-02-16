@@ -78,7 +78,7 @@ make -C $FAUDES_DST dist-clean
 echo ==================== configure libFAUDES
 make -C $FAUDES_DST configure 
 echo ==================== build libFAUDES shared object
-make -C $FAUDES_DST -j 20
+make -C $FAUDES_DST -j20
 
 
 # clean environment
