@@ -1,4 +1,4 @@
-# libVIODES - visual representation of libFAUDES objects as Qt Widgets
+# libVIODES - Qt Widgets to represent libFAUDES objects
 
 
 ## Design Objectives
