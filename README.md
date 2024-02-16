@@ -24,7 +24,7 @@ targets to fill the gap.
 VioCore: 
 
 * base class for configuration classes (VioStyle)
-* base classes for faudes::Type widgets (VioModel, VioWidget)
+* base classes for faudes::Type widgets (VioModel, VioView, VioWidget)
 * helper for editing faudes symbols 
 * base class for faudes::Attribute* widgets (VioAttributeModel, VioAttributeWidget)
 * Qt style plugin for extensions
