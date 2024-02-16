@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010  Thomas Moor
+   Copyright (C) 2010-2024 Thomas Moor
 
 */
 

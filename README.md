@@ -17,6 +17,7 @@ targets to fill the gap.
   new attributes
 * make attribute widgets really easy to create
 
+*** We are currently migrating to Qt6 --- viocore incl. vioedeit are functional on Linux and MacOSx ***
 
 ## Organisation
 
@@ -86,7 +87,7 @@ for testing ant debugging.
 
 ## Build System
 
-To compile libVIODES, you will need Qt series 4 with minimum version 4.4.2. For Linux, you will need to install the Qt developper packages. For Mac OS X and Windows there exsist installer for Qt 4.8.5. For Windows, make sure that you choose the same compiler for Qt as you use for libFAUDES. Also make sure that the Qt toolset is within the PATH environment variable. 
+To compile libVIODES, you will need Qt series 6 with minimum version 6.6.2. For Linux, you will need to install the Qt developper packages. For Mac OS X and Windows there exsist installerr provided by Qt. For Windows, make sure that you choose the same compiler for Qt as you use for libFAUDES. Also make sure that the Qt toolset is within the PATH environment variable. 
 
 You will also need a configured and compiled copy of libFAUDES. This
 is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems, we provide a skript `copyfaudes.sh` that performs this step:

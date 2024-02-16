@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010  Thomas Moor, 
+   Copyright (C) 2010-2024 Thomas Moor
 
 */
 
@@ -910,7 +910,7 @@ void VioNameSetLayout::Read(faudes::TokenReader& rTr) {
     mPropSize= rTr.ReadInteger();
     mListSize= rTr.ReadInteger();
     rTr.ReadEnd("VioLayout");
-  } catch(faudes::Exception expection) {
+  } catch(faudes::Exception& expection) {
   } 
 }
 
@@ -1095,7 +1095,7 @@ void VioNameSetView::UpdateUserLayout(void) {
     mPropAction->setChecked(mUserLayout->mPropBuiltIn);
   }
   // propview size
-  int w;
+  int w=-1;
   if(mPropView) {
     QList<int> sz = mSplitter->sizes();
     w = sz[0]+sz[1];

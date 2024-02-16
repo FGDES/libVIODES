@@ -5,6 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
+   Copyright (C) 2010-2024 Thomas Moor.
 
 */
 
@@ -60,13 +61,21 @@ void VioElement::Line(const int& line) {
 
 // get value (todo: have const version)
 faudes::Transition VioElement::Trans(void) const { 
-  if(mEType==ETrans) return mFTrans; return faudes::Transition(0,0,0); };
+  if(mEType==ETrans) return mFTrans;
+  return faudes::Transition(0,0,0);
+};
 faudes::Idx VioElement::State(void) const { 
-  if(mEType==EState) return mFTrans.X1; return 0; };
+  if(mEType==EState) return mFTrans.X1;
+  return 0;
+};
 faudes::Idx VioElement::Event(void) const { 
-  if(mEType==EEvent) return mFTrans.Ev; return 0; };
+  if(mEType==EEvent) return mFTrans.Ev;
+  return 0;
+};
 int VioElement::Line(void) const { 
-  if(mEType==ELine) return mFTrans.Ev; return 0; };
+  if(mEType==ELine) return mFTrans.Ev;
+  return 0;
+};
  
 // untyped access
 faudes::Idx VioElement::X1(void) const { return mFTrans.X1; };

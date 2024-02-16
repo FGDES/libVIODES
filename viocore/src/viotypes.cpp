@@ -5,6 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
+   Copyright (C) 2010-2024 Thomas Moor.
 
 */
 
@@ -1011,7 +1012,7 @@ void VioView::UpdateModel(void) {
   QString err="";
   try { 
     DoModelUpdate();
-  } catch (faudes::Exception& fexcep) {
+  } catch(faudes::Exception& fexcep) {
     err=QString("Token mismatch: ")+VioStyle::QStrFromStr(fexcep.What());
   }
   // report error
@@ -1343,7 +1344,7 @@ int VioView::ApplyFaudesFunction(const QString& ffnct) {
     FD_DQT("VioView::ApplyFaudesFunction(" << ffnct << "): execute");
     try {
       fnct->Execute();
-    } catch(faudes::Exception) {
+    } catch(faudes::Exception&) {
     }
   }
   // return ownership

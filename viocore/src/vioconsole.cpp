@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010 Thomas Moor
+   Copyright (C) 2010-2024 Thomas Moor.
 
 */
 
@@ -719,7 +719,7 @@ void VioConsoleEvaluate::run(void) {
   mErrStr="";
   try{
     faudes::LuaState::G()->Evaluate(VioStyle::StrFromQStr(mCommand));
-  } catch( faudes::Exception fex) {
+  } catch(faudes::Exception& fex) {
     mErrStr=VioStyle::QStrFromStr(fex.What());
   }
 };
