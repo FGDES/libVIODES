@@ -8,7 +8,7 @@
 # a typical setup will have ./lobfaudes next to ./libviodes
 
 # edit this line to select the libfaudes source location
-#FAUDES_SRC=../libfaudes-2_27a
+#FAUDES_SRC=../libfaudes-2_31h
 FAUDES_SRC=../libFAUDES
 
 # do not change the libfaudes destination
@@ -58,7 +58,7 @@ fi
 ############################################################################
 # do it
 
-# configure libFAUDES to go with libVIODES 
+# configure libFAUDES to go with libVIODES/DESTool 
 # - minimum plug-ins: luabindings, timed, simulator, iodevice)
 # - minimum debug: core_checked core_progress
 # - minimum options: core_systime core_network core_thread
@@ -97,7 +97,7 @@ if [ ! -f ${FAUDES_DST}/bin/luafaudes ]; then
     return
 fi
 
-echo "done ... inspect results in " $(pwd)/$FAUDES_DST
+echo "===== copy/configure/compile libFAUDES done"
 
 # update version
 VIODES_BASE=$(pwd)/../libviodes 
@@ -105,6 +105,9 @@ DESTOOL_BASE=$(pwd)
 
 # retrieve version an pass to qmake
 . ./VERSION
-qmake -set VIODES_VERSION_MAJOR $VERSION_VERSION_MAJOR 
-qmake -set VIODES_VERSION_MINOR $VERSION_VERSION_MINOR 
+qmake -set VIODES_VERSION_MAJOR $VIODES_VERSION_MAJOR 
+qmake -set VIODES_VERSION_MINOR $VIODES_VERSION_MINOR 
+
+echo "===== verify versions for qt by \"qmake -query\""
+echo "===== you may proceed with \"qmake viodes.pro\""
 

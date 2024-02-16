@@ -12,7 +12,7 @@
 #
 # Referenced variables, to be set in the main project file
 # - VIODES_TARGET          target name, e.g., viocore, viogen etc.
-# - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_libVIODES
+# - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_VIODES
 #
 # tmoor 201602
 # ##########################################
@@ -23,16 +23,15 @@ isEmpty( VIODES_VERSION_MINOR ): VIODES_VERSION_MINOR = $$[VIODES_VERSION_MINOR]
 isEmpty( VIODES_VERSION_MAJOR ): error("=== error: libVIODES major version not configured")
 isEmpty( VIODES_VERSION_MINOR ): error("=== error: libVIODES minor version not configured")
 VIODES_VERSION = $${VIODES_VERSION_MAJOR}.$${VIODES_VERSION_MINOR}
+VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
+VIODES_INCLUDE = $$VIODES_BASE/include
 
 # say hello
 message("=== libVIODES base at" $${VIODES_BASE})
+message("=== libFAUDES base at" $${VIODES_LIBFAUDES})
 message("=== libVIODES component" $${VIODES_TARGET})
 message("=== libVIODES version" $${VIODES_VERSION})
 message("=== using Qt at" $${QMAKE_LIBDIR_QT})
-
-# libVIODES directory layout
-VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
-VIODES_INCLUDE = $$VIODES_BASE/include
 
 # qmake target setting
 TEMPLATE = lib
