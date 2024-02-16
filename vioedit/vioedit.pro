@@ -5,7 +5,7 @@
 
 # set paths for dependant libraries
 VIODES_BASE = ..
-VIODES_LIBFAUDES = $$VIODES_BASE/libfaudes_for_viodes
+VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
 
 # target setting
 TEMPLATE = app
