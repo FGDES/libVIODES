@@ -10,14 +10,14 @@ integration of such extension in the scripting environment luafaudes.
 We need a similar approach for libFAUDES based GUI applications. libVIODES
 targets to fill the gap.
 
-* using the libFAUDES type registry as basis
-* having a general model/view approach for faudes::Type
-* derive classes in parallel to faudes::Type derivates
-* organise the generator widget such that is can pick up
+- using the libFAUDES type registry as basis
+- having a general model/view approach for faudes::Type
+- derive classes in parallel to faudes::Type derivates
+- organise the generator widget such that is can pick up
   new attributes
-* make attribute widgets really easy to create
+- make attribute widgets really easy to create
 
-*** We are currently migrating to Qt6 --- viocore incl. vioedeit are functional on Linux and MacOSx ***
+***We are currently migrating to Qt6 --- viocore incl. vioedit are functional on Linux and MacOSx --- plug-ins are work in progress ***
 
 ## Organisation
 
