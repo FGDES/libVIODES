@@ -1,4 +1,4 @@
-# libVIODES - Qt Widgets to represent libFAUDES objects
+# libVIODES - Qt Widgets to Represent libFAUDES Objects
 
 
 ## Design Objectives
@@ -19,9 +19,9 @@ targets to fill the gap.
 
 ***We are currently migrating to Qt6 ... viocore incl. vioedit are functional on Linux and MacOSx ... plug-ins are work in progress ... see https://github.com/FGDES/libVIODES-Qt4-Pre2024 for the most recent stable Qt4 based varaiant***
 
-## Organisation
+## Code Organisation
 
-VioCore: 
+#### VioCore: 
 
 * base class for configuration classes (VioStyle)
 * base classes for faudes::Type widgets (VioModel, VioView, VioWidget)
@@ -31,14 +31,14 @@ VioCore:
 * Qt style plugin for extensions
 
 
-VioStyle:
+#### VioStyle:
 
 * one static instance to configure visual and libFAUDES related defaults, eg
 colors, fonts and the dot executable path
 * classes derived from VioStyle to configure representations of particular faudes objects.
 * all attributes are read initially from a single XML file
 
-## Qt-Style Models vs faudes::Type
+#### Some Technical detail
 
 Each faudes object derived from faudes::Type is identified by its name from the faudes type registry for short fType. An fType is wrapped in a Qt-style model to hold additional
 data for visual representation, eg orders of lists or positions of nodes in a graph. 
