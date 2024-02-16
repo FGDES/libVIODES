@@ -65,20 +65,15 @@ to adapt their representation, ie have proper names of checkboxes.
 
 To extend libVIODES to display a specific fType, you need to derive corresponding
 VioStyle, VioModel, VioView and VioWidget classes. Via the Qt plugin mechanism, 
-you can register your extensons with the VioTypeResistry. There are
-demo plugins for timed generators and colord markings.
-
-
-##
-Plug-In/VioGen:
+you can register your extensons with the VioTypeResistry. An example is the generator plug-in
+VioGen:
 
 * plain generator representation (VioGeneratorModel, VioGeneratorWidget)
 * specific generator representation (VioGeneratorList*, VioGeneratorGraph*)
 * specialised Qt models/views (Lio*, Gio*)
 
 The code of this pluglin is taken from an previous project for graph
-representation (libVIOGen). There are some glitches from the merge, so don't consider this plugin as a template to design your plugin.
-
+representation (libVIOGen). 
 
 ## Tutorial
 
