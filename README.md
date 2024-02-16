@@ -75,7 +75,7 @@ Plug-In/VioGen:
 * specialised Qt models/views (Lio*, Gio*)
 
 The code of this pluglin is taken from an previous project for graph
-representation (libVIOGen). There are some glitches from the merge, so don,t consider this plugin as a template to design your plugin.
+representation (libVIOGen). There are some glitches from the merge, so don't consider this plugin as a template to design your plugin.
 
 
 ## Tutorial
