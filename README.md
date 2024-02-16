@@ -25,9 +25,11 @@ VioCore:
 
 * base class for configuration classes (VioStyle)
 * base classes for faudes::Type widgets (VioModel, VioView, VioWidget)
+* VioTypeRegistry to parallel the libFAUDES registry, i.e., to programmatically keep track derivatives of VioModels 
 * helper for editing faudes symbols 
 * base class for faudes::Attribute* widgets (VioAttributeModel, VioAttributeWidget)
 * Qt style plugin for extensions
+
 
 VioStyle:
 
