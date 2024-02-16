@@ -11,7 +11,7 @@ isEmpty( VIODES_VERSION_MINOR ): error("=== error: libVIODES minor version not c
 
 # say hello
 message("=== libVIODES applications project file")
-message("=== using Qt at "$$[QT_INSTALL_PREFIX])
+message("=== using Qt at "$$[QT_INSTALL_BINS])
 #message("=== using Qt at "$${QMAKE_LIBDIR_QT})
 message("=== building version "$${VIODES_VERSION_MAJOR}"."$${VIODES_VERSION_MINOR})
 
