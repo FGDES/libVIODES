@@ -21,7 +21,7 @@ targets to fill the gap.
 
 ## Code Organisation
 
-#### VioCore: 
+#### Base classes provided by VioCore  
 
 * base class for configuration classes (VioStyle)
 * base classes for faudes::Type widgets (VioModel, VioView, VioWidget)
@@ -31,14 +31,14 @@ targets to fill the gap.
 * Qt style plugin for extensions
 
 
-#### VioStyle:
+#### VioStyle
 
 * one static instance to configure visual and libFAUDES related defaults, eg
 colors, fonts and the dot executable path
 * classes derived from VioStyle to configure representations of particular faudes objects.
 * all attributes are read initially from a single XML file
 
-#### Some Technical detail
+#### libFAUDES types vs libVIODES types
 
 Each faudes object derived from faudes::Type is identified by its name from the faudes type registry for short fType. An fType is wrapped in a Qt-style model to hold additional
 data for visual representation, eg orders of lists or positions of nodes in a graph. 
@@ -61,7 +61,7 @@ changes via a signal/slot mechanism to the view(s). There is also a VioWidget, t
 holds its own internal model and view. The VioViews learn about the model configuration
 to adapt their representation, ie have proper names of checkboxes.
 
-## Qt-Style Plug-Ins
+#### Derived libVIODES types as Qt-Style Plug-Ins
 
 To extend libVIODES to display a specific fType, you need to derive corresponding
 VioStyle, VioModel, VioView and VioWidget classes. Via the Qt plugin mechanism, 
