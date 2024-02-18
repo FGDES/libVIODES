@@ -634,6 +634,7 @@ void VioLuaFunctionView::UpdateUserLayout(void) {
   }
   // done
   FD_DQL("VioLuaFunctionView::UpdateUserLayout(): done " << w);
+  (void) w;
 }
 
 // retrieve layout

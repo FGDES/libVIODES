@@ -18,7 +18,7 @@ FAUDES_DST=libFAUDES_for_VIODES
 ############################################################################
 # report to user
 echo ==================== copyfaudes.sh
-echo "copy, configure and compile libFAUDES for libviodes"
+echo "copy, configure and compile libFAUDES for libVIODES"
 echo "current directory: " $(pwd)
 echo "importing libFAUDES from " $FAUDES_SRC 
 
@@ -97,17 +97,13 @@ if [ ! -f ${FAUDES_DST}/bin/luafaudes ]; then
     return
 fi
 
-echo "===== copy/configure/compile libFAUDES done"
-
 # update version
-VIODES_BASE=$(pwd)/../libviodes 
-DESTOOL_BASE=$(pwd)
-
-# retrieve version an pass to qmake
 . ./VERSION
 qmake -set VIODES_VERSION_MAJOR $VIODES_VERSION_MAJOR 
 qmake -set VIODES_VERSION_MINOR $VIODES_VERSION_MINOR 
 
+
 echo "===== verify versions for qt by \"qmake -query\""
 echo "===== you may proceed with \"qmake viodes.pro\""
+echo "===== copy/configure/compile libFAUDES done"
 

@@ -763,6 +763,7 @@ void LioNameSetView::keyPressEvent(QKeyEvent *event) {
   if(index.isValid()) row=index.row();
   column=index.column();
   FD_DQN("LioNameSetView::keyPressEvent(...): row " << row << " col " << column);
+  (void) column;
   // switch: ingnore tab navigation
   if(event->key() == Qt::Key_Tab) {
     event->ignore();
