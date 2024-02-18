@@ -11,9 +11,6 @@
 #include "viosim.h"
 #include "viosimcondattr.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(viosim, VioSimPlugin)
-
 // tell name of this plugin
 QString VioSimPlugin::Name(void) {
   return QString("VioSim-")+QString(VIODES_VERSION);
@@ -21,8 +18,7 @@ QString VioSimPlugin::Name(void) {
 
 // register my types
 void VioSimPlugin::RegisterTypes(void) {
-  FD_DQT("VioSimPlugin::RegisterTypes(): sim condition attribute ");
-  
+  FD_DQT("VioSimPlugin::RegisterTypes(): sim condition attribute ");  
   // sim cond attribute: manually register with libfaudes
   faudes::TypeRegistry::G()->Insert<faudes::AttributeSimCondition>("AttributeSimCondition"); 
   // sim cond attribute: create style
@@ -46,7 +42,7 @@ void VioSimPlugin::RegisterTypes(void) {
 // register my types
 void VioSimPlugin::FinaliseTypes(void) {
   FD_DQT("VioSimPlugin::FinaliseTypes()");
-  // destool version of sim conditions ... 
+  // destool version of sim conditions ... nonstd layout
   // 1. have simconditionset under new name with faudes rego
   faudes::Type* fproto=faudes::TypeRegistry::G()->NewObject("SimConditionSet");
   faudes::TypeRegistry::G()->Insert(fproto,"DEST_SimConditionSet");

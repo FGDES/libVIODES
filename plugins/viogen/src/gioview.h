@@ -60,7 +60,8 @@ protected:
   void mouseDoubleClickEvent(QMouseEvent * event);
   void mouseMoveEvent(QMouseEvent * event);
 
-  // choose tool
+  // record scale
+  qreal mScale;
 
 
 

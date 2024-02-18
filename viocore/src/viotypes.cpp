@@ -81,6 +81,12 @@ void VioData::FaudesObject(faudes::Type* fobject) {
   mFaudesObject=fobject;
 }
 
+// faudes access
+QString VioData::FaudesType(void) {
+  if(!mFaudesObject) return "NULL";
+  return VioAttributeStyle::QStrFromStr(mFaudesObject->TypeName());
+}  
+
 
 // token io interface
 void VioData::Write(faudes::TokenWriter& rTw, const QString& ftype) const {
@@ -436,8 +442,8 @@ void VioModel::Write(const QString& rFileName) {
 
 // token io: read tokenwriter
 void VioModel::Read(faudes::TokenReader& rTr) {
-  FD_DQT("VioModel::FaudesRead(): ftype " << mFaudesType << 
-	 " ctype " << typeid(*(FaudesObject())).name() << " to fobject " << mData->FaudesObject());
+  FD_DQT("VioModel::Read(): ftype " << mFaudesType << 
+	 " ctype " << mData->FaudesType()  << " to fobject " << mData->FaudesObject());
   // virtual clear
   Clear();
   // assemble my section tag

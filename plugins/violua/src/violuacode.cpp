@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010 Thomas Moor
+   Copyright (C) 2010, 2024 Thomas Moor
 
 */
 
@@ -24,10 +24,10 @@
 void VioLuaCodeParser(const QTextBlock& block, VioLuaCodeHighlighter::BlockData* newstate, int position=-1) {
 
   // search regex (is static ok ??)
-  static QRegExp mControlStartExpression("\\b(for|function|if|repeat|while)\\b");
-  static QRegExp mMultilineStartExpression("(--\\[\\[)|(\\[=*\\[)");
-  static QRegExp mFilterExpression("(--(?!\\[\\[)([^\\n]*))|(\"((\\\\.)|([^\\\\\"]))*\")|('((\\\\.)|([^\\\\']))*')"); // got it ;-)  comments,strings, sq strings
-  QRegExp mStopExpression;
+  static QRegularExpression mControlStartExpression("\\b(for|function|if|repeat|while)\\b");
+  static QRegularExpression mMultilineStartExpression("(--\\[\\[)|(\\[=*\\[)");
+  static QRegularExpression mFilterExpression("(--(?!\\[\\[)([^\\n]*))|(\"((\\\\.)|([^\\\\\"]))*\")|('((\\\\.)|([^\\\\']))*')"); // got it ;-)  comments,strings, sq strings
+  QRegularExpression mStopExpression;
   // have an accumulator, initialise with previous state
   VioLuaCodeHighlighter::BlockData* state = 0;
   state = dynamic_cast< VioLuaCodeHighlighter::BlockData* >( block.previous().userData() );
@@ -53,28 +53,32 @@ void VioLuaCodeParser(const QTextBlock& block, VioLuaCodeHighlighter::BlockData*
   if(state->mSectionVector.back().mType==VioLuaCodeHighlighter::Comment) 
     filter=false;
   int index=0;
-  if(filter)
-  while(index>=0) {
-    index = mFilterExpression.indexIn(text,index);
-    if(index<0) break;
-    int length = mFilterExpression.matchedLength();
-    // replace
-    text.replace(index,length,'x');
-    // proceed with next match
-    index = index+length;
+  if(filter) {
+    QRegularExpressionMatchIterator mit = mFilterExpression.globalMatch(text);
+    while (mit.hasNext()) {
+      QRegularExpressionMatch match = mit.next();
+      int index = match.capturedStart();
+      int length = match.capturedLength();
+      // replace
+      text.replace(index,length,'x');
+    }
   }
   FD_DQ("VioLuaCodeParser(): filter " << block.blockNumber() << " text " << VioStyle::StrFromQStr(text));
   // go for relevant keys
   index = 0;
   while(index >= 0) {
     // seek for control/ml starts
-    int index_ctrl = mControlStartExpression.indexIn(text,index);
-    int index_ml   = mMultilineStartExpression.indexIn(text,index);
+    QRegularExpressionMatch match_ctrl=mControlStartExpression.match(text,index);
+    QRegularExpressionMatch match_ml=mMultilineStartExpression.match(text,index);
+    int index_ctrl = match_ctrl.capturedStart();
+    int index_ml   = match_ml.capturedStart();
     // seek for relevant stop
+    QRegularExpressionMatch match_stop;
     int index_stop = -1;
     if(state->mSectionVector.size()>0) {
       mStopExpression.setPattern(state->mSectionVector.back().mStopExpression);
-      index_stop=mStopExpression.indexIn(text,index);
+      QRegularExpressionMatch match_stop=mStopExpression.match(text,index);
+      index_stop=match_stop.capturedStart();
     }
     // hack: ensure progress
     index++; 
@@ -94,8 +98,8 @@ void VioLuaCodeParser(const QTextBlock& block, VioLuaCodeHighlighter::BlockData*
 	 (index_stop <= index_ctrl || index_ctrl <0) && 
          (index_stop <= index_ml   || index_ml <0) ) 
     {
-      int length = mStopExpression.matchedLength();
-      QString match = text.mid(index_stop,length);        
+      int length = match_stop.capturedLength();
+      QString match = match_stop.captured(); //text.mid(index_stop,length);        
       FD_DQ("VioLuaCodeParser(): stop " << VioStyle::StrFromQStr(match) << " tag at " << 
         index_stop << " (#" << length <<")");
       // if in target position, record begin and end tag
@@ -136,8 +140,8 @@ void VioLuaCodeParser(const QTextBlock& block, VioLuaCodeHighlighter::BlockData*
 	 (index_ctrl <= index_stop || index_stop <0) && 
          (index_ctrl <= index_ml   || index_ml <0) ) 
     {
-      int length = mControlStartExpression.matchedLength();
-      QString match = text.mid(index_ctrl,length);        
+      int length = match_ctrl.capturedLength();
+      QString match = match_ctrl.captured(); // text.mid(index_ctrl,length);        
       FD_DQ("VioLuaCodeParser(): start ctrl " << VioStyle::StrFromQStr(match) << 
         " tag at " << index_ctrl << " (#" << length <<")");
       VioLuaCodeHighlighter::SectionInfo sinfo;
@@ -154,12 +158,12 @@ void VioLuaCodeParser(const QTextBlock& block, VioLuaCodeHighlighter::BlockData*
       index=index_ctrl+length;
       continue;
     }
-    // case c) start multiline is first
+    // case c) start multiline is last
     if(   index_ml>=0 && 
 	 (index_ml <= index_ctrl || index_ctrl <0) && 
          (index_ml <= index_stop   || index_stop <0) ) {
-      int length = mMultilineStartExpression.matchedLength();
-      QString match = text.mid(index_ml,length);        
+      int length = match_ml.capturedLength();
+      QString match = match_ml.captured(); //text.mid(index_ml,length);        
       FD_DQ("VioLuaCodeParser(): start ml " << VioStyle::StrFromQStr(match) << 
         " tag at " << index_ml << " (#" << length <<")");
       VioLuaCodeHighlighter::SectionInfo sinfo;
@@ -218,17 +222,17 @@ VioLuaCodeHighlighter::VioLuaCodeHighlighter(QTextDocument *parent)
 
   mStringFormat.setFontItalic(true);
   mStringFormat.setForeground(VioStyle::Color(VioGreen));
-  rule.pattern = QRegExp("(\"((\\\\.)|([^\\\\\"]))*\")|('((\\\\.)|([^\\\\']))*')");
+  rule.pattern = QRegularExpression("(\"((\\\\.)|([^\\\\\"]))*\")|('((\\\\.)|([^\\\\']))*')");
   rule.format = mStringFormat;
   mHighlightingRules.append(rule);
 
   mKeywordFormat.setForeground(VioStyle::Color(VioBlue));
-  rule.pattern = QRegExp("\\b(and|break|do|else|elseif|end|false|for|function|if|in|local|nil|not|or|repeat|return|then|true|until|while)\\b");
+  rule.pattern = QRegularExpression("\\b(and|break|do|else|elseif|end|false|for|function|if|in|local|nil|not|or|repeat|return|then|true|until|while)\\b");
   rule.format = mKeywordFormat;
   mHighlightingRules.append(rule);
 
   mCommentFormat.setForeground(VioStyle::Color(VioRed));
-  rule.pattern = QRegExp("--[^\\n]*");
+  rule.pattern = QRegularExpression("--[^\\n]*");
   rule.format = mCommentFormat;
   mHighlightingRules.append(rule);
 
@@ -239,9 +243,9 @@ VioLuaCodeHighlighter::VioLuaCodeHighlighter(QTextDocument *parent)
 void VioLuaCodeHighlighter::highlightBlock(const QString &text) {
 
   // prepare my set of expressions
-  QMap<const HighlightingRule*, QRegExp> regex;
+  QMap<const HighlightingRule*, QRegularExpression> regex;
   foreach(const HighlightingRule &rule, mHighlightingRules) 
-     regex[&rule]=QRegExp(rule.pattern);
+     regex[&rule]=QRegularExpression(rule.pattern);
 
   // test rules for std highlighting
   int index=0;
@@ -250,9 +254,10 @@ void VioLuaCodeHighlighter::highlightBlock(const QString &text) {
     int mlength=0;
     const HighlightingRule* mrule=0;
     foreach(const HighlightingRule &rule, mHighlightingRules) {
-      QRegExp& expression=regex[&rule];
-      int pindex = expression.indexIn(text,index);
-      int plength = expression.matchedLength();
+      QRegularExpression& expression=regex[&rule];
+      QRegularExpressionMatch match=expression.match(text,index);
+      int pindex = match.capturedStart();
+      int plength = match.capturedLength();
       if(pindex>=0 &&  (pindex < mindex || mindex<0)) {
         mindex=pindex;
         mlength=plength;
@@ -315,9 +320,9 @@ VioLuaCodeEditor::VioLuaCodeEditor(QWidget *parent) :
   setFont(mFont);
 
   // color scheme
-  mTagMatchFormat.setBackground(VioStyle::Color(VioGreen).light(300));
+  mTagMatchFormat.setBackground(VioStyle::Color(VioGreen).lighter(300));
   mTagMatchFormat.setForeground(VioStyle::Color(VioBlack));
-  mTagMissFormat.setBackground(VioStyle::Color(VioRed).light(300));
+  mTagMissFormat.setBackground(VioStyle::Color(VioRed).lighter(300));
   mTagMissFormat.setForeground(VioStyle::Color(VioBlack));
 
   // dont want the std context menu
@@ -368,7 +373,7 @@ int VioLuaCodeEditor::lineNumberAreaWidth() {
     max /= 10;
     ++digits;
   }
-  int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+  int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
   return space;
 }
 

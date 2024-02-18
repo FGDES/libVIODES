@@ -21,6 +21,7 @@ class VioSimPlugin :
 
   Q_OBJECT
   Q_INTERFACES(VioTypePlugin) 
+  Q_PLUGIN_METADATA(IID "org.faudes.viodes.VioTypePlugin")
 
 public:
 

@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010 Thomas Moor
+   Copyright (C) 2010, 2024 Thomas Moor
 
 */
 
@@ -450,7 +450,7 @@ void VioLuaFunctionView::DoVioAllocate(void) {
   mFindDialog->Replace(true);
   mFindPattern="";
   mFindReplace="";
-  mFindFlags=0;
+  mFindFlags=QTextDocument::FindFlags(0);
   // my actions
   mFindAction = new QAction("Find ...",this);
   mFindAction->setEnabled(true);
@@ -823,11 +823,11 @@ void VioLuaFunctionPropertyView::DoVioAllocate(void) {
   //mVbox->addWidget(mParameterTable);
   QGroupBox* gb1 = new QGroupBox("Variant");
   QVBoxLayout* vb1 = new QVBoxLayout(gb1);
-  vb1->setMargin(0);
+  vb1->setContentsMargins(0,0,0,0);
   vb1->addWidget(mSignatureList);
   QGroupBox* gb2 = new QGroupBox("Signature");
   QVBoxLayout* vb2 = new QVBoxLayout(gb2);
-  vb2->setMargin(0);
+  vb2->setContentsMargins(0,0,0,0);
   vb2->addWidget(mParameterTable);
   mVbox->addSpacing(10); // why??
   mVbox->addWidget(gb1);
@@ -1143,13 +1143,13 @@ QString VioLuaExecute::Execute(void) {
   pLFfnct = const_cast<faudes::LuaFunctionDefinition*>(lfnct);
   // doit
   QApplication::processEvents();
-  QApplication::flush();
+  QApplication::sendPostedEvents();
   // have a progress dialog
   QProgressDialog progress("Evaluating: "+pLfnct->FaudesName(), "Cancel", 0, 0, 0); 
   progress.setWindowModality(Qt::ApplicationModal);
   progress.setValue(0);
   QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-  QApplication::flush();
+  QApplication::sendPostedEvents();
   // clear global break flag
   VioStyle::FaudesBreakClr(); 
   // run extra thread
@@ -1159,14 +1159,14 @@ QString VioLuaExecute::Execute(void) {
   long int i=100; 
   while(isRunning() && (--i)>0) {
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,10);
-    QApplication::flush();
+    QApplication::sendPostedEvents();
     wait(10);
   }
   FD_DS("WspExecute():: progress on");
   bool canceled=false;
   while(isRunning()) {
     QApplication::processEvents(QEventLoop::AllEvents,10);
-    QApplication::flush();
+    QApplication::sendPostedEvents();
     if(progress.wasCanceled() && !canceled) {
        VioStyle::FaudesBreakSet(); 
        FD_DS("WspExecute():: canceled");

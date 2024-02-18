@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
+   Copyright (C) 2009 - 2024, Thomas Moor;
 
 */
 
@@ -13,8 +13,9 @@
 #include "vionsetstyle.h"
 #include "viogenerator.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(viogen, VioGeneratorPlugin)
+// advertise my plugin // Qt4
+//Q_EXPORT_PLUGIN2(viogen, VioGeneratorPlugin)
+
 
 // tell name of this plugin
 QString VioGeneratorPlugin::Name(void) {

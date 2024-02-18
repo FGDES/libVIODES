@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009  Thomas Moor, Ruediger Berndt
+   Copyright (C) 2009-2024  Thomas Moor
 
 */
 
@@ -129,7 +129,7 @@ public:
   virtual void Clear(void);
 
   // state reindexing
-  virtual void ApplyStateIndicees(const QMap<faudes::Idx,faudes::Idx> & rNewIdx) {};
+  virtual void ApplyStateIndicees(const QMap<faudes::Idx,faudes::Idx> & rNewIdx) {(void) rNewIdx;};
 
   // public access to static data (pre 0.47)
   QList<VioGeneratorAbstractData*> mDataList; 

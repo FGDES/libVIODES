@@ -86,6 +86,7 @@ public:
   virtual faudes::Type* FaudesObject(void);
   virtual const faudes::Type* FaudesObject(void) const;
   virtual void FaudesObject(faudes::Type* fobject);
+  virtual QString FaudesType(void);
 
   // public data
   QString mText;

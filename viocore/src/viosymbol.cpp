@@ -125,8 +125,7 @@ VioSymbolEdit::VioSymbolEdit(QWidget *parent) :
   //connect(mLineEdit,SIGNAL(textEdited(const QString&)),this,SIGNAL(textChanged(const QString)));
   connect(mLineEdit,SIGNAL(returnPressed(void)),this,SIGNAL(returnPressed(void)));
   connect(mComboBox,SIGNAL(editTextChanged(const QString&)),this,SIGNAL(textChanged(const QString)));
-  connect(mComboBox,SIGNAL(activated(const QString&)),this,SIGNAL(textChanged(const QString)));
-  connect(mComboBox,SIGNAL(activated(const QString&)),this,SIGNAL(returnPressed()));
+  connect(mComboBox,SIGNAL(textActivated(const QString&)),this,SIGNAL(textChanged(const QString)));
   connect(mComboBox->lineEdit(),SIGNAL(returnPressed()),this,SIGNAL(returnPressed()));
   // connect for internal validation
   //connect(mLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(validate()));

@@ -14,8 +14,8 @@ QT += core gui svg widgets
 
 # target name
 unix:TARGET  =lib/vioedit.bin
-macx:TARGET  =VioEdit
-win32:TARGET = VioEdit
+macx:TARGET  =VIOEdit
+win32:TARGET = VIOEdit
 
 # lsb compiler options
 linux-lsb-g++:LIBS   += --lsb-shared-libs=faudes:luafaudes:viodes
@@ -51,14 +51,14 @@ macx {
   ContFiles.files += $$VIODES_BASE/vioedit/data/vioconfig.txt 
   ContFiles.path = Contents/MacOS
   QMAKE_BUNDLE_DATA += ContFiles
-#  ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib
+  ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib
 #  ViopFiles.files +=  $$VIODES_BASE/libviohio.dylib
 #  ViopFiles.files +=  $$VIODES_BASE/libviomtc.dylib
-#  ViopFiles.files +=  $$VIODES_BASE/libviosim.dylib
 #  ViopFiles.files +=  $$VIODES_BASE/libviodiag.dylib
-#  ViopFiles.files +=  $$VIODES_BASE/libviolua.dylib
-#  ViopFiles.path = Contents/plugins/viotypes
-#  QMAKE_BUNDLE_DATA += ViopFiles
+  ViopFiles.files +=  $$VIODES_BASE/libviosim.dylib
+  ViopFiles.files +=  $$VIODES_BASE/libviolua.dylib
+  ViopFiles.path = Contents/plugins/viotypes
+  QMAKE_BUNDLE_DATA += ViopFiles
 }
 
 # mac: fix library paths
@@ -71,14 +71,14 @@ macx {
   QMAKE_EXTRA_TARGETS += macfix
   macfix.target = macfix
   macfix.commands += \
-    install_name_tool $$ITF_ALL VioEdit.app/Contents/MacOS/VioEdit && \
-    install_name_tool $$ITF_ALL VioEdit.app/Contents/MacOS/libviodes.dylib  ##### && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviogen.dylib && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviohio.dylib && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviomtc.dylib && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviosim.dylib && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
-#    install_name_tool $$ITF_ALL VioEdit.app/Contents/plugins/viotypes/libviolua.dylib
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/VIOEdit && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/libviodes.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviogen.dylib && \
+#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviohio.dylib && \
+#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviomtc.dylib && \
+#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviosim.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviolua.dylib
  QMAKE_POST_LINK += make macfix
 }
 

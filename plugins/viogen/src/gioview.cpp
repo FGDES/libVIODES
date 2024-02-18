@@ -16,22 +16,24 @@ GioView::GioView(QWidget* parent) :  QGraphicsView(parent) {
   setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
   setDragMode(RubberBandDrag);
   setMouseTracking(true);
+  mScale=1;
 }
 
 // Scale
-void GioView::Scale(qreal sc) {  
-  setMatrix(QMatrix(sc,0,0,sc,0,0));
+void GioView::Scale(qreal sc) {
+  mScale=sc;
+  setTransform(QTransform(sc,0,0,sc,0,0));
 }
 
 // Scale
 qreal GioView::Scale(void) {  
-  return matrix().m11();
+  return mScale;
 }
 
 
 // Reset Matrix
 void GioView::Reset(void) {
-  setMatrix(QMatrix());
+  setTransform(QTransform());
 }
 
 // fit scene
@@ -62,15 +64,15 @@ void GioView::Fit(void){
 
 // wheel event
 void GioView::wheelEvent(QWheelEvent *event) {
-  FD_DQ("GioView::wheelEvent(..) at (" << event->pos().x() << ", " << event->pos().y()
-	<< ") with value " << event->delta());
+  FD_DQ("GioView::wheelEvent(..) at (" << QCursor::pos().x() << ", " << QCursor::pos().y()
+	<< ") with value " << event->angleDelta().y());
   // scale factor
-  qreal degree= ((qreal) event->delta()) / 8.0; 
+  qreal degree= ((qreal) event->angleDelta().y()) / 8.0; 
   if(degree < -30) degree = -30.0;
   if(degree >  30) degree = 30.0;
   qreal sc = 1.0 + ( 5.0 * degree / 3000.0 ); // 5% steps per 30 degree
   // where we are before scalung
-  QPointF opos=mapToScene(event->pos());
+  QPointF opos=mapToScene(QCursor::pos());
   FD_DQ("GioView::wheelEvent(..) at scenepos (" << opos.x() << ", " << opos.y() << ")");
   // do the scale
   setResizeAnchor(AnchorUnderMouse);
@@ -78,9 +80,9 @@ void GioView::wheelEvent(QWheelEvent *event) {
   scale(sc,sc);
   setTransformationAnchor(NoAnchor);
   // translate
-  QPointF npos=mapToScene(event->pos());
+  QPointF npos=mapToScene(QCursor::pos());
   QPointF diff=npos-opos;
-  QPointF vdiff=mapFromScene(diff);
+  //QPointF vdiff=mapFromScene(diff);
   translate(diff.x(),diff.y());
   // done
   event->accept();

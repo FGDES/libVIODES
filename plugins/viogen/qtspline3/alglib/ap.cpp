@@ -1,4 +1,5 @@
 // minor change: disable aligned mem allocation, tmoor 2011
+// minor change: make clang happy, tmoor 2024
 
 
 /********************************************************************
@@ -73,10 +74,10 @@ const double ap::minrealnumber  = 1E-300;
 /********************************************************************
 ap::complex operations
 ********************************************************************/
-const bool ap::operator==(const ap::complex& lhs, const ap::complex& rhs)
+bool ap::operator==(const ap::complex& lhs, const ap::complex& rhs)
 { return lhs.x==rhs.x && lhs.y==rhs.y; }
 
-const bool ap::operator!=(const ap::complex& lhs, const ap::complex& rhs)
+bool ap::operator!=(const ap::complex& lhs, const ap::complex& rhs)
 { return lhs.x!=rhs.x || lhs.y!=rhs.y; }
 
 const ap::complex ap::operator+(const ap::complex& lhs)
@@ -159,7 +160,7 @@ const ap::complex ap::operator/(const double& lhs, const ap::complex& rhs)
 const ap::complex ap::operator/(const ap::complex& lhs, const double& rhs)
 { return ap::complex(lhs.x/rhs, lhs.y/rhs); }
 
-const double ap::abscomplex(const ap::complex &z)
+double ap::abscomplex(const ap::complex &z)
 {
     double w;
     double xabs;
@@ -415,13 +416,14 @@ Service routines:
 ********************************************************************/
 void* ap::amalloc(size_t size, size_t alignment)
 {
-  // tmoor: let the compiler/system sort this one
-        void *block = malloc(sizeof(void*)+size);
-        void **p = (void**)block;
-        *p = block;
-        return (void*)((char*)block+sizeof(void*));
+       // tmoor: let the compiler/system sort this one
+       (void) alignment;
+       void *block = malloc(sizeof(void*)+size);
+       void **p = (void**)block;
+       *p = block;
+       return (void*)((char*)block+sizeof(void*));
 
-	/*
+ /*
 
  // original code
 

@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 
@@ -21,6 +21,7 @@ class VioGeneratorPlugin :
 
   Q_OBJECT
   Q_INTERFACES(VioTypePlugin) 
+  Q_PLUGIN_METADATA(IID "org.faudes.viodes.VioTypePlugin")
 
 public:
 

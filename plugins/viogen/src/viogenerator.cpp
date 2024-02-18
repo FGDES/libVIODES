@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009  Thomas Moor, Ruediger Berndt
+   Copyright (C) 2009,2024  Thomas Moor
 
 */
 
@@ -211,7 +211,7 @@ int VioGeneratorData::FromMime(const QMimeData* pMime) {
   Clear();
   int res=0;
   // convert to std string (can we avoid the copy somehow??)
-  std::string tstr=pMime->text().toAscii().constData();
+  std::string tstr=pMime->text().toLatin1().constData();
   // convert to token stream
   faudes::TokenReader rTr(faudes::TokenReader::String, tstr);
   // make sure we have a faudes object
@@ -261,6 +261,7 @@ int VioGeneratorData::FromMime(const QMimeData* pMime) {
 
 // conversion (0 on success)
 int VioGeneratorData::TestMime(const QMimeData* pMime) {
+  (void) pMime;
   return 1;
 }
 
@@ -427,7 +428,7 @@ void VioGeneratorModel::DoFaudesAllocate(void) {
   }
   // done
   FD_DQG("VioGeneratorModel::DoFaudesAllocate(): ftype " << VioStyle::StrFromQStr(mFaudesType)
-	 << " ctype " << typeid(*(mData->FaudesObject())).name() << " at " << FaudesObject());
+	 << " ctype " << mData->FaudesType() << " at " << FaudesObject());
 }
 
 // test whether we can host this faudes object
@@ -436,13 +437,13 @@ int VioGeneratorModel::DoTypeCheck(const faudes::Type* fobject) const {
   const faudes::vGenerator* vgen=dynamic_cast<const faudes::vGenerator*>(fobject);
   if(!vgen) return 1;
 
-  FD_DQG("VioGeneratorModel::DoTypeCheck(): check " << typeid(*fobject).name());
+  FD_DQG("VioGeneratorModel::DoTypeCheck(): check " << fobject->TypeName());
   FD_DQG("VioGeneratorModel::DoTypeCheck(): require trans  " 
-	 << typeid(*pGeneratorConfig->mTransAttribute->Attribute()).name());
+	 << pGeneratorConfig->mTransAttribute->Attribute()->TypeName());
   FD_DQG("VioGeneratorModel::DoTypeCheck(): require trans  " 
-	 << typeid(*pGeneratorConfig->mStateAttribute->Attribute()).name());
+	 << pGeneratorConfig->mStateAttribute->Attribute()->TypeName());
   FD_DQG("VioGeneratorModel::DoTypeCheck(): require trans  " 
-	 << typeid(*pGeneratorConfig->mEventAttribute->Attribute()).name());
+	 << pGeneratorConfig->mEventAttribute->Attribute()->TypeName());
 
   // must have flags at least as specified (TODO: test)
   //if(vgen->TransRel().AttributeTry(*pGeneratorConfig->mTransAttribute->Attribute())) return 1;
@@ -1280,8 +1281,8 @@ int VioGeneratorModel::Data(const VioData* pData) {
 int VioGeneratorModel::InsertData(const VioData* pData) {
   FD_DQT("VioGeneratorModel::InsertData()");
   if(TypeCheckData(pData)!=0) return 1;
-  const VioGeneratorData* gdat= qobject_cast<const VioGeneratorData*>(pData);
-  const faudes::vGenerator* gen = dynamic_cast<const faudes::vGenerator*>(pData->FaudesObject());
+  //const VioGeneratorData* gdat= qobject_cast<const VioGeneratorData*>(pData);
+  //const faudes::vGenerator* gen = dynamic_cast<const faudes::vGenerator*>(pData->FaudesObject());
   // do the insert (incl selection)
   bool changed=DoMergeData(pData);
   FD_DQG("VioGeneratorModel::InsertData(): changed " << changed);
@@ -1802,7 +1803,7 @@ void::VioGeneratorView::ShowPropertyView(bool on) {
   if(!mPropView) return;
   FD_DQG("VioGeneratorView::ShowPropertyView(): " << on);
   QList<int> sizes = mSplitter->sizes();
-  int lwidth=sizes[mSplitter->indexOf(pListView)];
+  //int lwidth=sizes[mSplitter->indexOf(pListView)];
   int gwidth=sizes[mSplitter->indexOf(pGraphView)];
   int pwidth=sizes[mSplitter->indexOf(mPropView)];
   if(!on && pwidth>10) {
@@ -1917,9 +1918,7 @@ void VioGeneratorView::UserExport(void) {
   QFileDialog* fdiag = new QFileDialog();
   QSettings settings("Faudes", "VioDES");
   fdiag->restoreState(settings.value("exportGraphicsDialog").toByteArray());
-  fdiag->setFilters(QStringList()  
-    << "SVG Files (*.svg)" << "PDF Files (*.pdf)" << "EPS Files (*.eps)" 
-    << "PNG Files (*.png)" << "JPG Files (*.jpg)" << "Any File (*.*)");
+  fdiag->setNameFilter("SVG Files (*.svg);;PDF Files (*.pdf);;EPS Files (*.eps);;PNG Files (*.png);;JPG Files (*.jpg;;Any File (*.*)");
   fdiag->setFileMode(QFileDialog::AnyFile);
   fdiag->setWindowTitle(QString("Export %1 graph to image file").arg(Model()->FaudesName()));
   fdiag->setAcceptMode(QFileDialog::AcceptSave);
@@ -1992,9 +1991,7 @@ void VioGeneratorView::UpdateUserLayout(void) {
 
         FD_DQG("VioGeneratorView::UpdateUserLayout(): result from restore splitter with size " << mUserLayout->mSplitterState.size()  << ": " << ok);
         while(sizes.size()<3) sizes.append(0);
-        int sum=0;
-        for(int i=0; i<sizes.size(); i++) sum+=sizes[i]; 
-        FD_DQG("VioGeneratorView::UpdateUserLayout(): fixing splitter, total width " << sum);
+        FD_DQG("VioGeneratorView::UpdateUserLayout(): fixing splitter");
         sizes[0] = mUserLayout->mListWidth;
         sizes[1] = mUserLayout->mGraphWidth;
         sizes[2] = mUserLayout->mPropWidth;
@@ -2144,7 +2141,7 @@ VioGeneratorAbstractView::VioGeneratorAbstractView(VioGeneratorView* parent) :
   FD_DQG("VioGeneratorAbstractView::VioGeneratorAbstractView("<< parent <<")");
   // set layout
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(0);
   // my sizepolicy
   setMinimumSize(QSize(100,100));
@@ -2299,7 +2296,7 @@ void VioGeneratorPropertyView::DoVioAllocate(void) {
 #endif
   // my box
   mPropBox = new QVBoxLayout();
-  mPropBox->setMargin(0);
+  mPropBox->setContentsMargins(0,0,0,0);
   mPropBox->setSpacing(0);
   mPropTrans = new PioTProp(0,pConfig);
   mPropBox->addWidget(mPropTrans);

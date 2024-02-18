@@ -39,7 +39,7 @@ CONFIG += shared plugin
 TARGET = $$VIODES_TARGET
 DESTDIR = $$VIODES_BASE
 LANGUAGE = C++
-QT += core gui svg widgets
+QT += core gui svg widgets printsupport
 
 
 

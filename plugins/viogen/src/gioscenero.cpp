@@ -11,6 +11,7 @@
 
 #include <QtGui>
 #include <QtSvg>
+#include <QPrinter>
 
 #include <cstdlib>
 #include <cstdio>
@@ -276,24 +277,10 @@ int GioSceneRo::GioWrite(faudes::TokenWriter& rTw) {
 };
 
 
-// export generator to (e)ps file (broken)
+// export generator to (e)ps file (not avail in Qt6)
 int GioSceneRo::EpsWrite(const QString &epsfile) {
-  FD_DQG("GioSceneRo::EpsWrite(file)");
-  // create a ps printer
-  QPrinter printer(QPrinter::HighResolution);
-  printer.setOutputFileName(epsfile);
-  printer.setOutputFormat(QPrinter::PostScriptFormat);
-  printer.setPaperSize(QSizeF(sceneRect().width()+5,sceneRect().height()+5),QPrinter::Point);
-  printer.setPageMargins(0,0,0,0,QPrinter::Point);
-  // create a painter on that printer
-  QPainter painter;
-  painter.begin(&printer);
-  // doit
-  FD_DQG("GioSceneRo::EpsWrite(file): render");
-  render(&painter,QRectF(),itemsBoundingRect());
-  FD_DQG("GioSceneRo::EpsWrite(file): render done");
-  // done
-  painter.end();
+  FD_DQG("GioSceneRo::EpsWrite(file) --- not functional");
+  (void) epsfile;
   return 0;
 } 
 
@@ -304,8 +291,10 @@ int GioSceneRo::PdfWrite(const QString &epsfile) {
   QPrinter printer(QPrinter::HighResolution);
   printer.setOutputFileName(epsfile);
   printer.setOutputFormat(QPrinter::PdfFormat);
-  printer.setPaperSize(QSizeF(sceneRect().width()+5,sceneRect().height()+5),QPrinter::Point);
-  printer.setPageMargins(0,0,0,0,QPrinter::Point);
+  QPageLayout page;
+  page.setPageSize(QPageSize(QSizeF(sceneRect().width()+5,sceneRect().height()+5),QPageSize::Unit::Point));
+  page.setMargins(QMargins(0,0,0,0));
+  printer.setPageLayout(page);
   // create a painter on that printer
   QPainter painter;
   painter.begin(&printer);
@@ -786,7 +775,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   int i=0;
   while(dotproc->state() != QProcess::NotRunning) {
     QApplication::processEvents(QEventLoop::WaitForMoreEvents,100);
-    QApplication::flush();
+    QApplication::sendPostedEvents();
     if(progress->wasCanceled()) dotproc->kill();
     if(i>20) progress->setValue(1); // wait for 2secs
     i++;
@@ -794,7 +783,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   progress->reset();
   delete progress;
   // restore active window
-  if(awin) QApplication::setActiveWindow(awin);
+  if(awin) awin->activateWindow();
   QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
   // catch error
   if(dotproc->exitStatus() != QProcess::NormalExit) {
@@ -1303,7 +1292,7 @@ void GioSceneRo::ChildModified(bool changed) {
 // handle my events: mouse press: emit signal application via viogenartor
 void GioSceneRo::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   FD_DQG("GioSceneRo::mousePress"); 
-  QGraphicsItem* item = itemAt(event->scenePos());
+  QGraphicsItem* item = itemAt(event->scenePos(),QTransform());
   if(!item) {
     emit MouseClick(VioElement::FromType());
   }
@@ -1322,7 +1311,7 @@ void GioSceneRo::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 // handle my events: mouse double click: emit signal to application
 void GioSceneRo::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) { 
   FD_DQG("GioSceneRo::mouseDoubleClick"); 
-  QGraphicsItem* item = itemAt(event->scenePos());
+  QGraphicsItem* item = itemAt(event->scenePos(),QTransform());
   if(GioState* state= qgraphicsitem_cast<GioState *>(item)) {
     FD_DQG("GioSceneRo::mouseDoubleClick on state " << state->Idx()); 
     emit MouseDoubleClick(VioElement::FromState(state->Idx()));

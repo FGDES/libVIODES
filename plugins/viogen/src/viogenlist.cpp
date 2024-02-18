@@ -454,7 +454,7 @@ bool VioGeneratorListModel::Contains(const VioElement& elem) const {
 void VioGeneratorListModel::SortAscendingX1(void) {
   FD_DQG("VioGeneratorListModel::SortAscendingX1()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanX1);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanX1);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortAscendingX1(): done");
 }
@@ -463,7 +463,7 @@ void VioGeneratorListModel::SortAscendingX1(void) {
 void VioGeneratorListModel::SortDescendingX1(void) {
   FD_DQG("VioGeneratorListModel::SortDescendingX1()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanX1);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanX1);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortDescendingX1(): done");
 }
@@ -473,7 +473,7 @@ void VioGeneratorListModel::SortDescendingX1(void) {
 void VioGeneratorListModel::SortAscendingX2(void) {
   FD_DQG("VioGeneratorListModel::SortAscendingX2()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanX2);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanX2);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortAscendingX2(): done");
 }
@@ -483,7 +483,7 @@ void VioGeneratorListModel::SortAscendingX2(void) {
 void VioGeneratorListModel::SortDescendingX2(void) {
   FD_DQG("VioGeneratorListModel::SortDescendingX2()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanX2);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanX2);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortDescendingX2(): done");
 }
@@ -493,7 +493,7 @@ void VioGeneratorListModel::SortDescendingX2(void) {
 void VioGeneratorListModel::SortAscendingEv(void) {
   FD_DQG("VioGeneratorListModel::SortAscendingEv()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanEv);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mLessThanEv);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortAscendingEv(): done");
 }
@@ -502,7 +502,7 @@ void VioGeneratorListModel::SortAscendingEv(void) {
 void VioGeneratorListModel::SortDescendingEv(void) {
   FD_DQG("VioGeneratorListModel::SortDescendingEv()");
   if(!(VioElementOrder::pGen=Generator())) return;
-  qStableSort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanEv);
+  std::stable_sort(mElementList.begin(), mElementList.end(), VioElementOrder::mGreaterThanEv);
   DoFixRowMap();
   FD_DQG("VioGeneratorListModel::SortDescendingEv(): done");
 }
@@ -640,7 +640,7 @@ void VioGeneratorListView::DoVioUpdate(void) {
     }
     // add view to layout
     if(mTableView) {
-      mTableView->setModel(pTableModel);
+      mTableView->setLioModel(pTableModel); // Qt6
       mVbox->addWidget(mTableView);
     }
   }

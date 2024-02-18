@@ -201,20 +201,25 @@ void GioScene::userSelectionUpdate(void) {
   if(userInsTrans()) return;
   // sense "transitions-select-mode" in scene
   bool seltrans=false;
-  foreach(QGraphicsItem* item, selectedItems()) 
-    if(qgraphicsitem_cast<GioTrans *>(item)) seltrans=true; 
+  foreach(QGraphicsItem* item, selectedItems()) {
+    if(qgraphicsitem_cast<GioTrans *>(item)) seltrans=true;
+  }
   // have copy of selection
   QList<VioElement> sel;
-  if(!seltrans)
-    foreach(QGraphicsItem* item, selectedItems()) 
+  if(!seltrans) {
+    foreach(QGraphicsItem* item, selectedItems()) {
       if(GioState* state=qgraphicsitem_cast<GioState *>(item)) 
         sel.append(VioElement::FromState(state->Idx()));
-  if(seltrans) 
-    foreach(QGraphicsItem* item, selectedItems()) 
+    }
+  }
+  if(seltrans) {
+    foreach(QGraphicsItem* item, selectedItems()) {
       if(GioTrans* trans=qgraphicsitem_cast<GioTrans *>(item)) 
         sel.append(VioElement::FromTrans(trans->FTrans()));
+    }
+  }
   // avoid re-select if nothing changed
-  qSort(sel);
+  std::sort(sel.begin(),sel.end());
   if(sel==pGeneratorModel->Selection()) return;
   // clear selection
   pGeneratorModel->SelectionClear();
@@ -428,13 +433,13 @@ void GioScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
   
   // where are we
-  QGraphicsItem* item = itemAt(event->scenePos());
+  QGraphicsItem* item = itemAt(event->scenePos(),QTransform());
   int selsize=selectedItems().size();
 
   // fix: dont interpret clicks on pending transition
   if(item==mInsTrans) {
     mInsTrans->setZValue(-10);
-    item = itemAt(event->scenePos());
+    item = itemAt(event->scenePos(),QTransform());
     mInsTrans->setZValue(5);
   }
  
@@ -784,7 +789,7 @@ void GioScene::keyReleaseEvent(QKeyEvent *keyEvent) {
 
 // handle my events: contex menu
 void GioScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
-  QGraphicsItem* item = itemAt(event->scenePos());
+  QGraphicsItem* item = itemAt(event->scenePos(),QTransform());
   // scene context
   if(!item) {
     userSelectNothing();

@@ -1,10 +1,10 @@
 /* liotseview.h  - view on liotselist item model */
 
-
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2010, 2024  Thomas Moor
 
 */
 
@@ -25,7 +25,7 @@ class VioGeneratorListModel;
  ************************************************
  ************************************************
 
- A Lio?View is a QTableView is pecialised to show
+ A Lio?View is a QTableView is specialised to show
  a Lio?list. It uses the VioSymbolDelegate for
  editing entries.
 
@@ -48,7 +48,7 @@ public:
   virtual ~LioVView(void);
 
   // reimplement: set model
-  virtual void setModel(LioVList* liolist);
+  virtual void setLioModel(LioVList* liolist);
 
   // be more compatible to treeview
   QHeaderView* header(void) { return horizontalHeader(); };
@@ -164,7 +164,7 @@ public:
   virtual ~LioTView(void);
 
   // reimplement: set model
-  virtual void setModel(LioVList* liolist);
+  virtual void setLioModel(LioVList* liolist);
 
 protected:
   // have a context menu
@@ -195,7 +195,7 @@ public:
   virtual ~LioSView(void);
 
   // reimplement: set model
-  virtual void setModel(LioVList* liolist);
+  virtual void setLioModel(LioVList* liolist);
 
 protected:
   // have a context menu
@@ -224,7 +224,7 @@ public:
   virtual ~LioEView(void);
 
   // reimplement: set model
-  virtual void setModel(LioVList* liolist);
+  virtual void setLioModel(LioVList* liolist);
 
 protected:
   // have a context menu

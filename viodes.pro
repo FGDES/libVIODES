@@ -12,20 +12,19 @@ isEmpty( VIODES_VERSION_MINOR ): error("=== error: libVIODES minor version not c
 # say hello
 message("=== libVIODES applications project file")
 message("=== using Qt at "$$[QT_INSTALL_BINS])
-#message("=== using Qt at "$${QMAKE_LIBDIR_QT})
 message("=== building version "$${VIODES_VERSION_MAJOR}"."$${VIODES_VERSION_MINOR})
 
 # do subdirs
 CONFIG += ordered
 TEMPLATE = subdirs
 SUBDIRS  = ./viocore  \
-#           ./plugins/viogen/qtspline3 \ 
-#           ./plugins/viogen \ 
+           ./plugins/viogen/qtspline3 \ 
+           ./plugins/viogen \ 
 #           ./plugins/viohio \
 #           ./plugins/viomtc \
-#           ./plugins/viosim \
 #           ./plugins/viodiag \
-#           ./plugins/violua 
+           ./plugins/viosim \
+           ./plugins/violua 
 
 unix:SUBDIRS += ./vioedit
 

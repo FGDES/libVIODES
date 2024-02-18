@@ -12,9 +12,6 @@
 #include "violuastyle.h"
 #include "violuafunction.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(violua, VioLuaPlugin)
-
 // tell name of this plugin
 QString VioLuaPlugin::Name(void) {
   return QString("VioLua-")+QString(VIODES_VERSION);

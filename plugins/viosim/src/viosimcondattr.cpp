@@ -73,7 +73,7 @@ void VioAttributeSimCondModel::DoFaudesAllocate(void) {
     FD_DQT("VioAttributeSimCondModel::DoFaudesAllocate(): fallback ctype");
     mData->FaudesObject(new faudes::AttributeSimCondition());  
   }
-  FD_DQT("VioAttributeSimCondModel::DoFaudesAllocate(): ctype " << typeid(*FaudesObject()).name());
+  FD_DQT("VioAttributeSimCondModel::DoFaudesAllocate(): ctype " << FaudesObject()->TypeName());
 }
 
 // test whether we can host this faudes object
@@ -248,7 +248,7 @@ void VioAttributeSimCondView::DoVioAllocate(void) {
   connect(mStopWidget,SIGNAL(editingFinished(int,int)),this,SLOT(UpdateFromStopWidget()));
   connect(mStopWidget,SIGNAL(resizeModel()),this,SLOT(UpdateFromStopWidget()));
   QHBoxLayout* hbox = new QHBoxLayout();
-  hbox->setMargin(0);
+  hbox->setContentsMargins(0,0,0,0);
   hbox->setSpacing(2);
   hbox->addWidget(mStartWidget);
   hbox->addWidget(mStopWidget);

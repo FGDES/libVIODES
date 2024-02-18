@@ -48,6 +48,7 @@ void VioLuaStyle::Initialise(const QString& ftype){
 
 // load from file (dummy)
 void VioLuaStyle::ReadFile(const QString& filename){
+  (void) filename;
 }
 
 

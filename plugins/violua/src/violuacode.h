@@ -50,7 +50,7 @@ private:
 
   // my highlighting rules
   struct HighlightingRule {
-    QRegExp pattern;
+    QRegularExpression pattern;
     QTextCharFormat format;
   };
   QVector<HighlightingRule> mHighlightingRules;
@@ -63,7 +63,7 @@ private:
   QTextCharFormat mKeywordFormat;
 
   // section nesting 
-  QRegExp mTagExpression;
+  QRegularExpression mTagExpression;
 
 public:
 

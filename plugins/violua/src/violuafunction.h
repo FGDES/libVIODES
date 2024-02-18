@@ -217,7 +217,7 @@ public slots:
   // find 
   void FindDialog(void);
   void FindAgain(void);
-  void Find(const QString& pattern, const QString& replace, QTextDocument::FindFlags flags=0);
+  void Find(const QString& pattern, const QString& replace, QTextDocument::FindFlags flags=QTextDocument::FindFlags(0));
 
   // zoom
   void ZoomIn(void);

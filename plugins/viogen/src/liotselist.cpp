@@ -154,7 +154,8 @@ void LioVList::UpdateResize(void) {
     return;
   // empty or content changed: force reset
   if(rowCount()<=0) {
-    reset();
+    beginResetModel();
+    endResetModel();
   }
   // sense resize: grow
   if(rowCount()>mUpdateOldRows && mUpdateOldRows>=0) {
@@ -184,15 +185,17 @@ void LioVList::UpdateAll(void) {
   index2=createIndex(rowCount()-1,columnCount()-1);
   emit dataChanged(index1,index2);
   mUpdateChanged=false;
+  FD_DQG("LioVList::UpdateAll(): ok ");
 }
 
 // clear all
 void LioVList::UpdateReset(void) {
   FD_DQG("LioVList::UpdateReset()");
-  reset();
+  beginResetModel();
   mUpdateOldRows=-1;
   mUpdateChanged=false;
   UpdateAll();
+  endResetModel();
 }
 
 // resize hook: update row
@@ -398,9 +401,10 @@ bool LioVList::dropMimeData(const QMimeData *data, Qt::DropAction action,
       }
     }
     // sort and doit
-    qSort(sourcelist);
+    std::sort(sourcelist.begin(),sourcelist.end());
+    beginResetModel();
     UserInternalMove(sourcelist,row);
-    reset();
+    endResetModel();
     return true;
   }
   return false;
@@ -508,6 +512,7 @@ QVariant LioTList::headerData(int section, Qt::Orientation orientation, int role
 // tablemodel: sort
 void LioTList::sort(int column, Qt::SortOrder order) {
   FD_DQG("LioTList::sort(...)");
+  beginResetModel();
   if(column==0) {
     if(order==Qt::AscendingOrder) pVioGeneratorListModel->SortAscendingX1();
     else pVioGeneratorListModel->SortDescendingX1();
@@ -520,7 +525,7 @@ void LioTList::sort(int column, Qt::SortOrder order) {
     if(order==Qt::AscendingOrder) pVioGeneratorListModel->SortAscendingX2();
     else pVioGeneratorListModel->SortDescendingX2();
   }
-  reset();
+  endResetModel();
   // track user edit
   Modified(true);
 }
@@ -702,11 +707,12 @@ QVariant LioSList::headerData(int section, Qt::Orientation orientation, int role
 // tablemodel: sort
 void LioSList::sort(int column, Qt::SortOrder order) {
   FD_DQG("LioSList::sort(...)");
+  beginResetModel();
   if(column==0) {
     if(order==Qt::AscendingOrder) pVioGeneratorListModel->SortAscendingX1();
     else pVioGeneratorListModel->SortDescendingX1();
   }
-  reset();
+  endResetModel();
   // track user edit
   Modified(true);
 }
@@ -851,11 +857,12 @@ QVariant LioEList::headerData(int section, Qt::Orientation orientation, int role
 // tablemodel: sort
 void LioEList::sort(int column, Qt::SortOrder order) {
   FD_DQG("LioEList::sort(...)");
+  beginResetModel();
   if(column==0) {
     if(order==Qt::AscendingOrder) pVioGeneratorListModel->SortAscendingEv();
     else pVioGeneratorListModel->SortDescendingEv();
   }
-  reset();
+  endResetModel();
   // track user edit
   Modified(true);
 }

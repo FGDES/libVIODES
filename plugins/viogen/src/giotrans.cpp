@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009, 2024 Thomas Moor
 
 */
 
@@ -873,9 +873,9 @@ bool GioTrans::moveCtrlPos(const QPointF &point) {
       iCOther=mCtrlPointEdit+2;
     }
     if(iCThis>=0) {
-      QPointF pointAB=mBasePointsStartPos[iAB];
-      QPointF pointCThis=mBasePointsStartPos[iCThis];
-      QPointF pointCOther=mBasePointsStartPos[iCOther];
+      //QPointF pointAB=mBasePointsStartPos[iAB];
+      //QPointF pointCThis=mBasePointsStartPos[iCThis];
+      //QPointF pointCOther=mBasePointsStartPos[iCOther];
       QPointF dirThis = mCtrlPoints[iCThis] - mCtrlPoints[iAB];
       qreal lenThis= VioStyle::NormF(dirThis);
       dirThis=VioStyle::NormalizeF(dirThis);

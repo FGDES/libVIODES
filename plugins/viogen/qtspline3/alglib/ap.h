@@ -1,3 +1,5 @@
+// minor change: make clang happy, tmoor 2024
+
 /********************************************************************
 AP Library version 1.1
 Copyright (c) 2003-2007, Sergey Bochkanov (ALGLIB project).
@@ -165,8 +167,8 @@ public:
 };
 
 const complex operator/(const complex& lhs, const complex& rhs);
-const bool operator==(const complex& lhs, const complex& rhs);
-const bool operator!=(const complex& lhs, const complex& rhs);
+bool operator==(const complex& lhs, const complex& rhs);   // tm: was cont bool
+bool operator!=(const complex& lhs, const complex& rhs);   // tm: was cont bool
 const complex operator+(const complex& lhs);
 const complex operator-(const complex& lhs);
 const complex operator+(const complex& lhs, const complex& rhs);
@@ -181,7 +183,7 @@ const complex operator*(const double& lhs, const complex& rhs);
 const complex operator/(const complex& lhs, const complex& rhs);
 const complex operator/(const double& lhs, const complex& rhs);
 const complex operator/(const complex& lhs, const double& rhs);
-const double abscomplex(const complex &z);
+double abscomplex(const complex &z); /// tm: was "const double"
 const complex conj(const complex &z);
 const complex csqr(const complex &z);
 
@@ -334,12 +336,14 @@ public:
 
     int getlowbound(int iBoundNum = 0) const
     {
+        (void) iBoundNum; // tm: make clang happy
         return m_iLow;
     };
 
 
     int gethighbound(int iBoundNum = 0) const
     {
+        (void) iBoundNum; // tm: make clang happy
         return m_iHigh;
     };
 

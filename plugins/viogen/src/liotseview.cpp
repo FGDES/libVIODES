@@ -90,8 +90,8 @@ VioGeneratorListModel* LioVView::GeneratorListModel(void) {
 
 
 // reimplement: set model
-void LioVView::setModel(LioVList* liolist) {
-  FD_DQG("LioVView::setModel()");
+void LioVView::setLioModel(LioVList* liolist) {
+  FD_DQG("LioVView::setLioModel(): " << liolist);
   // bail out ob double call
   if(model()==liolist) return;
   // disconnect
@@ -181,7 +181,7 @@ QList<int> LioVView::SelectedRows(void) {
     selectedrows.append(index.row());
   }
   FD_DQG("LioVView::SelectedRows(): rows #" << selectedrows.size());
-  qSort(selectedrows);
+  std::sort(selectedrows.begin(),selectedrows.end());
   return selectedrows;
 }
 
@@ -274,20 +274,26 @@ void LioVView::keyPressEvent(QKeyEvent *event) {
   // switch: explicit insert a line
   if( (event->key() == Qt::Key_Insert) || 
       ( (event->key() == Qt::Key_Return) && (event->modifiers() & Qt::ShiftModifier ) ) ) {
-    FD_DQG("LioVView::keyPressEvent(...): Insert row " << row);
+    FD_DQG("LioVView::keyPressEvent(...): Insert row " << row << " to model " << GeneratorModel());
     mInsertMode=false;
     // retrieve row
     const QList<VioElement> gensel=GeneratorModel()->Selection();
+    FD_DQG("LioVView::keyPressEvent(...): test selection #" << gensel.size());
     if(row<0 && gensel.size()==1)  { 
       QModelIndex index= pTableModel->ModelIndex(gensel.at(0));
       row=index.row();
       FD_DQG("LioVView::keyPressEvent(...): Insert below " << gensel.at(0).Str() << " at row " << row );
     }
+    FD_DQG("LioVView::keyPressEvent(...): access vio model");
     pVioGeneratorModel->SelectionClear();
+    FD_DQG("LioVView::keyPressEvent(...): insert to qt model");
     model()->insertRow(row+1);
+    FD_DQG("LioVView::keyPressEvent(...): make active");
     setCurrentIndex(model()->index(row+1,0));
     QTableView::edit(currentIndex());
+    FD_DQG("LioVView::keyPressEvent(...): accept event");
     event->accept();
+    FD_DQG("LioVView::keyPressEvent(...): done");
     return;
   } 
   // switch: edit current item
@@ -507,17 +513,17 @@ LioTView::~LioTView(void) {
 
 
 // reimplement: set model
-void LioTView::setModel(LioVList* liolist) {
-  FD_DQG("LioTView::setModel()");
+void LioTView::setLioModel(LioVList* liolist) {
+  FD_DQG("LioTView::setLioModel()");
   // bail out on double call
   if(model()==liolist) return;
   // bail out on type mismatch
   if(!qobject_cast<LioTList*>(liolist)) return;
   if(model()==liolist) return;
   // call base
-  LioVView::setModel(liolist);
+  LioVView::setLioModel(liolist);
   // layout header after setting model
-  header()->setResizeMode(QHeaderView::Interactive);
+  header()->setSectionResizeMode(QHeaderView::Interactive);
   header()->setStretchLastSection(true); 
   SetSortEnabled(3);
 }
@@ -597,18 +603,18 @@ LioSView::~LioSView(void) {
 
 
 // reimplement: set model
-void LioSView::setModel(LioVList* liolist) {
-  FD_DQG("LioSView::setModel()");
+void LioSView::setLioModel(LioVList* liolist) {
+  FD_DQG("LioSView::setLioModel()");
   // bail out on double call
   if(model()==liolist) return;
   // bail out on type mismatch
   if(!qobject_cast<LioSList*>(liolist)) return;
   // call base
-  LioVView::setModel(liolist);
+  LioVView::setLioModel(liolist);
   // layout header after setting model
-  header()->setResizeMode(0,QHeaderView::Stretch);
+  header()->setSectionResizeMode(0,QHeaderView::Stretch);
   for(int col=1; col<pTableModel->columnCount(); col++)
-    header()->setResizeMode(col,QHeaderView::ResizeToContents);
+    header()->setSectionResizeMode(col,QHeaderView::ResizeToContents);
   SetSortEnabled(1);
 }
 
@@ -670,18 +676,18 @@ LioEView::~LioEView(void) {
 
 
 // reimplement: set model
-void LioEView::setModel(LioVList* liolist) {
-  FD_DQG("LioEView::setModel()");
+void LioEView::setLioModel(LioVList* liolist) {
+  FD_DQG("LioEView::setLioModel()");
   // bail out on double call
   if(model()==liolist) return;
   // bail out on type mismatch
   if(!qobject_cast<LioEList*>(liolist)) return;
   // call base
-  LioVView::setModel(liolist);
+  LioVView::setLioModel(liolist);
   // layout header after setting model
-  header()->setResizeMode(0,QHeaderView::Stretch);
+  header()->setSectionResizeMode(0,QHeaderView::Stretch);
   for(int col=1; col<pTableModel->columnCount(); col++)
-    header()->setResizeMode(col,QHeaderView::ResizeToContents);
+    header()->setSectionResizeMode(col,QHeaderView::ResizeToContents);
   SetSortEnabled(1);
 }
 

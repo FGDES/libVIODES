@@ -217,7 +217,7 @@ void GioState::updateText(void) {
   // get flags
   pGeneratorConfig->MapElementOptions(GeneratorModel(), VioElement::FromState(mIdx), pRenderOptions);
   pRenderOptions->mBodyBrush.setColor(
-    pRenderOptions->mBodyBrush.color().light(300));
+    pRenderOptions->mBodyBrush.color().lighter(300));
   // clear all
   mDrawElements.clear();
   // draw name and set name rect

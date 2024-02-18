@@ -113,7 +113,7 @@ void VioWindow::New() {
   // have a new window
   VioWindow* nwin = new VioWindow();
   nwin->Widget(viowid);
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   nwin->restoreGeometry(settings.value("geometry").toByteArray());
   nwin->move(nwin->pos()+QPoint(10,10));
   nwin->show();
@@ -126,7 +126,7 @@ void VioWindow::ImportFaudes() {
   // save changes
   if(mVioWidget->Modified()) {
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("Do you want to save the current document?"),
       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, 
       QMessageBox::Save);
@@ -142,7 +142,7 @@ void VioWindow::ImportFaudes() {
 
   // open dialog: restore from settings
   QFileDialog* fdiag = new QFileDialog();
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   fdiag->restoreState(settings.value("stateFaudesFileDialog").toByteArray());
 
   // open dialog: vio files
@@ -185,7 +185,7 @@ void VioWindow::ImportFaudes() {
   // report error
   if(err!="") {
     QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("<p>Cannot import file %1</p>"
          "<p>%2</p>"
 	 ).arg(StrippedName(filename),err));
@@ -212,7 +212,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
 
   // open dialog: restore from settings
   QFileDialog* fdiag = new QFileDialog(this);
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   fdiag->restoreState(settings.value("stateFileDialog").toByteArray());
 
   // open dialog: vio files
@@ -249,7 +249,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
     if(win->CurrentFile()=="") continue;
     if(win->CurrentFile()!=filename) continue;
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("This file is allready opened in another window. Do you want to open another copy?"),
 	QMessageBox::Yes | QMessageBox::No);
     if(ret != QMessageBox::Yes) return;
@@ -259,7 +259,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
   if(mCurrentFile==filename) {
     owin=false;
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("Revert to file?"),
 	QMessageBox::Yes | QMessageBox::No);
     if(ret != QMessageBox::Yes) return;
@@ -269,7 +269,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
   if(!owin) 
   if(mVioWidget->Modified()) {
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VioEidt"),
       tr("Do you want to save the current document?"),
       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, 
       QMessageBox::Save);
@@ -281,7 +281,7 @@ QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
   VioWindow* nwin = this;
   if(owin) {
      nwin = new VioWindow();
-    //QSettings settings("Faudes", "vioDiag");
+    //QSettings settings("Faudes", "VIOEdit");
     nwin->restoreGeometry(settings.value("geometry").toByteArray());
     nwin->move(nwin->pos()+QPoint((int) (30.0*rand()/RAND_MAX),(int) (30.0*rand()/RAND_MAX)));
     nwin->show();
@@ -303,7 +303,7 @@ void VioWindow::SaveAs() {
 
   // save dialog: restore from settings
   QFileDialog* fdiag = new QFileDialog();
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   fdiag->restoreState(settings.value("stateFileDialog").toByteArray());
 
   // save dialog: vio files
@@ -335,7 +335,7 @@ void VioWindow::ExportFaudes() {
 
   // save dialog: restore from settings
   QFileDialog* fdiag = new QFileDialog();
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   fdiag->restoreState(settings.value("stateFaudesFileDialog").toByteArray());
 
   // save dialog: vio files
@@ -385,7 +385,7 @@ void VioWindow::OpenRecent() {
     if(win->CurrentFile()=="") continue;
     if(win->CurrentFile()!=filename) continue;
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("This file is allready opened in another window. Do you want to open another copy?"),
 	QMessageBox::Yes | QMessageBox::No);
     if(ret != QMessageBox::Yes) return;
@@ -395,7 +395,7 @@ void VioWindow::OpenRecent() {
   if(mCurrentFile==filename) {
     owin=false;
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("Revert to file?"),
 	QMessageBox::Yes | QMessageBox::No);
     if(ret != QMessageBox::Yes) return;
@@ -405,7 +405,7 @@ void VioWindow::OpenRecent() {
   if(!owin) 
   if(mVioWidget->Modified()) {
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("Do you want to save the current document?"),
       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, 
       QMessageBox::Save);
@@ -417,7 +417,7 @@ void VioWindow::OpenRecent() {
   VioWindow* nwin = this;
   if(owin) {
     nwin = new VioWindow();
-    QSettings settings("Faudes", "vioDiag");
+    QSettings settings("Faudes", "VIOEdit");
     nwin->restoreGeometry(settings.value("geometry").toByteArray());
     nwin->move(nwin->pos()+QPoint((int) (30.0*rand()/RAND_MAX),(int) (30.0*rand()/RAND_MAX)));
     nwin->show();
@@ -434,13 +434,13 @@ void VioWindow::About() {
   // use qt about box
   QMessageBox aboutbox;
   aboutbox.setText(QString(
-    "<p><b>vioDiag - a  test application for libVioDES plug-ins</b></p>")); 
+    "<p><b>VIOEdit - a  test application for libVIODES plug-ins</b></p>")); 
   aboutbox.setInformativeText(QString(
     "<p><b>Version:</b> %1 with %2 plug-ins</p> " 
     "<p><b>Configuration:</b> %3</p> " 
     "<p><b>VioPlugIns:</b> %4</p> " 
     "<p><b>Credits:</b> %5</p> " 
-    "<p><b>(c) 2010 Thomas Moor</b></p> "
+    "<p><b>(c) 2010, 2024 Thomas Moor</b></p> "
     ).arg(
       faudes::VersionString().c_str(),
       faudes::PluginsString().c_str(),
@@ -457,7 +457,7 @@ void VioWindow::About() {
 void VioWindow::CreateActions() {
 
   // about
-  mAboutAct = new QAction(tr("About vioDiag"), this);
+  mAboutAct = new QAction(tr("About VIOEdit"), this);
   mAboutAct->setStatusTip(tr("Show About-Box"));
   connect(mAboutAct, SIGNAL(triggered()), this, SLOT(About()));
 
@@ -730,7 +730,7 @@ void VioWindow::LoadFile(const QString &fileName) {
   // report error
   if(err!="") {
     QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("<p>Cannot read file %1</p>"
          "<p>%2</p>"
 	 ).arg(StrippedName(fileName),err));
@@ -765,7 +765,7 @@ void VioWindow::SaveFile(const QString &fileName) {
   // report error
   if(err!="") {
     QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("<p>Cannot write file %1</p>"
          "<p>%2</p>"
 	 ).arg(fileName,err));
@@ -786,8 +786,8 @@ void VioWindow::FaudesError(const QString& faudeserror) {
 
   //say hello
   QMessageBox::warning(this, 
-    tr("vioDiag"),
-    tr("<p>vioDiag sensed the following libFAUDES error:</p>"
+    tr("VIOEdit"),
+    tr("<p>VIOEdit sensed the following libFAUDES error:</p>"
        "<p>%1</p>"
     ).arg(faudeserror));
   return;
@@ -814,15 +814,15 @@ void VioWindow::CurrentFile(const QString &fileName) {
 
   // default window title
   if (mCurrentFile.isEmpty()) {
-    setWindowTitle(tr("vioDiag: Untitled[*]"));
+    setWindowTitle(tr("VIOEdit: Untitled[*]"));
     return;
   }
 
   // file name window title
-  setWindowTitle(tr("vioDiag: %1[*]").arg(StrippedName(mCurrentFile)));
+  setWindowTitle(tr("VIOEdit: %1[*]").arg(StrippedName(mCurrentFile)));
 
   // fix recent files incl settings
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   QStringList files = settings.value("recentFileList").toStringList();
   files.removeAll(fileName);
   files.prepend(fileName);
@@ -846,7 +846,7 @@ QString VioWindow::CurrentFile(void) {
 void VioWindow::UpdateRecentFileActions() {
 
   // get from settings
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   QStringList files = settings.value("recentFileList").toStringList();
 
   // iterate list
@@ -870,7 +870,7 @@ void VioWindow::UpdateRecentFileActions() {
 void VioWindow::ClearRecentFileActions() {
 
   // claer in  settings
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   QStringList files;
   settings.setValue("recentFileList", files);
 
@@ -887,7 +887,7 @@ void VioWindow::closeEvent ( QCloseEvent * event ){
   // save changes
   if(mVioWidget->Modified()) {
     int ret = QMessageBox::warning(this, 
-      tr("vioDiag"),
+      tr("VIOEdit"),
       tr("Do you want to save the current document?"),
       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, 
       QMessageBox::Save);
@@ -896,7 +896,7 @@ void VioWindow::closeEvent ( QCloseEvent * event ){
   }
 
   // save window geometry
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   settings.setValue("geometry", saveGeometry());
 
   // call base
@@ -1026,7 +1026,7 @@ int main(int argc, char *argv[]) {
       VioStyle::ReadFile(cfgname); 
     } catch (faudes::Exception& fexcep) {
       QString err=QString("Error: ")+VioStyle::QStrFromStr(fexcep.What());
-      QMessageBox::warning(0,"vioDiag",
+      QMessageBox::warning(0,"VIOEdit",
 	QString("<p>Cannot read configuration file %1</p><p>%2</p>").arg(cfgname,err));
       exit(1);
     }
@@ -1044,7 +1044,7 @@ int main(int argc, char *argv[]) {
   // disclaimer
   FD_WARN("viodiag: show disclaimer");
   {
-    QSettings settings("Faudes", "vioDiag");
+    QSettings settings("Faudes", "VIOEdit");
     QString never = settings.value("disclaimer3").toString();
     if(never!="dontShowDisclaimer") {
     QMessageBox disclaimer;
@@ -1053,9 +1053,9 @@ int main(int argc, char *argv[]) {
       "<p><b>Do you want to proceed?</b></p>"));
       disclaimer.setInformativeText(QString(
        "<p>If you are not developing a libVioDES plug-in, it is very unlikely "
-       "that you want to use vioDiag. </p> "
+       "that you want to use VIOEdit. </p> "
         "<p> %1 </p> ").arg(VioStyle::LicenseText())); 
-      disclaimer.setWindowTitle("vioDiag");
+      disclaimer.setWindowTitle("VIOEdit");
       disclaimer.setIcon(QMessageBox::Information);
       QPushButton* disno = disclaimer.addButton("No", QMessageBox::NoRole);
       QPushButton* disnever = disclaimer.addButton("Yes, dont ask again", QMessageBox::YesRole);
@@ -1079,7 +1079,7 @@ int main(int argc, char *argv[]) {
     VioTypeRegistry::Initialise();
   } catch (faudes::Exception& fexcep) {
     QString err=QString("Error: ")+VioStyle::QStrFromStr(fexcep.What());
-    QMessageBox::warning(0,"vioDiag",
+    QMessageBox::warning(0,"VIOEdit",
     QString("<p>Error while loading plugins.</p><p>%1</p>").arg(err));
     exit(1);
   }
@@ -1090,7 +1090,7 @@ int main(int argc, char *argv[]) {
     VioFunctionRegistry::Initialise();
   } catch (faudes::Exception& fexcep) {
     QString err=QString("Error: ")+VioStyle::QStrFromStr(fexcep.What());
-    QMessageBox::warning(0,"vioDiag",
+    QMessageBox::warning(0,"VIOEdit",
     QString("<p>Error while initialising functions.</p><p>%1</p>").arg(err));
     exit(1);
   }
@@ -1098,7 +1098,7 @@ int main(int argc, char *argv[]) {
   // load file and go
   FD_WARN("viodiag: open main window");
   VioWindow *vioWin = new VioWindow;
-  QSettings settings("Faudes", "vioDiag");
+  QSettings settings("Faudes", "VIOEdit");
   vioWin->restoreGeometry(settings.value("geometry").toByteArray());
   if(vioname!="") vioWin->LoadFile(vioname);
   vioWin->show();

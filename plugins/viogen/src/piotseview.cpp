@@ -51,7 +51,7 @@ PioVProp::PioVProp(QWidget* parent, VioStyle* config) : QWidget(parent) {
 
   // overall layout
   mVbox = new QVBoxLayout(this);
-  mVbox->setMargin(0);
+  mVbox->setContentsMargins(0,0,0,0);
   mVbox->setSpacing(0);
   mVbox->addLayout(hbox);
   mVbox->addSpacing(10);
@@ -77,7 +77,10 @@ PioVProp::~PioVProp(void) {
 // set viogenerator
 void PioVProp::GeneratorModel(VioGeneratorModel* genmodel) {
   FD_DQG("PioVProp::GeneratorModel()");
-  if(genmodel) FD_DQG("PioVProp::GeneratorModel(): ctype " << typeid(*genmodel).name() << " " << typeid(genmodel->Layout()).name()  );
+  if(genmodel) {
+    FD_DQG("PioVProp::GeneratorModel(): ctype " << typeid(*genmodel).name());
+    //FD_DQG("PioVProp::GeneratorModel(): layout " << typeid(genmodel->Layout()).name()  );
+  }
   // disconnect
   if(pVioGeneratorModel)
     disconnect(pVioGeneratorModel, 0, this, 0);
