@@ -133,7 +133,7 @@ void VioAttributeDiagStateView::DoVioAllocate(void) {
   mStateLabel->setReadOnly(true);
   QLabel* head = new QLabel("Diagnoser Lable");
   QVBoxLayout* vbox = new QVBoxLayout();
-  vbox->setMargin(0);
+  vbox->setContentsMargins(0,0,0,0);
   vbox->setSpacing(2);
   vbox->addWidget(head);
   vbox->addWidget(mStateLabel);

@@ -4,14 +4,12 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libFAUDES)
 
-   Copyright (C) 2009 Thomas Moor;
+   Copyright (C) 2009, 2024,  Thomas Moor;
 
 */
 
 #include "viohio.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(viohio, VioHiosysPlugin)
 
 // tell name of this plugin
 QString VioHiosysPlugin::Name(void) {

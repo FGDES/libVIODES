@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009, 2024  Thomas Moor
 
 */
 
@@ -144,7 +144,7 @@ void VioMtcGeneratorStyle::MapElementOptions(const VioGeneratorModel* pGenModel,
   for(;mit!=csattr->Colors().End(); mit++) {
     QString markname=VioStyle::QStrFromStr(csattr->Colors().SymbolicName(*mit));
     if(!pmgen->Layout().ColorMap().contains(markname)) continue;
-    const QColor& color = VioStyle::Color(pmgen->Layout().ColorMap()[markname]).light(200);
+    const QColor& color = VioStyle::Color(pmgen->Layout().ColorMap()[markname]).lighter(200);
     QPen cp = VioStyle::DefaultPen();
     cp.setColor(color);
     cp.setWidthF(0.75*StateMarkGap());

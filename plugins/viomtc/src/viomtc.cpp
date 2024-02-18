@@ -13,9 +13,6 @@
 #include "viomtcgenstyle.h"
 #include "viomtcgenerator.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(viomtc, VioMtcPlugin)
-
 // tell name of this plugin
 QString VioMtcPlugin::Name(void) {
   return QString("VioMtc-")+QString(VIODES_VERSION);

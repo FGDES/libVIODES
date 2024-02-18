@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009  Thomas Moor, Ruediger Berndt
+   Copyright (C) 2009, 2024  Thomas Moor
 
 */
 
@@ -73,7 +73,6 @@ void VioMtcGeneratorLayout::WriteCore(faudes::TokenWriter& rTw) const {
   VioGeneratorLayout::WriteCore(rTw);
   // my data: color map
   rTw.WriteBegin("ColorMap");
-  int oldcol=rTw.Columns();
   rTw.Columns(2);
   for(int i=0; i< mColorList.size(); i++) {
     rTw.WriteString(VioStyle::StrFromQStr(mColorList.at(i)));
@@ -200,7 +199,7 @@ void VioMtcGeneratorModel::DoFaudesAllocate(void) {
   }
   // done
   FD_DQT("VioMtcGeneratorModel::DoFaudesAllocate(): ftype " << VioStyle::StrFromQStr(mFaudesType)
-	 << " ctype " << typeid(*mData->FaudesObject()).name() << " at " << mData->FaudesObject());
+	 << " ctype " << mData->FaudesObject()->TypeName() << " at " << mData->FaudesObject());
 }
 
 // allocate visual model data
@@ -369,6 +368,8 @@ void VioMtcGeneratorConfigView::DoVioUpdate(void) {
 // color set has been changed
 void VioMtcGeneratorConfigView::UpdateFromColorColumns(int row, int col) {
   FD_DQT("VioMtcGeneratorConfigView::UpdateFromColorColumns()");
+  (void) col;
+  (void) row;
   // bail out if widget is not ready or model not there
   if(!mColorColumns || !pMtcGeneratorModel) return;
   // retrieve entire table

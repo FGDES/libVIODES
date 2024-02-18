@@ -52,9 +52,9 @@ macx {
   ContFiles.path = Contents/MacOS
   QMAKE_BUNDLE_DATA += ContFiles
   ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib
-#  ViopFiles.files +=  $$VIODES_BASE/libviohio.dylib
-#  ViopFiles.files +=  $$VIODES_BASE/libviomtc.dylib
-#  ViopFiles.files +=  $$VIODES_BASE/libviodiag.dylib
+  ViopFiles.files +=  $$VIODES_BASE/libviohio.dylib
+  ViopFiles.files +=  $$VIODES_BASE/libviomtc.dylib
+  ViopFiles.files +=  $$VIODES_BASE/libviodiag.dylib
   ViopFiles.files +=  $$VIODES_BASE/libviosim.dylib
   ViopFiles.files +=  $$VIODES_BASE/libviolua.dylib
   ViopFiles.path = Contents/plugins/viotypes
@@ -74,9 +74,9 @@ macx {
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/VIOEdit && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/libviodes.dylib && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviogen.dylib && \
-#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviohio.dylib && \
-#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviomtc.dylib && \
-#    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviohio.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviomtc.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviosim.dylib && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviolua.dylib
  QMAKE_POST_LINK += make macfix

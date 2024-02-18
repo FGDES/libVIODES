@@ -71,7 +71,7 @@ void VioAttributeMtcStateModel::DoFaudesAllocate(void) {
     FD_DQT("VioAttributeMtcStateModel::DoFaudesAllocate(): fallback ctype");
     mData->FaudesObject(new faudes::AttributeColoredState());  
   }
-  FD_DQT("VioAttributeMtcStateModel::DoFaudesAllocate(): ctype " << typeid(*mData->FaudesObject()).name());
+  FD_DQT("VioAttributeMtcStateModel::DoFaudesAllocate(): ctype " << mData->FaudesObject()->TypeName());
 }
 
 // test whether we can host this faudes object
@@ -206,6 +206,8 @@ void VioAttributeMtcStateView::DoVioUpdate(void) {
 
 // color set has been changed
 void VioAttributeMtcStateView::UpdateFromColorColumns(int row, int col) {
+  (void) row;
+  (void) col;
   FD_DQT("VioAtributeMtcStateView::UpdateFromColorColumns()");
   // bail out if widget is not ready or model not there
   if(!mColorColumns || !pAttributeMtcStateModel) return;

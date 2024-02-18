@@ -12,9 +12,6 @@
 #include "viodiagstateattr.h"
 #include "viodiaggenstyle.h"
 
-// advertise my plugin
-Q_EXPORT_PLUGIN2(viodiag, VioDiagnosisPlugin)
-
 // tell name of this plugin
 QString VioDiagnosisPlugin::Name(void) {
   return QString("VioDiag-")+QString(VIODES_VERSION);

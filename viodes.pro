@@ -20,9 +20,9 @@ TEMPLATE = subdirs
 SUBDIRS  = ./viocore  \
            ./plugins/viogen/qtspline3 \ 
            ./plugins/viogen \ 
-#           ./plugins/viohio \
-#           ./plugins/viomtc \
-#           ./plugins/viodiag \
+           ./plugins/viohio \
+           ./plugins/viomtc \
+           ./plugins/viodiag \
            ./plugins/viosim \
            ./plugins/violua 
 
