@@ -17,7 +17,7 @@ targets to fill the gap.
   new attributes
 - make attribute widgets really easy to create
 
-We have migrated libVIODES to Qt6. See https://github.com/FGDES/libVIODES-Qt4-Pre2024 for the most recent stable Qt4 based varaiant
+We have migrated libVIODES to Qt6. See https://github.com/FGDES/libVIODES-Qt4-Pre2024 for the most recent stable Qt4 based variant
 
 ## Code Organisation
 
