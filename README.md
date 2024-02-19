@@ -75,9 +75,9 @@ VioGen:
 The code of this pluglin is taken from an previous project for graph
 representation (libVIOGen). 
 
-## Tutorial
+## Tutorial/Testing
 
-The base usaage of libVIODES is demonstrated by the simple Qt application "vioedit" that loads VioModels
+The base usaage of libVIODES is demonstrated by the Qt application "vioedit" that loads VioModels
 from file and displays the corresponding VioView. It is meant as a basis
 for testing ant debugging.
 
