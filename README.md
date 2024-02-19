@@ -84,14 +84,14 @@ for testing ant debugging.
 
 ## Build System
 
-To compile libVIODES, you will need Qt series 6 with minimum version 6.6.2. For Linux, you will need to install the Qt developper packages. For Mac OS X and Windows there exsist installerr provided by Qt. For Windows, make sure that you choose the same compiler for Qt as you use for libFAUDES. Also make sure that the Qt toolset is within the PATH environment variable. 
+To compile libVIODES, you will need Qt series 6. The minor version should not be critical: Linux we are compiling with Qt 6.2.4 which we conveniently found in the Ubuntu package manager;  for Mac OS X we got the at the time of migrating most recent 6.6.2 via the online installer provided by the Qt Project; Windows should be likewise, we did not test yet. For all three plattforms, the Qt version needs to be 'activated' e.g. by setting the PATH environment variable to point to `qmake`; cerify with `qmake -v`.
 
 You will also need a configured and compiled copy of libFAUDES. This
 is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems, we provide a skript `copyfaudes.sh` that performs this step:
 
     ./libVIOEDS> . ./copyfaudes.sh
 
-The script expects a plain libFAUDES next to `./libVIODES`, copies the sources to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES using the libFAUDES `makefile`. The script is meant as a documentation on which configuration options are recommended, please inspect carefully before execution.  
+The script expects a plain libFAUDES next to `./libVIODES`, copies the sources to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES using the libFAUDES `makefile`. The script is meant as a documentation on which configuration options are recommended, please inspect carefully before execution. For best results, it is recommended to use the same toolchain when compiling either libVIODES or libFAUDES, and, preferably, this toolchain also, matches the oe Qt was compiled. This is a no-issue on Linux and Mac OSX, but can be tricky on MS Windows.
 
 Once you are set, 
 compiling libVIODES is controlled by the Qt project `./libviodes/viodes.pro`. 
