@@ -104,4 +104,4 @@ To compile use
 ## Authors/Copyright/License
 
 The initial version of libVIODES was developped in the context of Ruediger Berndt's
-masters project in 2009. Back then, our main concern was to parallel the libFAUDES type system with elementary Qt models in a flexible manner. Actual graphical representation of automata was merged from Thomas Moor's predecessor project VIOGen, with quite some effort for the various plug-ins. Principle authors are Thomas Moor and Ruediger Berdt, distribution is by terms of the LGPL 3.
+masters project in 2009. Back then, our main concern was to parallel the libFAUDES type system with elementary Qt models in a flexible manner. Actual graphical representation of automata was merged from Thomas Moor's predecessor project VIOGen, with quite some effort for the various plug-ins. Principle authors are Thomas Moor and Ruediger Berndt, distribution is by terms of the LGPL 3.
