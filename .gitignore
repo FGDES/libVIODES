@@ -18,8 +18,8 @@
 *.pro.user.*
 object_script.*
 Makefile
-.qmake.stash
-
+**/.qmake.stash
+.qtc_clangd
 
 # osx irritations
 **/.DS_Store
