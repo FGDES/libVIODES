@@ -3,7 +3,7 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 
@@ -35,7 +35,7 @@ class GioView : public QGraphicsView {
 
 public:
   // construct from scene
-  GioView(QWidget* parent=0);
+  GioView(QWidget* parent=nullptr);
 
 public slots:
 
@@ -54,11 +54,15 @@ signals:
 
 protected:
   // reimplement mouse events
-  void wheelEvent(QWheelEvent *event);
-  void mousePressEvent(QMouseEvent * event);
-  void mouseReleaseEvent(QMouseEvent * event);
-  void mouseDoubleClickEvent(QMouseEvent * event);
-  void mouseMoveEvent(QMouseEvent * event);
+  void wheelEvent(QWheelEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void mouseDoubleClickEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
+
+  // get and implement gesture events
+  bool event(QEvent *event) override;
+  bool gestureEvent(QGestureEvent* gevent);
 
   // record scale
   qreal mScale;

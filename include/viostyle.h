@@ -54,7 +54,7 @@
 #ifdef FAUDES_DEBUG_VIO
 #define FD_DQ(message) FAUDES_WRITE_CONSOLE("FAUDES_VIO: " << message)
 #else
-#define FD_DQ(message) { };
+#define FD_DQ(message) { }
 #endif
 
 
@@ -62,14 +62,14 @@
 #ifdef FAUDES_DEBUG_VIO_HELPER
 #define FD_DQH(message) FAUDES_WRITE_CONSOLE("FAUDES_VIOHELPER: " << message)
 #else
-#define FD_DQH(message) { };
+#define FD_DQH(message) { }
 #endif
 
 // debugging: extra widgets
 #ifdef FAUDES_DEBUG_VIO_WIDGETS
 #define FD_DQW(message) FAUDES_WRITE_CONSOLE("FAUDES_VIOWIDGETS: " << message)
 #else
-#define FD_DQW(message) { };
+#define FD_DQW(message) { }
 #endif
 
 

@@ -3,12 +3,17 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009 - 2024 Thomas Moor;
+
 
 */
 
+// local debugging
+#define FAUDES_DEBUG_VIO
+
 
 #include "gioview.h"
+
 
 // construct
 GioView::GioView(QWidget* parent) :  QGraphicsView(parent) {
@@ -16,13 +21,17 @@ GioView::GioView(QWidget* parent) :  QGraphicsView(parent) {
   setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
   setDragMode(RubberBandDrag);
   setMouseTracking(true);
+  grabGesture(Qt::GestureType::PinchGesture);
   mScale=1;
 }
 
 // Scale
 void GioView::Scale(qreal sc) {
-  mScale=sc;
+  //setResizeAnchor(AnchorUnderMouse);
+  //scale(sc,sc);
+  //setTransformationAnchor(NoAnchor);
   setTransform(QTransform(sc,0,0,sc,0,0));
+  mScale=sc;
 }
 
 // Scale
@@ -60,14 +69,34 @@ void GioView::Fit(void){
 }
 
 
-
+// all events to handle gestures
+bool GioView::event(QEvent *event) {
+  if(event->type() == QEvent::Gesture)
+    return gestureEvent(static_cast<QGestureEvent*>(event));
+  return QGraphicsView::event(event);
+}
 
 // wheel event
 void GioView::wheelEvent(QWheelEvent *event) {
   FD_DQ("GioView::wheelEvent(..) at (" << QCursor::pos().x() << ", " << QCursor::pos().y()
-	<< ") with value " << event->angleDelta().y());
+     << ") with value " << event->angleDelta().y() << " is pointer " << event->isPointerEvent() );
+  // test for device
+  bool handle=false;
+  if(event->deviceType()==QInputDevice::DeviceType::Mouse) {
+    FD_DQ("GioView::wheeleEvent(..): its a mouse wheel: do zoom")
+    handle=true;
+  }
+  if(event->deviceType()==QInputDevice::DeviceType::TouchPad) {
+    FD_DQ("GioView::wheeleEvent(..): its a touchpad: pass on for scroll")
+    handle=false;
+  }
+  if(!handle) {
+    FD_DQ("GioView::wheeleEvent(..): pass on to base");
+    QGraphicsView::wheelEvent(event);
+    return;
+  }
   // scale factor
-  qreal degree= ((qreal) event->angleDelta().y()) / 8.0; 
+  qreal degree= event->angleDelta().y() / 8.0;
   if(degree < -30) degree = -30.0;
   if(degree >  30) degree = 30.0;
   qreal sc = 1.0 + ( 5.0 * degree / 3000.0 ); // 5% steps per 30 degree
@@ -90,6 +119,21 @@ void GioView::wheelEvent(QWheelEvent *event) {
   emit NotifyZoom(Scale());
 };
 
+
+// get pinch for zoom: event
+bool GioView::gestureEvent(QGestureEvent *gevent) {
+    QPinchGesture* pinch=static_cast<QPinchGesture*>(gevent->gesture(Qt::PinchGesture));
+  if(!pinch) return false;
+  FD_DQ("GioView::gestureEvent(..) pinch at (" << pinch->hotSpot().x()<< ", " << pinch->hotSpot().y() << ") sf " << pinch->totalScaleFactor())
+  // do the scale
+  qreal sc=pinch->scaleFactor();
+  setResizeAnchor(AnchorUnderMouse);
+  setTransformationAnchor(AnchorUnderMouse);
+  scale(sc,sc);
+  setTransformationAnchor(NoAnchor);
+  // notify
+  emit NotifyZoom(Scale());  return true;
+}
 
 // handle my events: mouse press
 // note: when rubber band drag ends, press void deselects but is not passed to scene

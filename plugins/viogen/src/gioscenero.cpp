@@ -4,7 +4,7 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 
@@ -19,7 +19,6 @@
 #include <clocale>
 
 #include "gioscenero.h"
-#include "gioview.h"
 
 // resolve forward
 #include "viogengraph.h"

@@ -5,7 +5,7 @@
 
    Visual IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009  Thomas Moor, Ruediger Berndt
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 

@@ -22,7 +22,7 @@
 #ifdef FAUDES_DEBUG_VIO_TYPE
 #define FD_DQT(message) FAUDES_WRITE_CONSOLE("FAUDES_VIO_TYPES: " << message)
 #else
-#define FD_DQT(message)
+#define FD_DQT(message) {}
 #endif
 
 

@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 
@@ -12,7 +12,6 @@
 #ifndef FAUDES_GIOSCENERO_H
 #define FAUDES_GIOSCENERO_H
 
-#include "libviodes.h"
 #include "giostate.h"
 #include "giotrans.h"
 
@@ -51,13 +50,13 @@ public:
 
   // constructor, destructor
   GioSceneRo(VioGeneratorGraphModel* pGen);
-  virtual ~GioSceneRo(void);
+  ~GioSceneRo(void) override;
 
   // read only access to faudes generator 
   const fGenerator* Generator(void) const;
 
   // access to generator model
-  VioGeneratorModel* GeneratorModel(void) { return pGeneratorModel; };
+  VioGeneratorModel* GeneratorModel(void) { return pGeneratorModel; }
 
   // record modification
   void Modified(bool ch);
@@ -65,7 +64,7 @@ public:
   void ChildModified(bool ch);
 
   // consistency: gioitems match generator
-  bool Consistent(void) { return mConsistent;};
+  bool Consistent(void) { return mConsistent;}
   void Consistent(bool cons);
   int  TestConsistent(void);
  
@@ -75,11 +74,11 @@ public:
   QList<GioTrans*> TransItemsByTarget(faudes::Idx idxB);
 
   // test for empty
-  bool Empty(void) const { return mStateItems.empty() && mTransItems.empty();};
+  bool Empty(void) const { return mStateItems.empty() && mTransItems.empty();}
 
   // read-only interface (should be data based)
-  const QList<GioState*> States(void) const { return mStateItems; };
-  const QList<GioTrans*> Trans(void)  const { return mTransItems; };
+  const QList<GioState*> States(void) const { return mStateItems; }
+  const QList<GioTrans*> Trans(void)  const { return mTransItems; }
 
   // all data container
   class Data  {
@@ -174,10 +173,10 @@ protected:
   virtual void moveGioTrans(const faudes::Transition& oftrans, const faudes::Transition& nftrans);
 
   // get ui events
-  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+  virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
 
   // gio items, linked to faudes id
   QList<GioState*> mStateItems;

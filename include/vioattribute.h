@@ -23,7 +23,7 @@
 #ifdef FAUDES_DEBUG_VIO_ATTRIBUTE
 #define FD_DQA(message) FAUDES_WRITE_CONSOLE("FAUDES_VIO_ATTRIBUTE: " << message)
 #else
-#define FD_DQA(message)
+#define FD_DQA(message) { }
 #endif
 
 

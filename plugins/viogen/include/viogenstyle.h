@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
+   Copyright (C) 2009 - 2024 Thomas Moor;
 
 */
 
@@ -26,7 +26,7 @@
 #ifdef FAUDES_DEBUG_VIO_GENERATOR
 #define FD_DQG(message) FAUDES_WRITE_CONSOLE("FAUDES_VIO_GENERATOR: " << message)
 #else
-#define FD_DQG(message) { };
+#define FD_DQG(message) { }
 #endif
 
 
@@ -51,8 +51,8 @@
 class VIOGEN_API GioRenderOptions {
 public:
   // construct
-  GioRenderOptions(void); 
-  virtual ~GioRenderOptions(void) {};
+  GioRenderOptions(void);
+  virtual ~GioRenderOptions(void) {}
 
   // clear to default
   virtual void Clear(void);
@@ -63,7 +63,7 @@ public:
   // defining parameter
   int mLineStyle;
   const QColor* mLineColor;
-  int mBodyStyle;    
+  int mBodyStyle;
   const QColor* mBodyColor;
   int mTextStyle;
 
@@ -189,7 +189,7 @@ public:
 
   // construct/destruct
   VioGeneratorStyle(const QString& ftype="Generator");
-  ~VioGeneratorStyle(void) {};
+  ~VioGeneratorStyle(void) override {}
 
   // attribute prototypes
   VioAttributeModel* mGlobalAttribute;
@@ -220,18 +220,18 @@ public:
   const QList<GioFlagEffect>& EventEffects(void);
 
   // have render options object factory
-  virtual GioRenderOptions* NewRenderOptions() const { 
-    return new GioRenderOptions(); };
+  virtual GioRenderOptions* NewRenderOptions() const {
+      return new GioRenderOptions(); }
 
   // map faudes elements to renderoptions (here: from flageffects)
   virtual void MapElementOptions(const VioGeneratorModel* pGenModel, const VioElement& rElem, GioRenderOptions* rOptions); 
   
   // numerical drawing parameters
-  const qreal& StateNormalSize(void) { return mStateNormalSize;};
-  const qreal& StateSmallSize(void) { return mStateSmallSize;};
-  const qreal& StateMarkGap(void) { return mStateMarkGap;};
-  const qreal& ImportMeshWidthX(void) { return mImportMeshWidthX;};
-  const qreal& ImportMeshWidthY(void) { return mImportMeshWidthY;};
+  const qreal& StateNormalSize(void) { return mStateNormalSize;}
+  const qreal& StateSmallSize(void) { return mStateSmallSize;}
+  const qreal& StateMarkGap(void) { return mStateMarkGap;}
+  const qreal& ImportMeshWidthX(void) { return mImportMeshWidthX;}
+  const qreal& ImportMeshWidthY(void) { return mImportMeshWidthY;}
 
   // draw states 
   virtual bool StatePointL(QPointF& pointL, const QPointF& pointC, const GioRenderOptions* pOptions);

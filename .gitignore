@@ -16,7 +16,7 @@
 # Qt locals
 *.pro.user
 *.pro.user.*
-*.Debug
+object_script.*
 Makefile
 .qmake.stash
 
