@@ -4,15 +4,13 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
-   Copyright (C) 2010-2024 Thomas Moor
+   Copyright (C) 2009, 2024 Thomas Moor
 
 */
 
 #include "viostyle.h"
 #include "viotypes.h"
 #include "vioregistry.h"
-#include "vioattrstyle.h"
 
 
 /*
@@ -67,7 +65,7 @@ void VioEditFunction::Apply(VioModel* model) const {
  */
 
 // static instance
-VioStyle* mpStaticInstance=0;
+VioStyle* mpStaticInstance=nullptr;
 
 // static default: faudes names
 std::string VioStyle::mStateSymbol="st_1";
@@ -236,7 +234,7 @@ void VioStyle::Initialise(void) {
   mpGridXPen->setWidthF(1);
   // fonts
   mpDefaultFont = new QFont();
-  mpDefaultFontMetrics = new QFontMetricsF(*mpDefaultFont,0);
+  mpDefaultFontMetrics = new QFontMetricsF(*mpDefaultFont,nullptr);
   // cursors: cross
   mpCursorCross = new QCursor(Qt::CrossCursor);
   // cursors: variations: 
@@ -255,26 +253,26 @@ void VioStyle::Initialise(void) {
   mpCursorCrossS = new QCursor(Qt::CrossCursor);
   mpCursorCrossP = new QCursor(Qt::CrossCursor);
   mpCursorCrossC = new QCursor(Qt::CrossCursor);
-  // guess dot executable, trying default "dot" or config-override first
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  // guess dot executable, trying default "dot", config-override takes place later
   mDotExecutable="dot";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="/usr/bin/dot";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="/usr/local/bin/dot";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
+  mDotExecutable="/opt/local/bin/dot";
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="/Applications/Graphviz.app/Contents/MacOS/dot";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="c:\\Programme\\Graphviz2.16\\bin\\dot.exe";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="\"c:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe\"";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="dot.exe";
-  if(QProcess::execute(mDotExecutable + " -V")!=0) {
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="(dot not found)";
-  }}}}}}}};
+  }}}}}}}}
   FD_WARN("VioStyle(): using dot executable: " << mDotExecutable);
-  mDotExecutable="dot";
 }
 
 // helper function for derived classes
@@ -283,14 +281,16 @@ faudes::TokenReader* VioStyle::NewStyleReader(const QString& section, const QStr
   std::string fname=VioStyle::LfnFromQStr(filename);
   std::string fsection=VioStyle::StrFromQStr(section);
   if(fname=="") fname=VioStyle::LfnFromQStr(VioStyle::ConfigFile());
-  faudes::TokenReader* trp=0;
+  faudes::TokenReader* trp=nullptr;
   try { 
     FD_DQT("VioAttributeStyle::Config: read file " << fname);
     trp = new faudes::TokenReader(fname);
     trp->ReadBegin("VioConfig");
   } catch (faudes::Exception& fexcep) {
+    (void) fexcep;
     FD_DQT("VioAttributeStyle::Config: cannot open/read file " << fname);
-    return 0;
+    delete trp;
+    return nullptr;
   }
   // find my section
   try {
@@ -299,11 +299,12 @@ faudes::TokenReader* VioStyle::NewStyleReader(const QString& section, const QStr
       return trp;
     }    
   } catch (faudes::Exception& fexcep) {
+    (void) fexcep;
     FD_DQT("VioAttributeStyle::Config: corrupted file " << fname);
   }
   // failure
   delete trp;
-  return 0;
+  return nullptr;
 }
 
 
@@ -317,7 +318,7 @@ void VioStyle::ReadFile(const QString& filename) {
   if(mConfigFile=="") mConfigFile=QCoreApplication::applicationDirPath() + "/vioconfig.txt";
   // have token reader
   std::string fname=VioStyle::LfnFromQStr(mConfigFile);
-  FD_DQ("VioStyle::Config: read file " << fname);
+  FD_WARN("VioStyle::Config: read file " << fname);
   faudes::TokenReader tr(fname);
   // find my section
   tr.ReadBegin("VioConfig");

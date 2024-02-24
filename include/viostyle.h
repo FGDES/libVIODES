@@ -158,7 +158,7 @@ public:
 
   // construct/destruct
   VioStyle(const QString& ftype="Type");
-  virtual ~VioStyle(void) {};
+  virtual ~VioStyle(void) {}
 
   // load hard-coded default
   static void Initialise();
@@ -178,8 +178,8 @@ public:
   static VioStyle* G(void);
 
   // viodes: configuration name and file
-  static const QString& ConfigFile(void) { return mConfigFile; };
-  static const QString& ConfigName(void) { return mConfigName; };
+  static const QString& ConfigFile(void) { return mConfigFile; }
+  static const QString& ConfigName(void) { return mConfigName; }
 
 
   // faudes break flag
@@ -192,19 +192,19 @@ public:
   bool GroupView(void) const;
 
   // viodes: edit functions for derived classes
-  QList<VioEditFunction> EditFunctions(void) { return mEditFunctions; };
+  QList<VioEditFunction> EditFunctions(void) { return mEditFunctions; }
   void InsEditFunction(const VioEditFunction& vfnct);
     
 
   // faudes: default faudes data
-  static const std::string& StateSymbol (void) { return mStateSymbol; };
-  static const std::string& EventSymbol (void) { return mEventSymbol; };
+  static const std::string& StateSymbol (void) { return mStateSymbol; }
+  static const std::string& EventSymbol (void) { return mEventSymbol; }
 
   // faudes: dot executable
-  static const QString& DotExecutable(void) { return mDotExecutable; };
+  static const QString& DotExecutable(void) { return mDotExecutable; }
 
   // license text
-  static const QString& LicenseText(void) { return mLicenseText; };
+  static const QString& LicenseText(void) { return mLicenseText; }
 
   // viodes plugin info
   static QString PluginsString(void);
@@ -305,10 +305,10 @@ public:
   static QPointF GridPoint(const QPointF& point);
 
   // drawing: cursors
-  static const QCursor& CursorCross(void) { return *mpCursorCross; };
-  static const QCursor& CursorCrossS(void) { return *mpCursorCrossS; };;
-  static const QCursor& CursorCrossC(void) { return *mpCursorCrossC; };;
-  static const QCursor& CursorCrossP(void) { return *mpCursorCrossP; };;
+  static const QCursor& CursorCross(void) { return *mpCursorCross; }
+  static const QCursor& CursorCrossS(void) { return *mpCursorCrossS; }
+  static const QCursor& CursorCrossC(void) { return *mpCursorCrossC; }
+  static const QCursor& CursorCrossP(void) { return *mpCursorCrossP; }
  
   
   
