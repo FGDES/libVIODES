@@ -135,14 +135,14 @@ void VioGeneratorLayout::Read(faudes::TokenReader& rTr) {
   // section
   try {
     rTr.ReadBegin("VioLayout");
-  } catch(faudes::Exception expection) {
+  } catch(const faudes::Exception& expection) {
     // no such section: bail out
     return;
   } 
   // try core
   try {
     ReadCore(rTr);
-  } catch(faudes::Exception expection) {
+  } catch(const faudes::Exception& expection) {
     // error: ignore
   } 
   // skip until end
@@ -231,7 +231,7 @@ int VioGeneratorData::FromMime(const QMimeData* pMime) {
       while(VioGeneratorAbstractData* adat = VioGeneratorAbstractData::NewFromTokenReader(rTr))
         mDataList.append(adat);
       rTr.ReadEnd("VioGeneratorData");
-    } catch(faudes::Exception& exception) {
+    } catch(const faudes::Exception& exception) {
       Clear();
       res=1;
     }
@@ -251,7 +251,7 @@ int VioGeneratorData::FromMime(const QMimeData* pMime) {
       gen->InsEvents(*falphabet);
       gen->EventAttributes(*falphabet);
       delete falphabet;
-    } catch(faudes::Exception& exception) {
+    } catch(const faudes::Exception& exception) {
       Clear();
       res=1;
     }
@@ -925,7 +925,7 @@ VioElement VioGeneratorModel::ElementAttr(const VioElement& elem, const faudes::
     case VioElement::EVoid: mpFaudesGenerator->GlobalAttribute(attr); break;
     default: break;
   }
-  } catch(faudes::Exception& exception) {
+  } catch(const faudes::Exception& exception) {
   } 
   // dispose copy
   if(cattr) delete cattr;
