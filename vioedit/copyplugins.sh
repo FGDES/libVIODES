@@ -14,7 +14,7 @@ mkdir -p $VIOAPP/plugins/viotypes
 cp -p $VIODES/libviodes*so $VIOAPP
 cp $FAUDES/libfaudes.so $VIOAPP
 cp $FAUDES/include/libfaudes.rti $VIOAPP
-cp $VIODES/vioedit/example/vioconfig.txt $VIOAPP
+cp $VIODES/vioedit/examples/vioconfig.txt $VIOAPP
 cp $VIODES/libviogen*so $VIOAPP/plugins/viotypes
 cp $VIODES/libviohio*so $VIOAPP/plugins/viotypes
 cp $VIODES/libviomtc*so $VIOAPP/plugins/viotypes

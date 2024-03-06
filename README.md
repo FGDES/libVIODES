@@ -92,6 +92,7 @@ by the on-board package manager. E.g. for Ubuntu 22.04LTS
     sudo apt install qt6-base-dev
 or, back to Ubuntu 18.04LTS,
     sudo apt install qtbase5-dev
+    sudo apt install libqt5svg5-dev
 For Mac OS X we at the time of migrating the most most recent Qt 6.6.2 via the online
 installer provided by the Qt Project. Windows should be likewise, we did not test yet.
 
