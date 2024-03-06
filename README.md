@@ -25,7 +25,8 @@ We have migrated libVIODES to Qt6. See https://github.com/FGDES/libVIODES-Qt4-Pr
 
 * base class for configuration classes (VioStyle)
 * base classes for faudes::Type widgets (VioModel, VioView, VioWidget)
-* VioTypeRegistry to parallel the libFAUDES registry, i.e., to programmatically keep track derivatives of VioModels 
+* VioTypeRegistry to parallel the libFAUDES registry, i.e., to programmatically
+  keep track derivatives of VioModels 
 * helper for editing faudes symbols 
 * base class for faudes::Attribute* widgets (VioAttributeModel, VioAttributeWidget)
 * Qt style plugin for extensions
@@ -84,14 +85,36 @@ for testing ant debugging.
 
 ## Build System
 
-To compile libVIODES, you will need Qt series 6. The minor version should not be critical: for Linux we are compiling with Qt 6.2.4 which we conveniently found in the Ubuntu package manager;  for Mac OS X we got the at the time of migrating most recent Qt 6.6.2 via the online installer provided by the Qt Project; Windows should be likewise, we did not test yet. For all three plattforms, the Qt version needs to be somehow activated, e.g., by setting the PATH environment variable to point to `qmake`; cerify with `qmake -v`.
+To compile libVIODES, you will need Qt series 6 or series 5. For Linux we are compiling
+with Qt 6.2.4 (minor version should not matter) and Qt 5.15.3 (we only tested this version).
+Depending on your Linux distribition, at least Qt series 6 or series 5 should be available
+by the on-board package manager. E.g. for Ubuntu 22.04LTS
+    sudo apt install qt6-base-dev
+or, back to Ubuntu 18.04LTS,
+    sudo apt install qtbase5-dev
+For Mac OS X we at the time of migrating the most most recent Qt 6.6.2 via the online
+installer provided by the Qt Project. Windows should be likewise, we did not test yet.
+
+For all three plattforms, the Qt version needs to be somehow activated, e.g.,
+by setting the PATH environment variable to point to `qmake` specific to the Qt
+version to be used; we provide the sample scripts `serpathXYZ.sh` which you may adapt
+to your needs. After setting PATH adequatly from a shell, run a plain `qmake -v` from the
+same shell for verification.
 
 You will also need a configured and compiled copy of libFAUDES. This
-is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems, we provide a skript `copyfaudes.sh` that performs this step:
+is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems,
+we provide a skript `copyfaudes.sh` to performs this step:
 
     ./libVIOEDS> . ./copyfaudes.sh
 
-The script expects a plain libFAUDES next to `./libVIODES`, copies the sources to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES using the libFAUDES `makefile`. The script is meant as a documentation on which configuration options are recommended, please inspect carefully before execution. For best results, it is recommended to use the same toolchain when compiling either libVIODES or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also matches the one Qt was compiled with. This is a no-issue on Linux and Mac OSX (which have a system wide C runtime) but used to be tricky MS Windows (we will see).
+The script expects a plain libFAUDES next to `./libVIODES`, copies the sources
+to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES
+using the libFAUDES `makefile`. The script is meant as a documentation on which
+configuration options are recommended, please inspect carefully before execution. For
+best results, it is recommended to use the same toolchain when compiling either libVIODES
+or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also
+matches the one Qt was compiled with. This is a no-issue on Linux and Mac OSX (which
+have a system wide C runtime) but used to be tricky MS Windows (we will see in due course).
 
 Once you are set, 
 compiling libVIODES is controlled by the Qt project `./libviodes/viodes.pro`. 
