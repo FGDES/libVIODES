@@ -115,7 +115,7 @@ void VioMtcGeneratorLayout::Read(faudes::TokenReader& rTr) {
     rTr.ReadBegin("VioLayout");
     ReadCore(rTr);
     rTr.ReadEnd("VioLayout");
-  } catch(faudes::Exception expection) {
+  } catch(const faudes::Exception& expection) {
   } 
   FD_DQG("VioMtcGeneratorLayout::Read(): scale " << mGraphScale);
 }

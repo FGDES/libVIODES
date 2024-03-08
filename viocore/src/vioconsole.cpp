@@ -194,7 +194,7 @@ VioConsoleWidget::VioConsoleWidget(QWidget* parent) : QWidget(parent) {
   // my find dialog
   mFindDialog = new VioFindDialog(this);
   mFindPattern="";
-  mFindFlags=QFlags<QTextDocument::FindFlag>(0);
+  mFindFlags=QFlags<QTextDocument::FindFlag>();
   // text appearance
   QFont font;
   font.setFamily("Courier");
@@ -236,7 +236,7 @@ void VioConsoleWidget::BufferSize(int max) {
 void VioConsoleWidget::Clear(void) {
   mConsoleText->clear();
   mFindPattern="";
-  mFindFlags=QFlags<QTextDocument::FindFlag>(0);
+  mFindFlags=QFlags<QTextDocument::FindFlag>();
   mConsoleText->appendPlainText("libFAUDES console");
   mPrePrompt=mConsoleText->textCursor();
   mPostPrompt=mConsoleText->textCursor();
@@ -682,7 +682,7 @@ bool VioFindDialog::Backward(void) {
 
 // access 
 QTextDocument::FindFlags VioFindDialog::Flags(void) {
-  QTextDocument::FindFlags res= QFlags<QTextDocument::FindFlag>(0);;
+  QTextDocument::FindFlags res= QFlags<QTextDocument::FindFlag>();;
   if(CaseSensitive()) res |= QTextDocument::FindCaseSensitively;
   if(Backward()) res |= QTextDocument::FindBackward;
   if(FromStart()) res |= (QTextDocument::FindFlag) 0x1000;

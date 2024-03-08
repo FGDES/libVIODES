@@ -93,13 +93,15 @@ by the on-board package manager. E.g. for Ubuntu 22.04LTS
 or, back to Ubuntu 18.04LTS,
     sudo apt install qtbase5-dev
     sudo apt install libqt5svg5-dev
+
+
 For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.6.2, as this happend to be the most recent version at the time we migrated to series 6. Windows should work out likewise, we did not test yet.
 
-For all three plattforms, the Qt version needs to be somehow activated, e.g.,
-by setting the PATH environment variable to point to `qmake` specific to the Qt
-version to be used; we provide the sample scripts `serpathXYZ.sh` which you may adapt
-to your needs. After setting PATH adequatly from a shell, run a plain `qmake -v` from the
-same shell for verification.
+For all three plattforms macOS, Linux and Windows, your choicse of a specific Qt version
+needs to be somehow activated, e.g., by setting the PATH environment variable to point
+to `qmake` specific to the Qt version to be used; we provide the sample scripts
+`serpathXYZ.sh` which you may adapt to your needs. After setting PATH adequatly
+from a shell, run a plain `qmake -v` from the same shell for verification. 
 
 You will also need a configured and compiled copy of libFAUDES. This
 is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems,
