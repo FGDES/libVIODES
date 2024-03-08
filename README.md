@@ -87,7 +87,7 @@ for testing ant debugging.
 
 To compile libVIODES, you will need Qt series 6 or series 5. For Linux we are compiling
 with Qt 6.2.4 (minor version should not matter) and Qt 5.15.3 (comes with Ubuntu 22.04LTS, we also tested with 5.12.12 on Ubuntu 18.04LTS).
-Depending on your Linux distribition, at least Qt series 6 or series 5 should be available
+Depending on your Linux distribition, at least Qt series 5 should be available
 by the on-board package manager. E.g. for Ubuntu 22.04LTS
     sudo apt install qt6-base-dev
 or, back to Ubuntu 18.04LTS,
