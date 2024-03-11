@@ -86,7 +86,8 @@ for testing ant debugging.
 ## Build System
 
 To compile libVIODES, you will need Qt series 6 or series 5. For Linux we are compiling
-with Qt 6.2.4 (minor version should not matter) and Qt 5.15.3 (comes with Ubuntu 22.04LTS, we also tested with 5.12.12 on Ubuntu 18.04LTS).
+with Qt 6.2.4 (minor version should not matter) and Qt 5.15.3 (comes with Ubuntu 22.04LTS,
+we also tested with 5.12.12 on Ubuntu 18.04LTS, but this machine now is out of service).
 Depending on your Linux distribition, at least Qt series 5 should be available
 by the on-board package manager. E.g. for Ubuntu 22.04LTS
 
@@ -96,6 +97,7 @@ or, back to Ubuntu 18.04LTS,
 
     sudo apt install qtbase5-dev
     sudo apt install libqt5svg5-dev
+    sudo apt install libqt5printsupport5
 
 
 For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.6.2, as this happend to be the most recent version at the time we migrated to series 6. Windows should work out likewise, we did not test yet.
@@ -103,7 +105,7 @@ For Mac OS X we use the online installer provided by the Qt Project. Here we use
 For all three plattforms macOS, Linux and Windows, your choicse of a specific Qt version
 needs to be somehow activated, e.g., by setting the PATH environment variable to point
 to `qmake` specific to the Qt version to be used; we provide the sample scripts
-`serpathXYZ.sh` which you may adapt to your needs. After setting PATH adequatly
+`serpathXYZ.sh` which you may adapt to your needs. After setting PATH adequately
 from a shell, run a plain `qmake -v` from the same shell for verification. 
 
 You will also need a configured and compiled copy of libFAUDES. This

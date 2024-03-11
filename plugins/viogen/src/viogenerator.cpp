@@ -143,14 +143,9 @@ void VioGeneratorLayout::Read(faudes::TokenReader& rTr) {
   try {
     ReadCore(rTr);
   } catch(const faudes::Exception& expection) {
-    // error: ignore
+    FD_WARN("VioGeneratorLayout::ReadCore(): failed on outdated window layout - safe to ignore");
   } 
   // skip until end
-  while(!rTr.Eos("VioLayout")){
-    faudes::Token token;
-    rTr.Get(token);
-  }
-  // end section
   rTr.ReadEnd("VioLayout");
   FD_DQG("VioGeneratorLayout::Read(): ok with scale " << mGraphScale);
 }

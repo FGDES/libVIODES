@@ -1,52 +1,31 @@
-<VioMtcGenerator>
-<Generator>
-"Generator"   
-
-% 
-%  Statistics for Generator
-%  States:        3
-%  Init/Marked:   1/2
-%  Events:        1
-%  Transitions:   1
-%  StateSymbols:  0
-%  Attrib. E/S/T: 1/2/0
-% 
+<VioMtcSystem>
+<Generator name="Multitasking" ftype="MtcSystem">
 
 <Alphabet>
-"alpha"       +C+           
+<Event name="alpha">
+<Controllable/>
+</Event>
 </Alphabet>
 
-<States>
-1             
-<Colors>
-"Black"       
+<StateSet>
+<State id="1">
+<Colors ftype="ColorSet">
+<Color name="Blue"/>
+<Color name="Red"/>
 </Colors>
-2             
-<Colors>
-"Green"       "Red"         "Blue"        "Orange"      
-</Colors>
-3             
-</States>
+</State>
+</StateSet>
 
-<TransRel>
-2             "alpha"       1             
-</TransRel>
-
-<InitStates>
-2             
-</InitStates>
-
-<MarkedStates>
-1             2             
-</MarkedStates>
-
+<TransitionRelation>
+<Transition x1="1" event="alpha" x2="1"/>
+</TransitionRelation>
 
 </Generator>
 <VioModels>
 <TransitionList>
-=AAAAAQEAAAACAAAACgBhAGwAcABoAGEAAAAB= </TransitionList>
+=AAAAAQEAAAABAAAACgBhAGwAcABoAGEAAAAB= </TransitionList>
 <StateList>
-=AAAAAwIAAAABAgAAAAICAAAAAw=== </StateList>
+=AAAAAQIAAAAB= </StateList>
 <EventList>
 =AAAAAQMAAAAKAGEAbABwAGgAYQ=== </EventList>
 <GraphData>
@@ -55,50 +34,26 @@
 1             
 <Item>
 <Position>
-30            -140          
+10             50            
 </Position>
 <BasePoints>
-0             0             30            30            -50           0             
--30.057705    0             
-</BasePoints>
-</Item>
-</State>
-<State>
-2             
-<Item>
-<Position>
--70           -10           
-</Position>
-<BasePoints>
-0             0             20            20            -70           -20           
--20.023910    0             
-</BasePoints>
-</Item>
-</State>
-<State>
-3             
-<Item>
-<Position>
--60           110           
-</Position>
-<BasePoints>
-0             0             30            30            -50           0             
--29.999971    0             
+0              0              30             30             -60            0             
+-29.999743     0             
 </BasePoints>
 </Item>
 </State>
 </States>
 <TransRel>
 <Trans>
-2             "alpha"       1             +Line+        
+1              alpha         1              +Smooth+     
 <Item>
 <Position>
--70           -10           
+10             50            
 </Position>
 <BasePoints>
-57.926240     -58.902892    0             0             18.292665     -23.780465    
-39.225586     -50.993262    60.140625     -78.182813    81.707335     -106.219535   
-100           -130          
+110            -10            0              0              26.854931      -13.427466    
+100            -50            100            60             25.757807      15.454684     
+0              0             
 </BasePoints>
 </Item>
 </Trans>
@@ -106,6 +61,18 @@
 </GraphData>
 </VioModels>
 <VioLayout>
-0             =AAAA/wAAAAAAAAADAAABHwAAAUEAAAErAQAAAAcBAAAAAQ=== 1             299           1.181277      
+0             =AAAA/wAAAAEAAAADAAABDwAAAcQAAACWAf////8BAAAAAQA==  1              150            452            1              0             
+271           
+<ColorMap>
+Red           Red          
+Green         Green        
+Blue          Blue         
+Yellow        Yellow       
+Magenta       Magenta      
+Cyan          Cyan         
+DarkRed       DarkRed      
+DarkGreen     DarkGreen    
+DarkBlue      DarkBlue     
+</ColorMap>
 </VioLayout>
-</VioMtcGenerator>
+</VioMtcSystem>

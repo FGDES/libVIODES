@@ -108,7 +108,7 @@
 %
 % Declare Generator Styles
 % 
-% List generator style names and corresponding faudes type.
+% List generator style names and corresponding faudes types.
 % The specified faudes type must be registered with the 
 % libFAUDES RTI, the style will be registered as a faudes
 % type on start up. The actual definition of individual style
@@ -127,7 +127,6 @@
 "HioController"   +faudes::HioController+
 "HioEnvironment"  +faudes::HioEnvironment+
 "HioConstraint"   +faudes::HioConstraint+
-
 
 % iosystem plugin
 "IoSystem"        +faudes::IoSystem+
