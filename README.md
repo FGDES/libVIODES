@@ -41,7 +41,8 @@ colors, fonts and the dot executable path
 
 #### libFAUDES types vs libVIODES types
 
-Each faudes object derived from faudes::Type is identified by its name from the faudes type registry for short fType. An fType is wrapped in a Qt-style model to hold additional
+Each faudes object derived from faudes::Type is identified by its name from the faudes type
+registry for short fType.An fType is wrapped in a Qt-style model to hold additional
 data for visual representation, eg orders of lists or positions of nodes in a graph. 
 The base class for this purpose is VioModel. To allow for a single derivate of VioModel 
 to represent closely related fTypes, vio models are configured by a VioStyle. The latter 
@@ -100,7 +101,10 @@ or, back to Ubuntu 18.04LTS,
     sudo apt install libqt5printsupport5
 
 
-For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.6.2, as this happend to be the most recent version at the time we migrated to series 6. Windows should work out likewise, we did not test yet.
+For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.6.2,
+as this happend to be the most recent version at the time we migrated to series 6. For
+Windows, we are currently using the MSYS2 environment, however, we borrow the actual
+toolchain from Qt.
 
 For all three plattforms macOS, Linux and Windows, your choicse of a specific Qt version
 needs to be somehow activated, e.g., by setting the PATH environment variable to point
@@ -119,7 +123,8 @@ to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles l
 using the libFAUDES `makefile`. The script is meant as a documentation on which
 configuration options are recommended, please inspect carefully before execution.
 
-For best results, it is recommended to use the same toolchain when compiling either libVIODES or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also
+For best results, it is recommended to use the same toolchain when compiling either libVIODES
+or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also
 matches the one Qt was compiled with. This is a non-issue on Linux and Mac OSX (which
 have a system wide C runtime) but used to be tricky MS Windows (we will see in due course).
 
@@ -134,4 +139,8 @@ To compile use
 ## Authors/Copyright/License
 
 The initial version of libVIODES was developped in the context of Ruediger Berndt's
-masters project in 2009. Back then, our main concern was to parallel the libFAUDES type system with elementary Qt models in a flexible manner. Actual graphical representation of automata was merged from Thomas Moor's predecessor project VIOGen, with quite some effort for the various plug-ins. Principle authors are Thomas Moor and Ruediger Berndt, distribution is by terms of the LGPL 3.
+masters project in 2009. Back then, our main concern was to parallel the libFAUDES type
+system with elementary Qt models in a flexible manner. Actual graphical representation of
+automata was merged from Thomas Moor's predecessor project VIOGen, with quite some effort
+for the various plug-ins. Principle authors are Thomas Moor and Ruediger Berndt, distribution
+is by terms of the LGPL 3.
