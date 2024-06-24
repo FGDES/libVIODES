@@ -31,7 +31,7 @@ message("=== libVIODES base at" $${VIODES_BASE})
 message("=== libFAUDES base at" $${VIODES_LIBFAUDES})
 message("=== libVIODES component" $${VIODES_TARGET})
 message("=== libVIODES version" $${VIODES_VERSION})
-message("=== using Qt at" $${QMAKE_LIBDIR_QT})
+message("=== using Qt at" $${QT_INSTALL_BINS})
 
 # qmake target setting
 TEMPLATE = lib

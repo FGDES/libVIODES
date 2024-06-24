@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2010 Thomas Moor
+   Copyright (C) 2010, 2024 Thomas Moor
 
 */
 
@@ -217,7 +217,7 @@ public slots:
   // find 
   void FindDialog(void);
   void FindAgain(void);
-  void Find(const QString& pattern, const QString& replace, QTextDocument::FindFlags flags=QTextDocument::FindFlags(0));
+  void Find(const QString& pattern, const QString& replace, QTextDocument::FindFlags flags=QTextDocument::FindFlags());
 
   // zoom
   void ZoomIn(void);

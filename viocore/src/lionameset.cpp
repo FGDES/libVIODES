@@ -1090,7 +1090,7 @@ PioNameSetView::~PioNameSetView(void) {
 // set vionameset
 void PioNameSetView::Model(VioNameSetModel* model) {
   FD_DQN("PioNameSetView::Model()");
-  if(model) FD_DQN("PioNameSetView::Model(): ctype " << typeid(*model).name());
+  if(model) {FD_DQN("PioNameSetView::Model(): ctype " << typeid(*model).name())};
   // disconnect
   if(pVioModel)
     disconnect(pVioModel, 0, this, 0);

@@ -18,13 +18,14 @@
 % Global Options
 
 % Name of configuration
-"VioStandardConfig-0.60"
+"VioStandardConfig-0.83"
 
-% Path to graphviz/dot executable
-%<DotPath> "dot" </DotPath>                                     %% linux
-%<DotPath> "/Application/Graphviz/Contents/dot" </DotPath>      %% mac osx
-%<DotPath> "dot.exe" </DotPath>                                 %% win/dos
-%<DotPath> "c:\Programme\Graphviz2.16\bin\dot.exe" </DotPath>   %% win/dos
+% Explicit path to graphviz/dot executable (uncomment and unescape &gt; and &lt;
+% &lt;DotPath&gt; "dot" &lt;/DotPath&gt;                                     %% linux
+% &lt;DotPath&gt; "/Application/Graphviz/Contents/dot" &lt;/DotPath&gt;      %% mac osx
+% &lt;DotPath&gt; "dot.exe" &lt;/DotPath&gt;                                 %% win with PATH set accordingly
+% &lt;DotPath&gt; "c:\Programme\Graphviz2.16\bin\dot.exe" &lt;/DotPath&gt;   %% win xp 32 bit
+% &lt;DotPath&gt; "c:\Program Files (x86)\Graphviz2.38\bin\dot.exe" &lt;/DotPath&gt; %% win 7 64bit
 
 % Colors (not implemented)
 <Color> "Red" 255 0 0 </Color>
@@ -107,7 +108,7 @@
 %
 % Declare Generator Styles
 % 
-% List generator style names and corresponding faudes type.
+% List generator style names and corresponding faudes types.
 % The specified faudes type must be registered with the 
 % libFAUDES RTI, the style will be registered as a faudes
 % type on start up. The actual definition of individual style
@@ -126,7 +127,6 @@
 "HioController"   +faudes::HioController+
 "HioEnvironment"  +faudes::HioEnvironment+
 "HioConstraint"   +faudes::HioConstraint+
-
 
 % iosystem plugin
 "IoSystem"        +faudes::IoSystem+

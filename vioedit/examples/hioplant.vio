@@ -1,0 +1,166 @@
+<VioHioPlant>
+<Generator name="generator" ftype="HioPlant">
+
+<Alphabet>
+<Element name="ready">
+<Flags value="0x18"/>
+</Element>
+<Element name="start">
+<Flags value="0x14"/>
+</Element>
+<Element name="go">
+<Flags value="0x28"/>
+</Element>
+<Element name="arive">
+<Flags value="0x24"/>
+</Element>
+</Alphabet>
+
+<StateSet>
+<State id="1" name="nana">
+<Initial/>
+<Marked/>
+<Flags value="0xc0000019"/>
+</State>
+<State id="2">
+<Marked/>
+<Flags value="0x4000000a"/>
+</State>
+<State id="3">
+<Initial/>
+<Marked/>
+<Flags value="0xc0000019"/>
+</State>
+<State id="4">
+<Marked/>
+<Flags value="0x40000012"/>
+</State>
+</StateSet>
+
+<TransitionRelation>
+<Transition x1="1" event="ready" x2="2"/>
+<Transition x1="2" event="start" x2="3"/>
+<Transition x1="3" event="go" x2="4"/>
+<Transition x1="4" event="arive" x2="1"/>
+</TransitionRelation>
+
+</Generator>
+<VioModels>
+<TransitionList>
+=AAAABAEAAAABAAAACgByAGUAYQBkAHkAAAACAQAAAAMAAAAEAGcAbwAAAAQBAAAABAAAAAoAYQByAGkAdgBlAAAAAQEAAAACAAAACgBzAHQAYQByAHQAAAAD= </TransitionList>
+<StateList>
+=AAAABAIAAAAEAgAAAAMCAAAAAgIAAAAB= </StateList>
+<EventList>
+=AAAABAMAAAAKAHMAdABhAHIAdAMAAAAKAHIAZQBhAGQAeQMAAAAEAGcAbwMAAAAKAGEAcgBpAHYAZQ=== </EventList>
+<GraphData>
+<States>
+<State>
+1             
+<Item>
+<Position>
+-60            20            
+</Position>
+<BasePoints>
+0              0              30             30             -50            0             
+-30.057877     0             
+</BasePoints>
+</Item>
+</State>
+<State>
+2             
+<Item>
+<Position>
+60             -110          
+</Position>
+<BasePoints>
+0              0              30             30             -50            0             
+-10.014910     0             
+</BasePoints>
+</Item>
+</State>
+<State>
+3             
+<Item>
+<Position>
+200            30            
+</Position>
+<BasePoints>
+0              0              30             30             -50            0             
+-30.057619     0             
+</BasePoints>
+</Item>
+</State>
+<State>
+4             
+<Item>
+<Position>
+60             160           
+</Position>
+<BasePoints>
+0              0              30             30             -50            0             
+-10.014910     0             
+</BasePoints>
+</Item>
+</State>
+</States>
+<TransRel>
+<Trans>
+1              ready         2              +Line+       
+<Item>
+<Position>
+-60            20            
+</Position>
+<BasePoints>
+67.348034      -58.217199     0              0              20.331741      -22.026052    
+50.418750      -54.620313     80.505469      -87.214258     113.210898     -122.645140   
+120            -130          
+</BasePoints>
+</Item>
+</Trans>
+<Trans>
+2              start         3              +Spline+     
+<Item>
+<Position>
+60             -110          
+</Position>
+<BasePoints>
+100            55             0              0              6.816683       7.303588      
+45.180078      48.407227      81.815234      77.659180      119.547692     118.086813    
+140            140           
+</BasePoints>
+</Item>
+</Trans>
+<Trans>
+3              go            4              +Spline+     
+<Item>
+<Position>
+200            30            
+</Position>
+<BasePoints>
+-60            75             0              0              -22.760612     19.509096     
+-58.316016     49.985156      -93.868359     90.458594      -132.408782    123.493242    
+-140           130           
+</BasePoints>
+</Item>
+</Trans>
+<Trans>
+4              arive         1              +Line+       
+<Item>
+<Position>
+60             160           
+</Position>
+<BasePoints>
+-52.407434     -76.507914     0              0              -6.520310      -7.607027     
+-38.617969     -45.054297     -69.091406     -80.606641     -100.480919    -117.227739   
+-120           -140          
+</BasePoints>
+</Item>
+</Trans>
+</TransRel>
+</GraphData>
+</VioModels>
+<VioLayout>
+0             =AAAA/wAAAAEAAAADAAABtwAAAbYAAAAAAf////8BAAAAAQA==  0              150            438            1              0             
+439           
+</VioLayout>
+</VioHioPlant>

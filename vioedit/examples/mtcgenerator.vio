@@ -1,0 +1,78 @@
+<VioMtcSystem>
+<Generator name="Multitasking" ftype="MtcSystem">
+
+<Alphabet>
+<Event name="alpha">
+<Controllable/>
+</Event>
+</Alphabet>
+
+<StateSet>
+<State id="1">
+<Colors ftype="ColorSet">
+<Color name="Blue"/>
+<Color name="Red"/>
+</Colors>
+</State>
+</StateSet>
+
+<TransitionRelation>
+<Transition x1="1" event="alpha" x2="1"/>
+</TransitionRelation>
+
+</Generator>
+<VioModels>
+<TransitionList>
+=AAAAAQEAAAABAAAACgBhAGwAcABoAGEAAAAB= </TransitionList>
+<StateList>
+=AAAAAQIAAAAB= </StateList>
+<EventList>
+=AAAAAQMAAAAKAGEAbABwAGgAYQ=== </EventList>
+<GraphData>
+<States>
+<State>
+1             
+<Item>
+<Position>
+10             50            
+</Position>
+<BasePoints>
+0              0              30             30             -60            0             
+-29.999743     0             
+</BasePoints>
+</Item>
+</State>
+</States>
+<TransRel>
+<Trans>
+1              alpha         1              +Smooth+     
+<Item>
+<Position>
+10             50            
+</Position>
+<BasePoints>
+110            -10            0              0              26.854931      -13.427466    
+100            -50            100            60             25.757807      15.454684     
+0              0             
+</BasePoints>
+</Item>
+</Trans>
+</TransRel>
+</GraphData>
+</VioModels>
+<VioLayout>
+0             =AAAA/wAAAAEAAAADAAABDwAAAcQAAACWAf////8BAAAAAQA==  1              150            452            1              0             
+271           
+<ColorMap>
+Red           Red          
+Green         Green        
+Blue          Blue         
+Yellow        Yellow       
+Magenta       Magenta      
+Cyan          Cyan         
+DarkRed       DarkRed      
+DarkGreen     DarkGreen    
+DarkBlue      DarkBlue     
+</ColorMap>
+</VioLayout>
+</VioMtcSystem>

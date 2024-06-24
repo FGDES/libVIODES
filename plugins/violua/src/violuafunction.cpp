@@ -378,7 +378,7 @@ void VioLuaFunctionLayout::Read(faudes::TokenReader& rTr) {
     rTr.Peek(token);
     if(token.IsInteger()) mTextSize=rTr.ReadInteger();
     rTr.ReadEnd("VioLayout");
-  } catch(faudes::Exception expection) {
+  } catch(const faudes::Exception& expection) {
   } 
 }
 
@@ -450,7 +450,7 @@ void VioLuaFunctionView::DoVioAllocate(void) {
   mFindDialog->Replace(true);
   mFindPattern="";
   mFindReplace="";
-  mFindFlags=QTextDocument::FindFlags(0);
+  mFindFlags=QTextDocument::FindFlags();
   // my actions
   mFindAction = new QAction("Find ...",this);
   mFindAction->setEnabled(true);
@@ -624,7 +624,7 @@ void VioLuaFunctionView::UpdateUserLayout(void) {
     mPropAction->setChecked(mUserLayout->mPropBuiltIn);
   }
   // propview size
-  int w;
+  int w=0;
   if(mPropView) {
     QList<int> sz = mSplitter->sizes();
     sz[0] = mUserLayout->mListSize;

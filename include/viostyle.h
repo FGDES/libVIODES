@@ -34,6 +34,10 @@
 #endif
 
 
+// require qt 
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+#error minimum QT version 5.12 required to compile/run libVIODES
+#endif
 
 // set version
 #ifndef VIODES_VERSION

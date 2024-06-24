@@ -2,7 +2,7 @@
 
 
 /*
-   Graphical IO for FAU Discrete Event Systems Library (libfaudes)
+   Graphical IO for FAU Discrete Event Systems Library (libFAUDES)
 
    Copyright (C) 2010-2024 Thomas Moor
 
@@ -211,7 +211,7 @@ public slots:
   void Paste(void);
 
   // find
-  void Find(const QString& pattern, QTextDocument::FindFlags flags = QFlags<QTextDocument::FindFlag>(0));
+  void Find(const QString& pattern, QTextDocument::FindFlags flags = QFlags<QTextDocument::FindFlag>());
   void FindAgain(void);
   void FindDialog(void);
 

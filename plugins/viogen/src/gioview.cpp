@@ -13,6 +13,7 @@
 
 
 #include "gioview.h"
+#include <QtGlobal>
 
 
 // construct
@@ -79,8 +80,9 @@ bool GioView::event(QEvent *event) {
 // wheel event
 void GioView::wheelEvent(QWheelEvent *event) {
   FD_DQ("GioView::wheelEvent(..) at (" << QCursor::pos().x() << ", " << QCursor::pos().y()
-     << ") with value " << event->angleDelta().y() << " is pointer " << event->isPointerEvent() );
-  // test for device
+	<< ") with value " << event->angleDelta().y());
+  // test for device mpuse wheel vs. touchpad (tested with Qt 6.2.4)
+#if QT_VERSION > QT_VERSION_CHECK(6, 2, 0)  
   bool handle=false;
   if(event->deviceType()==QInputDevice::DeviceType::Mouse) {
     FD_DQ("GioView::wheeleEvent(..): its a mouse wheel: do zoom")
@@ -95,6 +97,7 @@ void GioView::wheelEvent(QWheelEvent *event) {
     QGraphicsView::wheelEvent(event);
     return;
   }
+#endif  
   // scale factor
   qreal degree= event->angleDelta().y() / 8.0;
   if(degree < -30) degree = -30.0;

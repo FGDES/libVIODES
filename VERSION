@@ -1,9 +1,9 @@
 # libviodes
 #
 # the version string must not contain whitespace or shell escape characters
-# note: as of 0.84 we are migrating to Qt6
+# note: as of 0.84 we are migrating to Qt series 6 with compatibility with late Qt series 5
 #
-# 202401 tmoor
+# 202403 tmoor
 
 VIODES_VERSION_MAJOR=0
-VIODES_VERSION_MINOR=84
+VIODES_VERSION_MINOR=85
