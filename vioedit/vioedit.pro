@@ -48,7 +48,7 @@ macx {
   ContFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
   ContFiles.files += $$VIODES_LIBFAUDES/include/libfaudes.rti 
   ContFiles.files += $$VIODES_BASE/libviodes.dylib
-  ContFiles.files += $$VIODES_BASE/vioedit/data/vioconfig.txt 
+  ContFiles.files += $$VIODES_BASE/vioedit/examples/vioconfig.txt 
   ContFiles.path = Contents/MacOS
   QMAKE_BUNDLE_DATA += ContFiles
   ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib

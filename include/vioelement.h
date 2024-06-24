@@ -122,8 +122,8 @@ protected:
 Q_DECLARE_METATYPE(VioElement)
 
 // serialize lists etc
-QDataStream& operator<<(QDataStream& out, const VioElement& elem);
-QDataStream& operator>>(QDataStream& in , VioElement& elem);
+VIODES_API QDataStream& operator<<(QDataStream& out, const VioElement& elem);
+VIODES_API QDataStream& operator>>(QDataStream& in , VioElement& elem);
 
 
 
