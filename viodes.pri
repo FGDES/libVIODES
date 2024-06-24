@@ -14,7 +14,7 @@
 # - VIODES_TARGET          target name, e.g., viocore, viogen etc.
 # - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_VIODES
 #
-# tmoor 201602
+# tmoor 202406
 # ##########################################
 
 # figure version numbers (from qmake database or main project)
@@ -50,9 +50,12 @@ unix {
   VIODES_LIBVIOGEN_DSO = -L$${VIODES_BASE} -lviogen
 }
 win32 {
-  VIODES_LIBFAUDES_DSO = $${VIODES_LIBFAUDES}\\faudes.lib
-  VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\viodes.lib
-  VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\viogen.lib
+  #VIODES_LIBFAUDES_DSO = $${VIODES_LIBFAUDES}\\faudes.lib
+  #VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\viodes.lib
+  #VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\viogen.lib
+  VIODES_LIBFAUDES_DSO = -L$${VIODES_LIBFAUDES} -lfaudes
+  VIODES_LIBVIODES_DSO = -L$${VIODES_BASE} -lviodes
+  VIODES_LIBVIOGEN_DSO = -L$${VIODES_BASE} -lviogen
 }
 
 
@@ -63,7 +66,7 @@ LIBS += $${VIODES_LIBVIODES_DSO}
 }
 
 # extra lsb compiler options (must preceed libraries)
-linux-lsb-g++:QMAKE_LFLAGS   += --lsb-shared-libs=faudes:viodes:viogen
+#linux-lsb-g++:QMAKE_LFLAGS   += --lsb-shared-libs=faudes:viodes:viogen
 
 
 # force win32 plugin to release mode
@@ -71,7 +74,7 @@ win32: CONFIG -= debug
 win32: CONFIG += release
 
 # extra cflags
-win32: QMAKE_CXXFLAGS += /EHsc 
+#win32: QMAKE_CXXFLAGS += /EHsc 
 
 
 # dll export/import switch
