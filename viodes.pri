@@ -49,13 +49,15 @@ unix {
   VIODES_LIBVIODES_DSO = -L$${VIODES_BASE} -lviodes
   VIODES_LIBVIOGEN_DSO = -L$${VIODES_BASE} -lviogen
 }
-win32 {
+win32-g++ {
+  VIODES_LIBFAUDES_DSO = $${VIODES_LIBFAUDES}\\faudes.lib
+  VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\libviodes.a
+  VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\libviogen.a
+}
+win32-msvc* {
   VIODES_LIBFAUDES_DSO = $${VIODES_LIBFAUDES}\\faudes.lib
   VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\viodes.lib
   VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\viogen.lib
-  #VIODES_LIBFAUDES_DSO = -L$${VIODES_LIBFAUDES} -lfaudes
-  #VIODES_LIBVIODES_DSO = -L$${VIODES_BASE} -lviodes
-  #VIODES_LIBVIOGEN_DSO = -L$${VIODES_BASE} -lviogen
 }
 
 

@@ -27,7 +27,8 @@ VIO_SPLINE = ./qtspline3
 INCLUDEPATH += $$VIO_SPLINE/src
 INCLUDEPATH += $$VIO_SPLINE/alglib
 unix:LIBS += $$VIO_SPLINE/libqtspline3.a
-win32:LIBS += $$VIO_SPLINE/qtspline3.lib
+win32-g++:LIBS += $$VIO_SPLINE/libqtspline3.a
+win32-mscv*:LIBS += $$VIO_SPLINE/qtspline3.lib
 DEFINES += USING_SPLINE
 
 
