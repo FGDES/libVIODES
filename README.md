@@ -79,16 +79,16 @@ representation (libVIOGen).
 
 ## Tutorial/Testing
 
-The base usaage of libVIODES is demonstrated by the Qt application "vioedit" that loads VioModels
+The base usage of libVIODES is demonstrated by the Qt application "vioedit" that loads VioModels
 from file and displays the corresponding VioView. It is meant as a basis
-for testing ant debugging.
+for testing and debugging.
 
 
 ## Build System
 
 To compile libVIODES, you will need Qt series 6 or series 5. For Linux we are compiling
 with Qt 6.2.4 (minor version should not matter) and Qt 5.15.3 (comes with Ubuntu 22.04LTS,
-we also tested with 5.12.12 on Ubuntu 18.04LTS, but this machine now is out of service).
+we also tested with 5.12.12 on Ubuntu 18.04LTS, but this machine is now out of service).
 Depending on your Linux distribition, at least Qt series 5 should be available
 by the on-board package manager. E.g. for Ubuntu 22.04LTS
 
@@ -106,7 +106,7 @@ as this happend to be the most recent version at the time we migrated to series 
 Windows, we are currently using the MSYS2 environment, however, we borrow the actual
 toolchain from Qt.
 
-For all three plattforms macOS, Linux and Windows, your choicse of a specific Qt version
+For all three plattforms macOS, Linux and Windows, your choice of a specific Qt version
 needs to be somehow activated, e.g., by setting the PATH environment variable to point
 to `qmake` specific to the Qt version to be used; we provide the sample scripts
 `serpathXYZ.sh` which you may adapt to your needs. After setting PATH adequately
@@ -116,7 +116,7 @@ You will also need a configured and compiled copy of libFAUDES. This
 is expected to be located in `./libVIODES/libFAUDES_for_VIODES`. For POSIX systems,
 we provide a skript `copyfaudes.sh` to performs this step:
 
-    ./libVIOEDS> . ./copyfaudes.sh
+    ./libVIODES> . ./copyfaudes.sh
 
 The script expects a plain libFAUDES next to `./libVIODES`, copies the sources
 to `./libVIODES/libFAUDES_for_VIODES`, sets configuration options and compiles libFAUDES
@@ -140,7 +140,7 @@ To compile use
 
 The initial version of libVIODES was developped in the context of Ruediger Berndt's
 masters project in 2009. Back then, our main concern was to parallel the libFAUDES type
-system with elementary Qt models in a flexible manner. Actual graphical representation of
-automata was merged from Thomas Moor's predecessor project VIOGen, with quite some effort
+system with elementary Qt models in a flexible manner. Actual graphical representations of
+automata wre merged from Thomas Moor's predecessor project VIOGen, with quite some effort
 for the various plug-ins. Principle authors are Thomas Moor and Ruediger Berndt, distribution
 is by terms of the LGPL 3.
