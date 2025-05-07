@@ -53,6 +53,7 @@ if [ ! -d ${FAUDES_SRC}/plugins/synthesis ]; then
     echo "error: the specified source appears to be not a libFAUDES source tree: abort"
     return
 fi
+# todo ... test for qmake
 
 
 ############################################################################
@@ -76,7 +77,7 @@ cp -R $FAUDES_SRC $FAUDES_DST
 echo ==================== clean libFAUDES
 make -C $FAUDES_DST dist-clean
 echo ==================== configure libFAUDES
-make -C $FAUDES_DST configure 
+make -C $FAUDES_DST -j20 configure 
 echo ==================== build libFAUDES shared object
 make -C $FAUDES_DST -j20
 

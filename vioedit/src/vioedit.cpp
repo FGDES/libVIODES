@@ -440,7 +440,7 @@ void VioWindow::About() {
     "<p><b>Configuration:</b> %3</p> " 
     "<p><b>VioPlugIns:</b> %4</p> " 
     "<p><b>Credits:</b> %5</p> " 
-    "<p><b>(c) 2010, 2024 Thomas Moor</b></p> "
+    "<p><b>(c) 2010 - 2025 Thomas Moor</b></p> "
     ).arg(
       faudes::VersionString().c_str(),
       faudes::PluginsString().c_str(),
