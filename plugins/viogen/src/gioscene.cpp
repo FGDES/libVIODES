@@ -18,8 +18,6 @@
 #include <stdio.h>
 #include <iostream>
 
-using namespace std;
-
 #include "gioscene.h"
 
 #include "viogenerator.h"

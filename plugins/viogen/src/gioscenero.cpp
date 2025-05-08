@@ -23,7 +23,6 @@
 // resolve forward
 #include "viogengraph.h"
 
-using namespace std;
 
 // constructor
 GioSceneRo::GioSceneRo(VioGeneratorGraphModel* gmodel) : QGraphicsScene(gmodel) {
