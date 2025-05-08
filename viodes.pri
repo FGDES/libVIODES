@@ -14,7 +14,7 @@
 # - VIODES_TARGET          target name, e.g., viocore, viogen etc.
 # - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_VIODES
 #
-# tmoor 202406
+# tmoor 202505
 # ##########################################
 
 # figure version numbers (from qmake database or main project)
@@ -54,7 +54,7 @@ win32-g++ {
   VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\libviodes.a
   VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\libviogen.a
 }
-win32-msvc* {
+win32-msvc {
   VIODES_LIBFAUDES_DSO = $${VIODES_LIBFAUDES}\\faudes.lib
   VIODES_LIBVIODES_DSO = $${VIODES_BASE}\\viodes.lib
   VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\\viogen.lib
