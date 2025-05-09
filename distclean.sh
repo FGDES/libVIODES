@@ -15,7 +15,9 @@ echo ========= libVIODES: deleting libraries
 rm -f libvio*.so
 rm -f libvio*.dylib
 rm -f libvio*.a
+rm -f libvio*.lib
 rm -f vio*.dll
+rm -f vio*.lib
 rm -f plugins/viogen/qtspline3/lib*.a
 
 echo ========= libVIODES: deleting tutorial bins
