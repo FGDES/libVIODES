@@ -477,7 +477,7 @@ int GioSceneRo::GioConstruct(void) {
 // note: we use a fixed scaling factor of "100 Qt pixels" to "1 dot inch"
 int GioSceneRo::DotWrite(const QString &dotfile, bool mute_layout) {
   std::string cdotfile= VioStyle::LfnFromQStr(dotfile);
-  FD_DQG("gioscenero::DotWrite(" << this << ") to " << cdotfile);
+  FD_WARN("gioscenero::DotWrite(" << this << ") to " << cdotfile);
   faudes::StateSet::Iterator lit;
   faudes::TransSet::Iterator tit;
   // sort states for output
@@ -547,7 +547,7 @@ int GioSceneRo::DotWrite(const QString &dotfile, bool mute_layout) {
     stream.close();
   }
   catch (std::ios::failure&) {
-    FD_DQG("gioscenero::DotWrite(" << this << "): io error");
+    FD_WARN("gioscenero::DotWrite(" << this << "): io error");
     return -1;
   }
   return 0;
@@ -559,6 +559,7 @@ int GioSceneRo::DotWrite(const QString &dotfile, bool mute_layout) {
 // note: dotfile must be gioscenero DotWrite output and dot-processed to format "plain" 
 // note: we use a fixed scaling factor of "100 Qt pixels" to "1 dot inch"
 int GioSceneRo::DotConstruct(const QString &dotfile) {
+  FD_WARN("GioSceneRo::DotConstruct: from file \"" << dotfile << "\"");
   // prepare 
   Clear();
   std::string mydotfile= VioStyle::LfnFromQStr(dotfile);
@@ -567,7 +568,7 @@ int GioSceneRo::DotConstruct(const QString &dotfile) {
     FD_WARN("GioSceneRo::DotConstruct: cannot open/read dot output file \"" << dotfile << "\"");
     return 1;
   }
-  std::string prot;
+  std::string prot = "dot_prot_0";
   char* loc = strdup(setlocale(LC_ALL,NULL));
   setlocale(LC_ALL,"C");
   // plain version
@@ -709,7 +710,6 @@ int GioSceneRo::DotConstruct(const QString &dotfile) {
   // errors
   if(File) fclose(File);
   setlocale(LC_ALL,loc);
-
   if(err) {
     FD_WARN("GioSceneRo::DotConstruct: error while processing dot output: \"" << prot << "\"");      
     Clear();
@@ -719,6 +719,9 @@ int GioSceneRo::DotConstruct(const QString &dotfile) {
 
   int res=TestConsistent();
   Consistent(res==0);
+  if(res!=0) {
+    FD_WARN("GioSceneRo::DotConstruct: missing items \"" << res << "\": \"" << prot << "\"");
+  }
 
   // adjust scene 
   AdjustScene();
