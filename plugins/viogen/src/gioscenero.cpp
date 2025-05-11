@@ -559,7 +559,7 @@ int GioSceneRo::DotWrite(const QString &dotfile, bool mute_layout) {
 // note: dotfile must be gioscenero DotWrite output and dot-processed to format "plain" 
 // note: we use a fixed scaling factor of "100 Qt pixels" to "1 dot inch"
 int GioSceneRo::DotConstruct(const QString &dotfile) {
-  FD_WARN("GioSceneRo::DotConstruct: from file \"" << dotfile << "\"");
+  FD_DQG("GioSceneRo::DotConstruct: from file \"" << dotfile << "\"");
   // prepare 
   Clear();
   std::string mydotfile= VioStyle::LfnFromQStr(dotfile);
@@ -751,7 +751,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   // generate dot input file
   FD_DQG("GioSceneRo::DotConstruct: writing tmp dot input file" << dotinname);
   if(DotWrite(dotinname,!trans_only)<0) {
-    FD_DQG("GioSceneRo::DotConstruct: error writing dot input file");
+    FD_WARN("GioSceneRo::DotConstruct: error writing dot input file");
     return -2;
   }
   // we used to have an issue with the active window on linux/gnome
@@ -789,7 +789,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
   // catch error
   if(dotproc->exitStatus() != QProcess::NormalExit) {
-    FD_WARN("GioSceneRo::DotConstruct: error while generating dot output");      
+    FD_WARN("GioSceneRo::DotConstruct: error while running dot");      
     //std::stringstream errstr;
     //errstr << "Exception during dot processing";
     //throw faudes::Exception("GioSceneRo::DotConstruct", errstr.str(), 2);
@@ -800,7 +800,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   QApplication::processEvents();
   // check for errors
   if(res!=0) {
-    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output");      
+    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output (dotargs \"" << dotargs.join(" ")  << "\")");      
     return -1;
   }
   return res;
