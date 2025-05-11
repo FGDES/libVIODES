@@ -736,13 +736,13 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   FD_DQG("GioSceneRo::DotConstruct: using  " << pGeneratorConfig->DotExecutable());      
 
   // have temp files
-  QTemporaryFile dotin(
-    QDir::tempPath()+ QDir::separator()+ "faudes_dotin_XXXXXX");
+  QTemporaryFile dotin(QDir::tempPath()+ QDir::separator()+ "faudes_dotin_XXXXXX");
+  dotin.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
   dotin.open(); 
   QString dotinname = dotin.fileName(); 
   dotin.close();
-  QTemporaryFile 
-     dotout(QDir::tempPath()+ QDir::separator()+"faudes_dotout_XXXXXX");
+  QTemporaryFile dotout(QDir::tempPath()+ QDir::separator()+"faudes_dotout_XXXXXX");
+  dotout.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
   dotout.open(); 
   QString dotoutname = dotout.fileName(); 
   dotout.close();
@@ -772,7 +772,10 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   if(trans_only) dotargs << "-Kneato"; // ... supported by neato only
   dotargs << dotinname;
   dotargs << "-o" << dotoutname;
+  QString dotcmd =  pGeneratorConfig->DotExecutable() + " " + dotargs.join(" ");
+  FD_WARN("GioSceneRo::DotConstruct: running \"" << dotcmd << "\"");
   QProcess *dotproc = new QProcess(this);
+  dotproc->setProcessChannelMode(QProcess::ForwardedChannels);
   dotproc->start(pGeneratorConfig->DotExecutable(), dotargs);
   int i=0;
   while(dotproc->state() != QProcess::NotRunning) {
@@ -790,9 +793,6 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   // catch error
   if(dotproc->exitStatus() != QProcess::NormalExit) {
     FD_WARN("GioSceneRo::DotConstruct: error while running dot");      
-    //std::stringstream errstr;
-    //errstr << "Exception during dot processing";
-    //throw faudes::Exception("GioSceneRo::DotConstruct", errstr.str(), 2);
     return -1;
   }
   // interpret dot output
@@ -800,7 +800,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   QApplication::processEvents();
   // check for errors
   if(res!=0) {
-    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output (\"" << pGeneratorConfig->DotExecutable() << " " << dotargs.join(" ")  << "\")");      
+    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output");
     return -1;
   }
   return res;
