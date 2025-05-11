@@ -800,7 +800,7 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   QApplication::processEvents();
   // check for errors
   if(res!=0) {
-    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output (dotargs \"" << dotargs.join(" ")  << "\")");      
+    FD_WARN("GioSceneRo::DotConstruct: error while reading dot output (\"" << pGeneratorConfig->DotExecutable() << " " << dotargs.join(" ")  << "\")");      
     return -1;
   }
   return res;
