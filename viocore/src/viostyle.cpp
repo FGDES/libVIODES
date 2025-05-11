@@ -256,6 +256,8 @@ void VioStyle::Initialise(void) {
   // guess dot executable, trying default "dot", config-override takes place later
   mDotExecutable="dot";
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
+  mDotExecutable="dot.exe";
+  if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="/usr/bin/dot";
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="/usr/local/bin/dot";
@@ -268,10 +270,10 @@ void VioStyle::Initialise(void) {
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="\"c:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe\"";
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
-  mDotExecutable="dot.exe";
+  mDotExecutable="\"c:\\Program Files\\Graphviz\\bin\\dot.exe\"";
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="(dot not found)";
-  }}}}}}}}
+  }}}}}}}}}
   FD_WARN("VioStyle(): using dot executable: " << mDotExecutable);
 }
 

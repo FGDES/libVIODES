@@ -18,7 +18,7 @@
 % Global Options
 
 % Name of configuration
-"VioStandardConfig-0.83"
+"VioStandardConfig-0.85"
 
 % Explicit path to graphviz/dot executable (uncomment and unescape &gt; and &lt;
 % &lt;DotPath&gt; "dot" &lt;/DotPath&gt;                                     %% linux
@@ -26,6 +26,8 @@
 % &lt;DotPath&gt; "dot.exe" &lt;/DotPath&gt;                                 %% win with PATH set accordingly
 % &lt;DotPath&gt; "c:\Programme\Graphviz2.16\bin\dot.exe" &lt;/DotPath&gt;   %% win xp 32 bit
 % &lt;DotPath&gt; "c:\Program Files (x86)\Graphviz2.38\bin\dot.exe" &lt;/DotPath&gt; %% win 7 64bit
+% &lt;DotPath&gt; "c:\Program Files\Graphviz\bin\dot.exe" &lt;/DotPath&gt;   %% win 11 64bit
+
 
 % Colors (not implemented)
 <Color> "Red" 255 0 0 </Color>
