@@ -5,7 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009  Thomas Moor, Ruediger Berndt
-   Copyright (C) 2010-3024 Thomas Moor
+   Copyright (C) 2010-3025 Thomas Moor
 
 */
 
@@ -97,9 +97,13 @@ public:
   QDataStream& DoWrite(QDataStream& out) const;
   QDataStream& DoRead(QDataStream& in);
 
-  // serialize elements: wrt generator for file io
+  // serialize elements: wrt generator for file io, pre 0.85
   QDataStream& DoWrite(QDataStream& out, const faudes::vGenerator* gen) const;
   QDataStream& DoRead(QDataStream& in, const faudes::vGenerator* gen);
+
+  // serialize elements: wrt generator for file io
+  void DoWrite(faudes::TokenWriter& rTw, const faudes::vGenerator* gen) const;
+  bool DoRead(faudes::TokenReader& rTr, const faudes::vGenerator* gen);
 
   // faudes style debug string
   std::string Str(const faudes::vGenerator* gen=0) const;

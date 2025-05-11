@@ -24,7 +24,7 @@ echo ========= libVIODES: deleting tutorial bins
 rm -rf vioedit/Vio*.app
 rm -rf vioedit/lib/*
 
-echo ========= libVIODES: deleting local copy of libfaudes
-rm -rf libFAUDES_for_VIODES
+#echo ========= libVIODES: deleting local copy of libfaudes
+#rm -rf libFAUDES_for_VIODES
 
 

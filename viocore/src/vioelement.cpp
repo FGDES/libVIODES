@@ -5,7 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
-   Copyright (C) 2010-2024 Thomas Moor.
+   Copyright (C) 2010-2025 Thomas Moor.
 
 */
 
@@ -128,7 +128,7 @@ QDataStream& VioElement::DoRead(QDataStream& in) {
   return in;
 }
 
-// serialize elements: out, wrt generator for file io
+// serialize elements: out, wrt generator for file io, pre 0.85
 QDataStream& VioElement::DoWrite(QDataStream& out, const faudes::vGenerator* gen) const {
   out << (qint8) mEType;
   QString qevname=VioStyle::QStrFromStr(gen->EventName(mFTrans.Ev));
@@ -140,7 +140,7 @@ QDataStream& VioElement::DoWrite(QDataStream& out, const faudes::vGenerator* gen
   return out;
 }
 
-// serialize elements: in, wrt generator for file io
+// serialize elements: in, wrt generator for file io, pre 0.85
 QDataStream& VioElement::DoRead(QDataStream& in, const faudes::vGenerator* gen) {
   in >> (qint8&) mEType;
   QString qevname;
@@ -149,22 +149,103 @@ QDataStream& VioElement::DoRead(QDataStream& in, const faudes::vGenerator* gen) 
   else if(mEType==EState) { in >> (qint32&) mFTrans.X1; }
   else if(mEType==EEvent) { in >> qevname; }
   else if(mEType==ELine) { in >> (qint32&) mFTrans.Ev; }
-  mFTrans.Ev=gen->EventIndex(VioStyle::StrFromQStr(qevname));
+  if(qevname!="")
+    mFTrans.Ev=gen->EventIndex(VioStyle::StrFromQStr(qevname));
   return in;
+}
+
+// serialize elements: out, wrt generator for file io
+void VioElement::DoWrite(faudes::TokenWriter& rTw, const faudes::vGenerator* gen) const {
+  faudes::Token etoken;
+  switch(mEType) {
+  case EEvent:    
+    etoken.SetEmpty("Event");
+    etoken.InsAttributeString("name",gen->EventName(mFTrans.Ev));
+    break;
+  case EState:
+    etoken.SetEmpty("State");
+    etoken.InsAttributeInteger("id",gen->MinStateIndex(mFTrans.X1));
+    break;
+  case ETrans:
+    etoken.SetEmpty("Transition");
+    etoken.InsAttributeInteger("x1",gen->MinStateIndex(mFTrans.X1));
+    etoken.InsAttributeString("event",gen->EventName(mFTrans.Ev));
+    etoken.InsAttributeInteger("x2",gen->MinStateIndex(mFTrans.X2));
+    break;    
+  case ELine:
+    etoken.SetEmpty("Line");
+    etoken.InsAttributeInteger("id",mFTrans.Ev);
+    break;
+  default:  
+    etoken.SetEmpty("Void");
+  }
+  rTw.Write(etoken);
+}
+
+// serialize elements: out, wrt generator for file io
+bool VioElement::DoRead(faudes::TokenReader& rTr, const faudes::vGenerator* gen) {
+  faudes::Token etoken;
+  mEType=EVoid;
+  if(!rTr.Peek(etoken)) {
+    return false;
+  }  
+  if(etoken.IsBegin("Void")) {
+    rTr.Get(etoken);
+    mEType=EVoid;
+    rTr.ReadEnd("Void");
+    return true;
+  }  
+  if(etoken.IsBegin("State")) {
+    rTr.Get(etoken);
+    mEType=EState;
+    if(etoken.ExistsAttributeInteger("id"))    
+      mFTrans.X1=etoken.AttributeIntegerValue("id");
+    rTr.ReadEnd("State");
+    return true;
+  }  
+  if(etoken.IsBegin("Event")) {
+    rTr.Get(etoken);
+    mEType=EEvent;
+    if(etoken.ExistsAttributeString("name"))    
+      mFTrans.Ev=gen->EventIndex(etoken.AttributeStringValue("name"));
+    rTr.ReadEnd("Event");
+    return true;
+  }  
+  if(etoken.IsBegin("Transition")) {
+    rTr.Get(etoken);
+    mEType=ETrans;
+    if(etoken.ExistsAttributeInteger("x1"))    
+      mFTrans.X1=etoken.AttributeIntegerValue("x1");
+    if(etoken.ExistsAttributeString("event"))    
+      mFTrans.Ev=gen->EventIndex(etoken.AttributeStringValue("event"));
+    if(etoken.ExistsAttributeInteger("x2"))    
+      mFTrans.X2=etoken.AttributeIntegerValue("x2");
+    rTr.ReadEnd("Transition");
+    return true;
+  }  
+  if(etoken.IsBegin("Line")) {
+    rTr.Get(etoken);
+    mEType=ELine;
+    if(etoken.ExistsAttributeInteger("id"))    
+      mFTrans.Ev=etoken.AttributeIntegerValue("id");
+    rTr.ReadEnd("Line");
+    return true;
+  }  
+  return false;
 }
 
 // faudes style debug string (todo: have generator ref)
 std::string VioElement::Str(const faudes::vGenerator* gen) const { 
   std::string res="Void"; 
   if(gen==0) switch(mEType) {
-    case ETrans: res=mFTrans.Str(); break;
+    case ETrans: res="Trans["+mFTrans.Str()+"]"; break;
     case EState: res="State["+faudes::ToStringInteger(mFTrans.X1)+"]"; break;
     case EEvent: res="Event["+faudes::ToStringInteger(mFTrans.Ev)+"]"; break;
     case ELine: res="Line["+faudes::ToStringInteger(mFTrans.Ev)+"]"; break;
     default: break;
   }
   if(gen!=0) switch(mEType) {
-    case ETrans: res=gen->TStr(mFTrans); break;
+    case ETrans: res=gen->TStr(mFTrans) + "[Trans]"; break;
     case EState: res=gen->SStr(mFTrans.X1) + "[State]"; break;
     case EEvent: res=gen->EStr(mFTrans.Ev) + "[Event]"; break;
     case ELine: res="Line["+faudes::ToStringInteger(mFTrans.Ev)+"]"; break;

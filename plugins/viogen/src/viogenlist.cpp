@@ -90,7 +90,8 @@ VioGeneratorAbstractView* VioGeneratorListModel::NewView(VioGeneratorView* paren
   return view;
 }
 
-// token io: vio data
+// token io: vio data pre 0.85
+/*
 void VioGeneratorListModel::DoVioWrite(faudes::TokenWriter& rTw) const {
   FD_DQG("VioGeneratorListModel::DoVioWrite()");
   // set up byte array streams
@@ -107,29 +108,62 @@ void VioGeneratorListModel::DoVioWrite(faudes::TokenWriter& rTw) const {
   rTw.WriteBinary(buff1.constData(),buff1.size());
   rTw.WriteEnd(VioElement::TypeStr(mEType)+"List");
 }
+*/
+
+// token io: vio data 
+void VioGeneratorListModel::DoVioWrite(faudes::TokenWriter& rTw) const {
+  FD_DQG("VioGeneratorListModel::DoVioWrite()");
+  rTw.WriteBegin(VioElement::TypeStr(mEType)+"List");
+  for(int i=0; i< mElementList.size(); i++) {
+    mElementList.at(i).DoWrite(rTw,Generator());
+  }
+  rTw.WriteEnd(VioElement::TypeStr(mEType)+"List");
+}
 
 // token io: vio data
 void VioGeneratorListModel::DoVioRead(faudes::TokenReader& rTr) {
   FD_DQG("VioGeneratorListModel::DoVioRead()");
   // clear
-  mElementList.clear(); // ?? this did miss ???
-  // read tokens
-  QByteArray buff1;
-  rTr.ReadBegin(VioElement::TypeStr(mEType)+"List");
-  std::string rstr;
-  rTr.ReadBinary(rstr);
-  buff1 = QByteArray::fromRawData(rstr.data(),rstr.size());
-  // read stream: len, list of elements
-  QDataStream in(&buff1,QIODevice::ReadOnly);
-  qint32 len;
-  VioElement elem;
-  in >> len;
-  FD_DQG("VioGeneratorListModel::DoVioRead(): #" << len << " elements from buffer");
-  for(int i=0; i<len; i++) {
-    elem.DoRead(in,Generator());
-    mElementList.append(elem);
-    FD_DQG("VioGeneratorListModel::DoVioRead(): " << elem.Str());
+  mElementList.clear();
+  // begin secetion
+  std::string section = VioElement::TypeStr(mEType)+"List";;
+  rTr.ReadBegin(section);
+  // sense pre 0.85
+  faudes::Token dtoken;
+  rTr.Peek(dtoken);
+  if(dtoken.IsBinary()) {
+    FD_DQG("VioGeneratorListModel::DoVioRead(): pre 0.85 binary format");
+    rTr.Get(dtoken);
+    std::string rstr;
+    rTr.ReadBinary(rstr);
+    QByteArray buff1;
+    buff1 = QByteArray::fromRawData(rstr.data(),rstr.size());
+    QDataStream in(&buff1,QIODevice::ReadOnly);
+    qint32 len;
+    VioElement elem;
+    in >> len;
+    FD_DQG("VioGeneratorListModel::DoVioRead(): #" << len << " elements from buffer");
+    for(int i=0; i<len; i++) {
+      elem.DoRead(in,Generator());
+      mElementList.append(elem);
+      FD_DQG("VioGeneratorListModel::DoVioRead(): " << elem.Str());
+    }
   }
+  // 0.85 and later
+  FD_DQG("VioGeneratorListModel::DoVioRead(): read section " << section);
+  while(!rTr.Eos(section)) {
+    VioElement elem;  
+    if(elem.DoRead(rTr,Generator())) {
+      FD_DQG("VioGeneratorListModel::DoVioRead(): " << elem.Str());
+      mElementList.append(elem);
+      continue;
+    }
+    FD_DQG("VioGeneratorListModel::DoVioRead(): skipping token");
+    faudes::Token etoken;
+    rTr.Get(etoken);
+  }
+  FD_DQG("VioGeneratorListModel::DoVioRead(): done with section " << section);
+  // end section
   rTr.ReadEnd(VioElement::TypeStr(mEType)+"List");
   // fix my data structures
   DoFixRowMap();

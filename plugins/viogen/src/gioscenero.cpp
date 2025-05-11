@@ -4,7 +4,7 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 - 2024 Thomas Moor;
+   Copyright (C) 2009 - 2025 Thomas Moor;
 
 */
 
@@ -27,6 +27,7 @@
 // constructor
 GioSceneRo::GioSceneRo(VioGeneratorGraphModel* gmodel) : QGraphicsScene(gmodel) {
   FD_DQG("GioSceneRo::GioSceneRo(" << gmodel << ")");
+  setBackgroundBrush(Qt::white);
   pGeneratorGraphModel=gmodel;
   pGeneratorModel=gmodel->GeneratorModel();
   pGeneratorConfig=gmodel->GeneratorConfiguration();
