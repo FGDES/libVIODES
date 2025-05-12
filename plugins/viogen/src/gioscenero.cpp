@@ -737,12 +737,12 @@ int GioSceneRo::DotConstruct(bool trans_only) {
 
   // have temp files
   QTemporaryFile dotin(QDir::tempPath()+ QDir::separator()+ "faudes_dotin_XXXXXX");
-  dotin.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
+  //dotin.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
   dotin.open(); 
   QString dotinname = dotin.fileName(); 
   dotin.close();
   QTemporaryFile dotout(QDir::tempPath()+ QDir::separator()+"faudes_dotout_XXXXXX");
-  dotout.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
+  //dotout.setPermissions(QFileDevice::ReadOther | QFileDevice::WriteOther); // win/msys
   dotout.open(); 
   QString dotoutname = dotout.fileName(); 
   dotout.close();
