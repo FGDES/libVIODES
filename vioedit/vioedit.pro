@@ -57,18 +57,17 @@ RC_FILE = ./images/icon_win.rc
 
 ##### below this line: copy libraries in place
 
-# all copy to post link target
+# copy via post link target
 defineTest(viodes_copy) {
   src = $$1
   dst = $$2
+  QMAKE_POST_LINK += $$QMAKE_MKDIR  $$shell_path($$dst) &
   for(file, src) {
-    win32:file ~= s,/,\\,g
-    win32:dst ~= s,/,\\,g
-    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_quote($$file) $$shell_quote($$dir) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY_FILE $$shell_path($$file) $$shell_path($$dst) $$escape_expand(\\n\\t)
   }
   export(QMAKE_POST_LINK)
 }
-    
+
 # mac: copy libfaudes/libviodes to bundle 
 macx { 
   ContFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
@@ -124,8 +123,8 @@ win32 {
   VIODES_PLUGINS += $$VIODES_BASE/viodiag.dll
   VIODES_PLUGINS += $$VIODES_BASE/violua.dll
 
-  viodes_copy($$VIOEDIT_LIBS ./release)
-  viodes_copy($$VIODES_PLUGINS ./release/plugins)
+  viodes_copy($$VIOEDIT_LIBS, ./release)
+  viodes_copy($$VIODES_PLUGINS, ./release/plugins)
 }
 
                 
