@@ -126,7 +126,8 @@ configuration options are recommended, please inspect carefully before execution
 For best results, it is recommended to use the same toolchain when compiling either libVIODES
 or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also
 matches the one Qt was compiled with. This is a non-issue on Linux and Mac OSX (which
-have a system wide C runtime) but used to be tricky MS Windows (we will see in due course).
+have a system wide C runtime). For MS Windows we most of the time use an MSYS2 envirioment
+and occasionallt test with MS Visual C.
 
 Once you are set, 
 compiling libVIODES is controlled by the Qt project `./libviodes/viodes.pro`. 
@@ -134,6 +135,8 @@ To compile use
 
     ./libVIODES> qmake viodes.pro
     ./libVIODES> make
+
+We haev also tested Qt Creator as an IDE.    
 
 
 ## Authors/Copyright/License
