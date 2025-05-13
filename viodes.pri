@@ -27,11 +27,7 @@ VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
 VIODES_INCLUDE = $$VIODES_BASE/include
 
 # say hello
-message("=== libVIODES base at" $${VIODES_BASE})
-message("=== libFAUDES base at" $${VIODES_LIBFAUDES})
 message("=== libVIODES component" $${VIODES_TARGET})
-message("=== libVIODES version" $${VIODES_VERSION})
-message("=== using Qt at" $${QT_INSTALL_BINS})
 
 # qmake target setting
 TEMPLATE = lib
@@ -63,7 +59,7 @@ win32-msvc {
 # link to libviodes and libfaudes
 LIBS += $${VIODES_LIBFAUDES_DSO} 
 !equals( VIODES_TARGET , viodes ) {
-LIBS += $${VIODES_LIBVIODES_DSO} 
+ LIBS += $${VIODES_LIBVIODES_DSO}
 }
 
 # extra lsb compiler options (must preceed libraries)
