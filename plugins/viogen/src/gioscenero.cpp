@@ -770,8 +770,8 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   dotargs << "-y"; 
   if(trans_only) dotargs << "-n";      // no layout of states ...
   if(trans_only) dotargs << "-Kneato"; // ... supported by neato only
-  //dotargs << dotinname;
-  //dotargs << "-o" << dotoutname;
+  //dotargs << dotinname;          // no permissions on windows, so we pipe, see below
+  //dotargs << "-o" << dotoutname; // no permissions on windows, so we pipe, see below
   QString dotcmd =  pGeneratorConfig->DotExecutable() + " " + dotargs.join(" ");
   FD_WARN("GioSceneRo::DotConstruct: running \"" << dotcmd << "\"");
   QProcess *dotproc = new QProcess(this);

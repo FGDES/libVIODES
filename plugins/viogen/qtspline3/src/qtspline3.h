@@ -21,7 +21,7 @@
 namespace qtap {
 
 // optimize spline
-  void SplineInterpolation(QList<QPointF>& BezierControls, int Offset=0);
+void SplineInterpolation(QList<QPointF>& BezierControls, int Offset=0);
 
 } // namespace
 #endif

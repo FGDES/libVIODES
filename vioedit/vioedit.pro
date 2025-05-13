@@ -17,15 +17,11 @@ unix:TARGET  =lib/vioedit.bin
 macx:TARGET  =VIOEdit
 win32:TARGET = VIOEdit
 
-# lsb compiler options
-linux-lsb-g++:LIBS   += --lsb-shared-libs=faudes:luafaudes:viodes
-DEFINES += FAUDES_BUILD_APP
-DEFINES += VIODES_BUILD_APP
-
-
 # lib faudes/viodes
-LIBS          +=  -L$$VIODES_BASE -lviodes
-LIBS          +=  -L$$VIODES_LIBFAUDES -lfaudes 
+DEFINES       += FAUDES_BUILD_APP
+DEFINES       += VIODES_BUILD_APP
+LIBS          += -L$$VIODES_BASE -lviodes
+LIBS          += -L$$VIODES_LIBFAUDES -lfaudes
 
 # qmake paths
 INCLUDEPATH += $$VIODES_LIBFAUDES/include 
@@ -34,6 +30,23 @@ OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
 
 
+
+# lsb compiler options
+linux-lsb-g++:LIBS   += --lsb-shared-libs=faudes:luafaudes:viodes
+
+# win32 MSVC extra configuration 
+win32-msvc {
+  QMAKE_CXXFLAGS += /EHsc 
+  LIBS += -lwsock32
+  DEFINES += VIO_WINCONSOLE
+}
+
+# win32 MSYS extra configuration 
+win32-g++ {
+  LIBS += -lwsock32
+  DEFINES += VIO_WINCONSOLE
+}
+  
 # vioedit sources
 HEADERS      += src/vioedit.h                 
 SOURCES      += src/vioedit.cpp
@@ -42,8 +55,9 @@ SOURCES      += src/vioedit.cpp
 ICON = ./images/icon_osx.icns 
 RC_FILE = ./images/icon_win.rc
 
+##### below this line: copy libraries in place
 
-# mac: copy libfaudes to bundle 
+# mac: copy libfaudes/libviodes to bundle 
 macx { 
   ContFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
   ContFiles.files += $$VIODES_LIBFAUDES/include/libfaudes.rti 
@@ -81,5 +95,36 @@ macx {
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviolua.dylib
  QMAKE_POST_LINK += make macfix
 }
+
+
+# 
+win32 {
+
+  VIOEDIT_LIBS = $$VIODES_LIBFAUDES/faudes.dll
+  VIOEDIT_LIBS += $$VIODES_LIBFAUDES/include/libfaudes.rti
+  VIOEDIT_LIBS += $$VIODES_BASE/viodes.dll
+  VIOEDIT_LIBS += $$VIODES_BASE/vioedit/examples/vioconfig.txt
+
+  VIODES_PLUGINS =  $$VIODES_BASE/viogen.dll
+  VIODES_PLUGINS += $$VIODES_BASE/viohio.dll
+  VIODES_PLUGINS += $$VIODES_BASE/viomtc.dll
+  VIODES_PLUGINS += $$VIODES_BASE/viosim.dll
+  VIODES_PLUGINS += $$VIODES_BASE/viodiag.dll
+  VIODES_PLUGINS += $$VIODES_BASE/violua.dll
+
+  INSTCMD = \
+    cp $$VIODES_PLUGINS ./release/plugins && \
+    cp $$VIOEDIT_LIBS ./release && \
+    rm -f ./release/qt.conf && \
+    rm -f ./release/luafaudes.flx 
+
+  QMAKE_EXTRA_TARGETS += instlibs
+  instlibs.target = instlibs
+  instlibs.commands += $$INSTCMD
+  QMAKE_POST_LINK += make instlibs
+
+}
+
+                
 
 

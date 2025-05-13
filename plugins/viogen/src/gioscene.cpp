@@ -1145,10 +1145,12 @@ void GioScene::sceneContextMenu(const QPoint& screenpos) {
     if(selectedAction->isChecked()) {
       TransInsertMode(GioTrans::Smooth);
     }
+#ifdef USING_SPLINE
     if(selectedAction==modesplineAction)
     if(selectedAction->isChecked()) {
       TransInsertMode(GioTrans::Spline);
     }
+#endif    
     if(selectedAction==modepolygonAction)
     if(selectedAction->isChecked()) {
       TransInsertMode(GioTrans::Polygon);
