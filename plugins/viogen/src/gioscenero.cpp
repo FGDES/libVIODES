@@ -770,12 +770,14 @@ int GioSceneRo::DotConstruct(bool trans_only) {
   dotargs << "-y"; 
   if(trans_only) dotargs << "-n";      // no layout of states ...
   if(trans_only) dotargs << "-Kneato"; // ... supported by neato only
-  dotargs << dotinname;
-  dotargs << "-o" << dotoutname;
+  //dotargs << dotinname;
+  //dotargs << "-o" << dotoutname;
   QString dotcmd =  pGeneratorConfig->DotExecutable() + " " + dotargs.join(" ");
   FD_WARN("GioSceneRo::DotConstruct: running \"" << dotcmd << "\"");
   QProcess *dotproc = new QProcess(this);
-  dotproc->setProcessChannelMode(QProcess::ForwardedChannels);
+  //dotproc->setProcessChannelMode(QProcess::ForwardedChannels);
+  dotproc->setStandardOutputFile(dotoutname);
+  dotproc->setStandardInputFile(dotinname);  
   dotproc->start(pGeneratorConfig->DotExecutable(), dotargs);
   int i=0;
   while(dotproc->state() != QProcess::NotRunning) {
