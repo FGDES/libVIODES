@@ -42,7 +42,6 @@ LANGUAGE = C++
 QT += core gui svg widgets printsupport
 
 
-
 # platform dependent library names
 unix {
   VIODES_LIBFAUDES_DSO = -L$${VIODES_LIBFAUDES} -lfaudes

@@ -26,7 +26,7 @@ SUBDIRS  = ./viocore  \
            ./plugins/viosim \
            ./plugins/violua 
 
-unix:SUBDIRS += ./vioedit
+SUBDIRS += ./vioedit
 
 
 
