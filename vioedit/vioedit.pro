@@ -63,9 +63,30 @@ defineTest(viodes_copy) {
   dst = $$2
   QMAKE_POST_LINK += $$QMAKE_MKDIR  $$shell_path($$dst) &
   for(file, src) {
-    QMAKE_POST_LINK += $$QMAKE_COPY_FILE $$shell_path($$file) $$shell_path($$dst) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY_FILE $$shell_path($$file) $$shell_path($$dst/) $$escape_expand(\\n\\t)
   }
   export(QMAKE_POST_LINK)
+}
+
+# linux: copy libVIODES and libFAUDES
+unix:!macx {
+
+  VIOEDIT_LIBS = $$VIODES_LIBFAUDES/libfaudes.so
+  VIOEDIT_LIBS += $$VIODES_LIBFAUDES/include/libfaudes.rti
+  VIOEDIT_LIBS += $$VIODES_BASE/libviodes.so
+  VIOEDIT_LIBS += $$VIODES_BASE/vioedit/examples/vioconfig.txt
+
+  VIODES_PLUGINS =  $$VIODES_BASE/libviogen.so
+  VIODES_PLUGINS += $$VIODES_BASE/libviohio.so
+  VIODES_PLUGINS += $$VIODES_BASE/libviomtc.so
+  VIODES_PLUGINS += $$VIODES_BASE/libviosim.so
+  VIODES_PLUGINS += $$VIODES_BASE/libviodiag.so
+  VIODES_PLUGINS += $$VIODES_BASE/libviolua.so
+
+  viodes_copy($$VIOEDIT_LIBS, ./lib)
+  viodes_copy($$VIODES_PLUGINS, ./lib/plugins/viotypes)
+  viodes_copy($$VIODES_LIBFAUDES/stdflx/*.flx, ./lib/plugins/luaextensions/)
+
 }
 
 # mac: copy libfaudes/libviodes to bundle 
