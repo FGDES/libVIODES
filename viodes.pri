@@ -17,14 +17,12 @@
 # tmoor 202505
 # ##########################################
 
-# figure version numbers (from qmake database or main project)
-isEmpty( VIODES_VERSION_MAJOR ): VIODES_VERSION_MAJOR = $$[VIODES_VERSION_MAJOR]
-isEmpty( VIODES_VERSION_MINOR ): VIODES_VERSION_MINOR = $$[VIODES_VERSION_MINOR]
-isEmpty( VIODES_VERSION_MAJOR ): error("=== error: libVIODES major version not configured")
-isEmpty( VIODES_VERSION_MINOR ): error("=== error: libVIODES minor version not configured")
+# retrieve version
+! include( VERSION ) {
+  error("viodes.pri: VERSION not found")
+}
 VIODES_VERSION = $${VIODES_VERSION_MAJOR}.$${VIODES_VERSION_MINOR}
-VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
-VIODES_INCLUDE = $$VIODES_BASE/include
+DEFINES += VIODES_VERSION='\\"$${VIODES_VERSION}\\"'
 
 # say hello
 message("=== libVIODES component" $${VIODES_TARGET})
@@ -37,6 +35,13 @@ DESTDIR = $$VIODES_BASE
 LANGUAGE = C++
 QT += core gui svg widgets printsupport
 
+# have libFAUDES and viodes core
+VIODES_LIBFAUDES = $$VIODES_BASE/libFAUDES_for_VIODES
+VIODES_INCLUDE = $$VIODES_BASE/include
+
+# dll export/import switch
+DEFINES += $$upper($${VIODES_TARGET})_BUILD_LIB
+DEFINES += FAUDES_BUILD_APP
 
 # platform dependent library names
 unix {
@@ -72,11 +77,6 @@ win32: CONFIG += release
 
 # extra cflags
 #win32: QMAKE_CXXFLAGS += /EHsc 
-
-
-# dll export/import switch
-DEFINES += $$upper($${VIODES_TARGET})_BUILD_LIB
-DEFINES += FAUDES_BUILD_APP
 
 
 # pass on directory layout to qmake

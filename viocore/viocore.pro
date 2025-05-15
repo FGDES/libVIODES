@@ -4,7 +4,7 @@
 #
 
 # configuration parameters
-VIODES_BASE = ..
+VIODES_BASE = ../
 VIODES_TARGET = viodes
 
 # derive libVIODES configuration
