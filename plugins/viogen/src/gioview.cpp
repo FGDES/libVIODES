@@ -125,7 +125,7 @@ void GioView::wheelEvent(QWheelEvent *event) {
 
 // get pinch for zoom: event
 bool GioView::gestureEvent(QGestureEvent *gevent) {
-    QPinchGesture* pinch=static_cast<QPinchGesture*>(gevent->gesture(Qt::PinchGesture));
+  QPinchGesture* pinch=static_cast<QPinchGesture*>(gevent->gesture(Qt::PinchGesture));
   if(!pinch) return false;
   FD_DQ("GioView::gestureEvent(..) pinch at (" << pinch->hotSpot().x()<< ", " << pinch->hotSpot().y() << ") sf " << pinch->totalScaleFactor())
   // do the scale

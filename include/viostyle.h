@@ -196,7 +196,7 @@ public:
   bool GroupView(void) const;
 
   // viodes: edit functions for derived classes
-  QList<VioEditFunction> EditFunctions(void) { return mEditFunctions; }
+  const QList<VioEditFunction>& EditFunctions(void) { return mEditFunctions; }
   void InsEditFunction(const VioEditFunction& vfnct);
     
 

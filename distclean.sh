@@ -9,7 +9,7 @@ rm -f Makefile*
 rm -f viocore/Makefile*
 rm -f plugins/*/Makefile*
 rm -f plugins/*/*/Makefile*
-rm -c vioedit/Makefile*
+rm -f vioedit/Makefile*
 
 echo ========= libVIODES: deleting libraries
 rm -f libvio*.so
