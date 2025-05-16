@@ -17,9 +17,11 @@ unix:TARGET  =lib/vioedit.bin
 macx:TARGET  =VIOEdit
 win32:TARGET = VIOEdit
 
-# lib faudes/viodes
+# include faudes/viodes headers
 DEFINES       += FAUDES_BUILD_APP
 DEFINES       += VIODES_BUILD_APP
+
+# link to faudes/viodes DSOs
 LIBS          += -L$$VIODES_BASE -lviodes
 LIBS          += -L$$VIODES_LIBFAUDES -lfaudes
 
@@ -29,10 +31,10 @@ INCLUDEPATH += $$VIODES_BASE/include
 OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
 
-
-
-# lsb compiler options
-linux-lsb-g++:LIBS   += --lsb-shared-libs=faudes:luafaudes:viodes
+# mac os clang extra configuration
+macx {
+  LIBS += -rpath @executable_path
+}
 
 # win32 MSVC extra configuration 
 win32-msvc {
@@ -107,13 +109,12 @@ macx {
   QMAKE_BUNDLE_DATA += ViopFiles
 }
 
-# mac: fix library paths
+# mac: fix library paths (disabled, now using strategic clang options)
 macx { 
   # install_name_tool replacement commands for all our libraries
   ITF_LIBFAUDES = -change libfaudes.dylib @executable_path/libfaudes.dylib 
   ITF_LIBVIODES = -change libviodes.dylib @executable_path/libviodes.dylib 
-#  ITF_LIBVIOGEN = -change libviogen.dylib @executable_path/../plugins/viotypes/libviogen.dylib 
-  ITF_ALL = $$ITF_LIBFAUDES $$ITF_LIBVIODES $$ITF_LIBVIOGEN
+  ITF_ALL = $$ITF_LIBFAUDES $$ITF_LIBVIODES 
   QMAKE_EXTRA_TARGETS += macfix
   macfix.target = macfix
   macfix.commands += \
@@ -125,7 +126,7 @@ macx {
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviosim.dylib && \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviolua.dylib
- QMAKE_POST_LINK += make macfix
+  #QMAKE_POST_LINK += make macfix  ## (disabled)
 }
 
 

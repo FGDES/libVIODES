@@ -4,12 +4,12 @@
 #
 
 # configuration parameters
-VIODES_BASE = ../..
+VIODES_BASE = ..
 VIODES_TARGET = viogen
 
 # derive libVIODES configuration
 # load common configuration
-! include( $${VIODES_BASE}/viodes.pri ) {
+! include( $${VIODES_BASE}/vio.pri ) {
     error("==== error: libVIODES target configuration file not found" )
 }
 

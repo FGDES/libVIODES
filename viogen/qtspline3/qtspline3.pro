@@ -25,7 +25,7 @@ INCLUDEPATH += $$QTS_SRC
 INCLUDEPATH += $$QTS_ALGLIB
 OBJECTS_DIR = $$QTS_OBJ
 MOC_DIR = $$QTS_OBJ
-DESTDIR = ./
+DESTDIR = ./   
 
 # force win32 plugin to release mode
 

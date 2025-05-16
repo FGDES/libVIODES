@@ -4,18 +4,18 @@
 #
 
 # configuration parameters
-VIODES_BASE = ../..
+VIODES_BASE = ..
 VIODES_TARGET = viosim
 
 # derive libVIODES configuration
 # load common configuration
-! include( $${VIODES_BASE}/viodes.pri ) {
+! include( $${VIODES_BASE}/vio.pri ) {
     error("==== error: libVIODES target configuration file not found" )
 }
 
 # depends on viogen
 LIBS          += $$VIODES_LIBVIOGEN_DSO
-INCLUDEPATH   += $$VIODES_BASE/plugins/viogen/include
+INCLUDEPATH   += $$VIODES_LIBVIOGEN_DSO
 
 # local debug confgurataion
 debug {
