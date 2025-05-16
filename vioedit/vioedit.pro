@@ -17,6 +17,10 @@ unix:TARGET  =lib/vioedit.bin
 macx:TARGET  =VIOEdit
 win32:TARGET = VIOEdit
 
+# vioedit sources
+HEADERS      += src/vioedit.h                 
+SOURCES      += src/vioedit.cpp
+
 # include faudes/viodes headers
 DEFINES       += FAUDES_BUILD_APP
 DEFINES       += VIODES_BUILD_APP
@@ -31,9 +35,9 @@ INCLUDEPATH += $$VIODES_BASE/include
 OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
 
-# mac os clang extra configuration
+# mac os clang relaxed rpath
 macx {
-  LIBS += -rpath @executable_path
+  LIBS += -rpath @executable_path -rpath @executable_path/../plugins/viotypes
 }
 
 # win32 MSVC extra configuration 
@@ -48,11 +52,11 @@ win32-g++ {
   LIBS += -lwsock32
   DEFINES += VIO_WINCONSOLE
 }
-  
-# vioedit sources
-HEADERS      += src/vioedit.h                 
-SOURCES      += src/vioedit.cpp
 
+# force macx in release
+macx: CONFIG -= debug release_and_debug
+macx: CONFIG += release
+  
 # application icon
 ICON = ./images/icon_osx.icns 
 RC_FILE = ./images/icon_win.rc
@@ -94,9 +98,7 @@ unix:!macx {
 # mac: copy libfaudes/libviodes to bundle 
 macx { 
   ContFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
-  ContFiles.files += $$VIODES_LIBFAUDES/include/libfaudes.rti 
   ContFiles.files += $$VIODES_BASE/libviodes.dylib
-  ContFiles.files += $$VIODES_BASE/vioedit/examples/vioconfig.txt 
   ContFiles.path = Contents/MacOS
   QMAKE_BUNDLE_DATA += ContFiles
   ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib
@@ -107,6 +109,10 @@ macx {
   ViopFiles.files +=  $$VIODES_BASE/libviolua.dylib
   ViopFiles.path = Contents/plugins/viotypes
   QMAKE_BUNDLE_DATA += ViopFiles
+  ConfFiles.files += $$VIODES_BASE/vioedit/examples/vioconfig.txt 
+  ConfFiles.files += $$VIODES_LIBFAUDES/include/libfaudes.rti   
+  ConfFiles.path = Contents/Resources/vioconf
+  QMAKE_BUNDLE_DATA += ConfFiles
 }
 
 # mac: fix library paths (disabled, now using strategic clang options)

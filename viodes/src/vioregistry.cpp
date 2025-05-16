@@ -82,7 +82,7 @@ void VioTypeRegistry::Initialise(void) {
 
 
 
-  // loop plugin loading to figure order (relevant for windows)
+  // loop plugin loading to figure order (relevant for windows and mac)
   QStringList filelist = pdir.entryList(QDir::Files);
   QList<VioTypePlugin*> vplugins;
   bool found=true;

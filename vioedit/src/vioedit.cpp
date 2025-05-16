@@ -1019,26 +1019,14 @@ int main(int argc, char *argv[]) {
   // configure: defaults
   VioStyle::Initialise();
 
-
-  // configure: try read specified file
-  if(cfgname!="") {
-    try { 
-      VioStyle::ReadFile(cfgname); 
-    } catch (faudes::Exception& fexcep) {
-      QString err=QString("Error: ")+VioStyle::QStrFromStr(fexcep.What());
-      QMessageBox::warning(0,"VIOEdit",
-	QString("<p>Cannot read configuration file %1</p><p>%2</p>").arg(cfgname,err));
-      exit(1);
-    }
-  }
-
-  // configure: try read default file
-  if(cfgname=="") {
-    try { 
-      cfgname =  QCoreApplication::applicationDirPath() + "/vioconfig.txt";
-      VioStyle::ReadFile(cfgname);
-    } catch (faudes::Exception& fexcep) {
-    }
+  // configure: try read specified file (fallback to built in)
+  try { 
+    VioStyle::ReadFile(cfgname); 
+  } catch (faudes::Exception& fexcep) {
+    QString err=QString("Error: ")+VioStyle::QStrFromStr(fexcep.What());
+    QMessageBox::warning(0,"VIOEdit",
+       QString("<p>Cannot read configuration file %1</p><p>%2</p>").arg(VioStyle::ConfigFile(),err));
+    exit(1);
   }
 
   // disclaimer
@@ -1069,10 +1057,9 @@ int main(int argc, char *argv[]) {
 
   // initialise faudes registry (todo: path)
   FD_WARN("viodiag: load libFAUDES regsitry");
-  QString rtifile = QCoreApplication::applicationDirPath() + QDir::separator()+ "libfaudes.rti"; 
+  QString rtifile = VioStyle::FaudesRtiFile();
   faudes::LoadRegistry(VioStyle::StrFromQStr(rtifile));
 
- 
   // check for my plugins (file errors)
   FD_WARN("viodiag: load vio plug-ins");
   try { 

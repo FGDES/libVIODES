@@ -33,11 +33,11 @@ read
 
 ############################################################################
 # some consistency tests
-if [ ! -d viocore ]; then
+if [ ! -d viodes ]; then
     echo "error: the current directory appears not to be a libviodes distribution: abort"
     return
 fi
-if [ ! -f viodes.pro ]; then
+if [ ! -f libviodes.pro ]; then
     echo "error: the current directory appears not to be a libviodes distribution: abort"
     return
 fi

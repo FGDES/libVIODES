@@ -11,7 +11,7 @@
 # used for libVIODES including its Qt plug-ins
 #
 # Referenced variables, to be set in the main project file
-# - VIODES_TARGET          target name, e.g., viocore, viogen etc.
+# - VIODES_TARGET          target name, e.g., viodes, viogen etc.
 # - VIODES_BASE            base dir of libVIODES, must contain ./libFAUDES_for_VIODES
 #
 # tmoor 202505
@@ -19,7 +19,7 @@
 
 # retrieve version
 ! include( VERSION ) {
-  error("viodes.pri: VERSION not found")
+  error("vio.pri: VERSION not found")
 }
 VERSION = $${VIODES_VERSION_MAJOR}.$${VIODES_VERSION_MINOR}
 
@@ -59,16 +59,19 @@ win32-msvc {
   VIODES_LIBVIOGEN_DSO = $${VIODES_BASE}\viogen.lib
 }
 
-
 # link to libviodes and libfaudes
 LIBS += $${VIODES_LIBFAUDES_DSO} 
 !equals( VIODES_TARGET , viodes ) {
- LIBS += $${VIODES_LIBVIODES_DSO}
+  LIBS += $${VIODES_LIBVIODES_DSO}
 }
 
-# extra lsb compiler options (must preceed libraries)
-#linux-lsb-g++:QMAKE_LFLAGS   += --lsb-shared-libs=faudes:viodes:viogen
+# for thorse who want to link with viogen
+VIODES_LIBVIOGEN_INC =  $${VIODES_BASE}/viogen/include
 
+# macx force clang to have install name with rpath
+macx {
+  LIBS += -install_name @rpath/lib$${VIODES_TARGET}.dylib 
+}
 
 # force win32 plugin to release mode
 win32: CONFIG -= debug

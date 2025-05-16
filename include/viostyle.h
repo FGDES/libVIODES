@@ -199,13 +199,18 @@ public:
   const QList<VioEditFunction>& EditFunctions(void) { return mEditFunctions; }
   void InsEditFunction(const VioEditFunction& vfnct);
     
-
   // faudes: default faudes data
   static const std::string& StateSymbol (void) { return mStateSymbol; }
   static const std::string& EventSymbol (void) { return mEventSymbol; }
 
   // faudes: dot executable
   static const QString& DotExecutable(void) { return mDotExecutable; }
+
+  // faudes: libFAUDES RTI file
+  static const QString& FaudesRtiFile(void) { return mFaudesRtiFile; }
+
+  // faudes: libFAUDES FLX file
+  static const QString& FaudesFlxFile(void) { return mFaudesFlxFile; }
 
   // license text
   static const QString& LicenseText(void) { return mLicenseText; }
@@ -330,10 +335,12 @@ private:
   // static member declaration
   static QString mConfigFile;
   static QString mConfigName;
-  static std::string mStateSymbol;
-  static std::string mEventSymbol;
+  static QString mFaudesRtiFile;
+  static QString mFaudesFlxFile;
   static QString mDotExecutable;
   static QString mLicenseText;
+  static std::string mStateSymbol;
+  static std::string mEventSymbol;
   static qreal mArrowRatio;
   static qreal mArrowSize;
   static qreal mLineShapeSize;

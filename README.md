@@ -127,16 +127,22 @@ For best results, it is recommended to use the same toolchain when compiling eit
 or libFAUDES, so you link against the same C runtime. Preferably, this toolchain also
 matches the one Qt was compiled with. This is a non-issue on Linux and Mac OSX (which
 have a system wide C runtime). For MS Windows we most of the time use an MSYS2 envirioment
-and occasionallt test with MS Visual C.
+and occasionally test with MS Visual C.
 
-Once you are set, 
-compiling libVIODES is controlled by the Qt project `./libviodes/viodes.pro`. 
+Once you are set, compiling libVIODES is controlled by the main Qt project file
+`./libviodes/viodes.pro`, which in turn activates further `.pro' files.
 To compile use
 
-    ./libVIODES> qmake viodes.pro
+    ./libVIODES> qmake libviodes.pro
     ./libVIODES> make
 
-We haev also tested Qt Creator as an IDE.    
+The provided `.pro` files work fine with Qt Creator on Linux, Mac OSX and Windows. For Mac OSX
+we occasionally also test with the XCode IDE. For this, set the `QMAKESPEC` environment variable
+to `macx-xcode`, run
+
+    ./libVIODES> qmake -recursive
+
+and then open the generated project file in XCode.
 
 
 ## Authors/Copyright/License

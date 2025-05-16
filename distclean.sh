@@ -7,15 +7,13 @@ make -C vioedit clean
 echo ========= libVIODES: deleting makefiles
 rm -rf .qmake.stash
 rm -f Makefile*
-rm -f viocore/Makefile*
-rm -f plugins/*/Makefile*
-rm -f plugins/*/*/Makefile*
-rm -f vioedit/Makefile*
+rm -f vio*/Makefile*
+rm -f viogen/qtspilne3/Makefile*
 
 echo ========= libVIODES: deleting xcode projects
-rm -rf viodes.xcodeproj
-rm -rf vioedit/vioedit.xcodeproj
-rm -rf vio*/*.xcodeproj
+rm -rf *.xcodeproj
+rm -rf vio*/Release
+rm -rf vio*/Debug
 rm -rf vio*/*/*.xcodeproj
 
 echo ========= libVIODES: deleting libraries
@@ -28,7 +26,9 @@ rm -f vio*.lib
 rm -f plugins/viogen/qtspline3/lib*.a
 
 echo ========= libVIODES: deleting tutorial bins
+rm -rf vioedit/vioedit.xcodeproj
 rm -rf vioedit/*.app
+rm -rf vioedit/*/*.app
 rm -rf vioedit/lib/*
 
 echo ========= libVIODES: deleting all obj dirs

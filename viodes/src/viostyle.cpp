@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009, 2024 Thomas Moor
+   Copyright (C) 2009, 2024  Thomas Moor
 
 */
 
@@ -70,11 +70,17 @@ VioStyle* mpStaticInstance=nullptr;
 // static default: faudes names
 std::string VioStyle::mStateSymbol="st_1";
 std::string VioStyle::mEventSymbol="ev_1";
-QString VioStyle::mDotExecutable="dot";
 
 // static default: name of this configuration
-QString VioStyle::mConfigName = "VioStdConfig";
+QString VioStyle::mConfigName = "VioStdConfig Default";
 QString VioStyle::mConfigFile = "";
+
+// static: default files
+QString VioStyle::mDotExecutable="dot";
+QString VioStyle::mFaudesRtiFile="";
+QString VioStyle::mFaudesFlxFile="";
+
+
 
 // static: license 
 QString VioStyle::mLicenseText = 
@@ -274,7 +280,33 @@ void VioStyle::Initialise(void) {
   if(QProcess::execute(mDotExecutable,QStringList()<<"-V")!=0) {
   mDotExecutable="(dot not found)";
   }}}}}}}}}
-  FD_WARN("VioStyle(): using dot executable: " << mDotExecutable);
+  FD_WARN("VioStyle(): default dot executable: " << mDotExecutable);
+  // guess default configuretion file 
+  mConfigFile=QCoreApplication::applicationDirPath() + "/vioconfig.txt";
+#ifdef Q_OS_MAC  
+  mConfigFile=QCoreApplication::applicationDirPath() + "/../Resources/vioconf/vioconfig.txt";
+#endif  
+  FD_WARN("VioStyle(): default config file: " << mConfigFile);
+  // guess default libfaudes RTI
+  mFaudesRtiFile=QCoreApplication::applicationDirPath() + "/libfaudes.rti";
+  if(!QFileInfo(mFaudesRtiFile).exists()) {
+    mFaudesRtiFile = QCoreApplication::applicationDirPath() + "/../bin/luafaudes.rti";
+#ifdef Q_OS_MAC  
+    if(!QFileInfo(mFaudesRtiFile).exists()) 
+       mFaudesRtiFile=QCoreApplication::applicationDirPath() + "/../Resources/vioconf/libfaudes.rti";
+#endif
+  }
+  FD_WARN("VioStyle(): default rti  file: " << mFaudesRtiFile);
+  // guess default libfaudes FLX
+  mFaudesFlxFile=QCoreApplication::applicationDirPath() + "/luafaudes.flx";
+  if(!QFileInfo(mFaudesFlxFile).exists()) {
+    mFaudesFlxFile = QCoreApplication::applicationDirPath() + "/../bin/luafaudes.flx";
+#ifdef Q_OS_MAC
+    if(!QFileInfo(mFaudesFlxFile).exists()) 
+      mFaudesFlxFile = QCoreApplication::applicationDirPath() + "/../Resources/vioconf/luafaudes.flx";
+#endif
+  }
+  FD_WARN("VioStyle(): default flx  file: " << mFaudesFlxFile);
 }
 
 // helper function for derived classes
@@ -316,8 +348,6 @@ void VioStyle::ReadFile(const QString& filename) {
   Initialise();
   // record filename
   if(filename!="") mConfigFile=filename;
-  // built in default
-  if(mConfigFile=="") mConfigFile=QCoreApplication::applicationDirPath() + "/vioconfig.txt";
   // have token reader
   std::string fname=VioStyle::LfnFromQStr(mConfigFile);
   FD_WARN("VioStyle::Config: read file " << fname);

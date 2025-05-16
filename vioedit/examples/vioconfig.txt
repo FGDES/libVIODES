@@ -18,7 +18,7 @@
 % Global Options
 
 % Name of configuration
-"VioStandardConfig-0.85"
+"VioStandardConfig-0.86"
 
 % Explicit path to graphviz/dot executable (uncomment and unescape &gt; and &lt;
 % &lt;DotPath&gt; "dot" &lt;/DotPath&gt;                                     %% linux
