@@ -64,7 +64,7 @@ fi
 # - minimum debug: core_checked core_progress
 # - minimum options: core_systime core_network core_thread
 # - note: shared linkage is strictly required
-export FAUDES_PLUGINS="synthesis observer diagnosis iosystem hiosys multitasking coordinationcontrol timed iodevice simulator luabindings"
+export FAUDES_PLUGINS="synthesis omegaaut observer diagnosis iosystem hiosys multitasking coordinationcontrol timed iodevice priorities simulator luabindings"
 export FAUDES_DEBUG="core_checked core_exceptions iop_threads iop_performance sim_sync core_progress"
 export FAUDES_OPTIONS="core_systime core_network core_threads"
 export FAUDES_LINKING=shared

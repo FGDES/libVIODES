@@ -5,7 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2006, 2007  Thomas Moor, Klaus Schmidt, Sebastian Perk
-   Copyright (C) 2010-2024 Thomas Moor
+   Copyright (C) 2010-2025 Thomas Moor
 
 */
 
@@ -47,7 +47,7 @@
 // fix consoleout namespace for libfaudes debug macros (should have our own)
 #undef FAUDES_WRITE_CONSOLE
 #define FAUDES_WRITE_CONSOLE(message)  \
-  { if(!faudes::ConsoleOut::G()->Mute()) {   \
+  { if(faudes::ConsoleOut::G()->Verb()>0) {   \
       std::ostringstream cfl_line; cfl_line << message << std::endl; faudes::ConsoleOut::G()->Write(cfl_line.str());} }
 
 // have my own write progress with loopcallback

@@ -4,7 +4,7 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 - 2024 Thomas Moor;
+   Copyright (C) 2009 - 2025 Thomas Moor;
 
 */
 
@@ -1352,14 +1352,15 @@ bool GioScene::testPasteTrans(void) {
   const QMimeData* mdat=  QApplication::clipboard()->mimeData();
   QString str=mdat->text();
   GioTrans::Data data;
-  bool om=faudes::ConsoleOut::G()->Mute(); 
+  int om=faudes::ConsoleOut::G()->Verb(); 
+  faudes::ConsoleOut::G()->Verb(0);
   try {
-    faudes::ConsoleOut::G()->Mute(true);
     data.fromString(str);
-    faudes::ConsoleOut::G()->Mute(om);
   } catch(faudes::Exception& ex) {
+    faudes::ConsoleOut::G()->Verb(om);
     return false;
   }
+  faudes::ConsoleOut::G()->Verb(om);
   return true;
 };
 
@@ -1399,14 +1400,15 @@ bool GioScene::testPasteState(void) {
   const QMimeData* mdat=  QApplication::clipboard()->mimeData();
   QString str=mdat->text();
   GioState::Data data;
-  bool om=faudes::ConsoleOut::G()->Mute(); 
+  int om=faudes::ConsoleOut::G()->Verb(); 
+  faudes::ConsoleOut::G()->Verb(0);
   try {
-    faudes::ConsoleOut::G()->Mute(true);
     data.fromString(str);
-    faudes::ConsoleOut::G()->Mute(om);
   } catch(faudes::Exception& ex) {
+    faudes::ConsoleOut::G()->Verb(om);
     return false;
   }
+  faudes::ConsoleOut::G()->Verb(om);
   return true;
 };
 
