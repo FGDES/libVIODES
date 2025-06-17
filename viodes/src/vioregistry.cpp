@@ -5,9 +5,12 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
-   Copyright (C) 2010-2024 Thomas Moor
+   Copyright (C) 2010-2025 Thomas Moor
 
 */
+
+// local debug
+//#define FAUDES_DEBUG_VIO_TYPE
 
 #include "vioregistry.h"
 #include "vioattribute.h"
@@ -29,6 +32,8 @@ Implementation: VioTypeRegistry
 // static members
 QStringList VioTypeRegistry::mTypeList;
 QStringList VioTypeRegistry::mUserTypeList;
+QStringList VioTypeRegistry::mVectorTypeList;
+bool VioTypeRegistry::mVTLvalid=true;
 QStringList VioTypeRegistry::mPluginList;
 QStringList VioTypeRegistry::mSectionList;
 QMap<QString, QStringList> VioTypeRegistry::mSectionToTypes;
@@ -68,32 +73,38 @@ void VioTypeRegistry::Initialise(void) {
     vioplugin->RegisterTypes();
   }
 
-  // set up dir for dynamically linked plugins
-  QDir pdir = QDir(qApp->applicationDirPath());
+  // find potentially dynamically linked plugins
+  QList<QFileInfo> filelist;
+  QDir pdir;
 #ifdef Q_OS_MAC
+  pdir=QDir(qApp->applicationDirPath());
   pdir.cdUp();
-  pdir.cd("plugins");
+  pdir.cd("PlugIns");
   pdir.cd("viotypes");
+  filelist.append(pdir.entryInfoList(QDir::Files));
+  pdir=QDir(qApp->applicationDirPath());
+  pdir.cdUp();
+  pdir.cd("Frameworks");
+  filelist.append(pdir.entryInfoList(QDir::Files));
 #else
+  pdir=QDir(qApp->applicationDirPath());
   pdir.cd("plugins");
   pdir.cd("viotypes");
+  filelist.append(pdir.entryInfoList(QDir::Files));
 #endif
-  FD_WARN("VioTypeRegistry::Initialise(): plugin dir " << VioStyle::StrFromQStr(pdir.absoluteFilePath("./")));
+  FD_WARN("VioTypeRegistry::Initialise(): found #" << filelist.length() << " files");
 
 
-
-  // loop plugin loading to figure order (relevant for windows and mac)
-  QStringList filelist = pdir.entryList(QDir::Files);
   QList<VioTypePlugin*> vplugins;
   bool found=true;
   while(found) {
 
   // look for dynamically linked plugins and register base types
   found=false;
-  foreach(QString file, filelist) {
-    FD_WARN("VioTypeRegistry::Initialise(): loading file " << VioStyle::StrFromQStr(file));
+  foreach(QFileInfo file, filelist) {
+    FD_WARN("VioTypeRegistry::Initialise(): loading file " << VioStyle::StrFromQStr(file.absoluteFilePath()));
     // load plugin
-    QPluginLoader loader(pdir.absoluteFilePath(file));
+    QPluginLoader loader(file.absoluteFilePath());
     QObject *plugin = loader.instance();
     if(!plugin) {
       FD_WARN("VioTypeRegistry::Initialise(): load error: " << VioStyle::StrFromQStr(loader.errorString()));
@@ -149,25 +160,33 @@ void VioTypeRegistry::Insert(VioModel* pPrototype, const QString& rTypeName) {
   if(ftype=="") ftype=pPrototype->FaudesType();
   // report
   FD_DQT("VioTypeRegistry::Insert(): using type name \"" << VioStyle::StrFromQStr(ftype)<<"\"");
-  // is it a user type
+  // is it a user type? ...
   bool utype=true;
-  if(!faudes::TypeRegistry::G()->Exists(VioStyle::StrFromQStr(pPrototype->FaudesType())))
+  // ... must be faudes-registered 
+  const faudes::TypeDefinition* ftdef
+    = faudes::TypeRegistry::G()->Definitionp(VioStyle::StrFromQStr(pPrototype->FaudesType()));
+  if(!ftdef)
     utype=false; 
-  if(faudes::TypeRegistry::G()->Exists(VioStyle::StrFromQStr(pPrototype->FaudesType()))) 
-    if(faudes::TypeRegistry::G()->Definition(VioStyle::StrFromQStr(pPrototype->FaudesType())).HtmlDoc().empty()) 
+  // ... must have faudes html doc 
+  if(ftdef)
+    if(ftdef->HtmlDoc().empty()) 
       utype=false;
-  if(faudes::TypeRegistry::G()->Exists(VioStyle::StrFromQStr(pPrototype->FaudesType()))) 
-    if(faudes::TypeRegistry::G()->Definition(VioStyle::StrFromQStr(pPrototype->FaudesType())).TextDoc().empty()) 
+  // ... must have faudes html doc text dow
+  if(ftdef)
+    if(ftdef->TextDoc().empty()) 
       utype=false;
+  // ... must have a non-trivial gui
   if(typeid(*pPrototype)==typeid(VioModel))
     utype=false;
-  // allow for overwrite
+  FD_DQT("VioTypeRegistry::Insert(): user type: " << (utype ? "pass" : "fail" ));
+  // allow for overwrit
   mTypeList.removeAll(ftype);
   // register (incl take ownership)
   pPrototype->setParent(0); // should be "this"
   VioTypeRegistry::mTypeToModel.insert(ftype,pPrototype);
   // record in flat list
   mTypeList.append(ftype);
+  mVTLvalid=false;
   // record in flat list
   if(utype) 
   if(!mUserTypeList.contains(ftype)) 
@@ -201,7 +220,7 @@ const QStringList& VioTypeRegistry::Types(void) {
   return mTypeList;  
 }
 
-// return list of user types (i.e. types with docu)
+// return list of user types (i.e. types with docu and GUI)
 const QStringList& VioTypeRegistry::UserTypes(void) {
   return mUserTypeList;  
 }
@@ -209,6 +228,39 @@ const QStringList& VioTypeRegistry::UserTypes(void) {
 // return types by section
 const QStringList& VioTypeRegistry::Types(const QString& rSection) {
   return mSectionToTypes.constFind(rSection).value();
+}
+
+// return list of user types (i.e. types with docu nad element GUI)
+const QStringList& VioTypeRegistry::VectorTypes(void) {
+  // valid cache
+  if(mVTLvalid) return mVectorTypeList;
+  // need to compile
+  mVectorTypeList.clear();
+  QSet<QString> utypes(mUserTypeList.begin(),mUserTypeList.end());
+  QMap<QString,VioModel*>::Iterator tit;
+  for(tit=mTypeToModel.begin(); tit !=mTypeToModel.end(); ++tit) {
+    VioModel* prototype= tit.value();
+    QString tname=tit.key();
+    // must be faudes-registered 
+    const faudes::TypeDefinition* ftdef
+      = faudes::TypeRegistry::G()->Definitionp(VioStyle::StrFromQStr(prototype->FaudesType()));
+    if(!ftdef) continue;
+    // must have faudes html and text doc 
+    if(ftdef->HtmlDoc().empty()) continue;
+    if(ftdef->TextDoc().empty()) continue;
+    // must cast to faudes BaseVector
+    const faudes::vBaseVector*  fvect = dynamic_cast<const faudes::vBaseVector*>(ftdef->Prototype());
+    if(!fvect) continue;
+    FD_DQT("VioTypeRegistry::VectorTypes: " << tname << " casts to vector of " << fvect->ElementType());
+    // elements must be vio user types
+    if(!utypes.contains(VioStyle::QStrFromStr(fvect->ElementType()))) continue;
+    // were in  
+    FD_DQT("VioTypeRegistry::VectorTypes: " << tname << ": pass");
+    mVectorTypeList.removeAll(tname);
+    mVectorTypeList.append(tname);
+  }
+  mVTLvalid=true;
+  return mVectorTypeList;  
 }
 
 // return list of plugins
@@ -389,15 +441,48 @@ void VioFunctionRegistry::Initialise(void) {
   for(fit=faudes::FunctionRegistry::G()->Begin(); fit!=faudes::FunctionRegistry::G()->End(); fit++) {
     // bail out if this faudes function has no prototype object
     if(!fit->second->Prototype()) {
-      FD_DQT("VioFunctionRegistry::Initialise(): skipping " << fit->second->Name());
+      FD_DQT("VioFunctionRegistry::Initialise(): no prototype: skipping " << fit->second->Name());
       continue;
     }
     // get faudes function name
     QString ffunction = VioStyle::QStrFromStr(fit->second->Name());
+    // bail out if we cant read the signature
+    if(!VioFunctionRegistry::ValidSignature(ffunction)) {
+      FD_DQT("VioFunctionRegistry::Initialise(): cant read signatures: skipping " << ffunction);
+      continue;
+    }
     // insert
     VioFunctionRegistry::Insert(ffunction);
   }
   FD_DQT("VioFunctionRegistry::Initialise(): done #" << mFuncList.size());
+}
+
+// test signature
+bool VioFunctionRegistry::ValidSignature(const QString& rFuncName) {
+  const faudes::FunctionDefinition* fdef=faudes::FunctionRegistry::G()->Definitionp(VioStyle::StrFromQStr(rFuncName));
+  if(!fdef) return false;
+  // types DEStool can handle 
+  QSet<QString> instypes;
+  instypes.unite(QSet<QString>(VioTypeRegistry::UserTypes().begin(),VioTypeRegistry::UserTypes().end()));
+  instypes.unite(QSet<QString>(VioTypeRegistry::VectorTypes().begin(),VioTypeRegistry::VectorTypes().end()));
+  instypes.insert("Boolean");
+  instypes.insert("String");
+  instypes.insert("Integer");
+  int ok=0;
+  for(int v=0; v<fdef->VariantsSize(); ++v) {
+    const faudes::Signature variant=fdef->Variant(v);
+    for(int n=0; n<variant.Size(); ++n) {
+      QString ftype=VioStyle::QStrFromStr(variant.At(n).Type());
+      if(!instypes.contains(ftype)) { 
+        FD_DQT("VioFunctionRegistry::ValidSignature(): non-user par type " << ftype <<
+	   " in variant " << v+1 << "/" << fdef->VariantsSize());
+	break;
+      }
+      if(n==variant.Size()-1) ++ok;
+    }
+  }
+  FD_DQT("VioFunctionRegistry::ValidSignature():  " << rFuncName << ": #" << ok << " user variants")
+  return (ok>0);
 }
 
 // test existence
@@ -414,6 +499,8 @@ void VioFunctionRegistry::Insert(const QString& rFuncName) {
   if(rFuncName.isEmpty()) return;
   // ensure exitence
   if(!faudes::FunctionRegistry::G()->Exists(VioStyle::StrFromQStr(rFuncName))) return;
+  // insist in one valid signature
+  //if(!ValidSignature(rFuncName)) return;
   // get faudes section
   const faudes::FunctionDefinition& fdef=faudes::FunctionRegistry::G()->Definition(VioStyle::StrFromQStr(rFuncName));
   QString fsect = VioStyle::QStrFromStr(fdef.KeywordAt(0));

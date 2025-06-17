@@ -14,11 +14,11 @@ message("=== libVIODES version" $${VERSION})
 message("=== using Qt at "$$[QT_INSTALL_BINS])
 
 # do subdirs
-ONFIG += ordered
+CONFIG += ordered
 TEMPLATE = subdirs
 SUBDIRS  = ./viodes  \
-           ./viogen \ 
            ./viogen/qtspline3 \ 
+           ./viogen \ 
            ./viohio \
            ./viomtc \
            ./viodiag \

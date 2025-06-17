@@ -5,7 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009  Thomas Moor, Ruediger Berndt
-   Copyright (C) 2010-2024 Thomas Moor
+   Copyright (C) 2010-2025 Thomas Moor
 
 */
 
@@ -41,7 +41,7 @@ class VIODES_API VioTypeRegistry {
 
 public:
 
-  // initialise from qt plugins
+  // initialise from qt plugins and rti file
   static void Initialise(void);
 
   // insert new type representation
@@ -63,6 +63,7 @@ public:
   static const QStringList& Sections(void);
   static const QStringList& Types(void);
   static const QStringList& UserTypes(void);
+  static const QStringList& VectorTypes(void);
   static const QStringList& Types(const QString& rSection);
 
 
@@ -86,9 +87,12 @@ private:
   // my type/plugin list
   static QStringList mTypeList;
   static QStringList mUserTypeList;
+  static QStringList mVectorTypeList;
+  static bool mVTLvalid;
   static QStringList mPluginList;
   static QStringList mSectionList;
   static QMap<QString, QStringList> mSectionToTypes;
+
 };
 
 
@@ -125,6 +129,7 @@ public:
   static const faudes::FunctionDefinition* Definition(const QString& rFuncName);
 
 private:
+  static bool ValidSignature(const QString& rFuncName);
   static void Insert(const QString& rFuncName);
   static QStringList mFuncList;
   static QMap<QString, QStringList> mSectionToFunctions;

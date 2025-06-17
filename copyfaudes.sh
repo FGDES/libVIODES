@@ -9,7 +9,7 @@
 
 # edit this line to select the libfaudes source location
 #FAUDES_SRC=../libfaudes-2_31h
-FAUDES_SRC=../libFAUDES
+FAUDES_SRC=../libFAUDES_dev
 
 # do not change the libfaudes destination
 FAUDES_DST=libFAUDES_for_VIODES

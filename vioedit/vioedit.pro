@@ -1,5 +1,5 @@
 #
-# project file for vioedit, tmoor 2024
+# project file for vioedit, tmoor 2025
 #
 #
 
@@ -15,6 +15,7 @@ QT += core gui svg widgets
 # target name
 unix:TARGET  =lib/vioedit.bin
 macx:TARGET  =VIOEdit
+macx:QMAKE_TARGET_BUNDLE_PREFIX = org.faudes
 win32:TARGET = VIOEdit
 
 # vioedit sources
@@ -35,7 +36,7 @@ INCLUDEPATH += $$VIODES_BASE/include
 OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
 
-# mac os clang relaxed rpath
+# mac os clang relaxed rpath 
 macx {
   LIBS += -rpath @executable_path -rpath @executable_path/../plugins/viotypes
 }
@@ -67,7 +68,7 @@ RC_FILE = ./images/icon_win.rc
 defineTest(viodes_copy) {
   src = $$1
   dst = $$2
-  QMAKE_POST_LINK += $$QMAKE_MKDIR  $$shell_path($$dst) &
+  QMAKE_POST_LINK += $$QMAKE_MKDIR  $$shell_path($$dst) $$escape_expand(\\n\\t)
   for(file, src) {
     QMAKE_POST_LINK += $$QMAKE_COPY_FILE $$shell_path($$file) $$shell_path($$dst/) $$escape_expand(\\n\\t)
   }
@@ -97,11 +98,11 @@ unix:!macx {
 
 # mac: copy libfaudes/libviodes to bundle 
 macx { 
-  ContFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
-  ContFiles.files += $$VIODES_BASE/libviodes.dylib
-  ContFiles.path = Contents/MacOS
-  QMAKE_BUNDLE_DATA += ContFiles
-  ViopFiles.files +=  $$VIODES_BASE/libviogen.dylib
+  FrameFiles.files += $$VIODES_LIBFAUDES/libfaudes.dylib
+  FrameFiles.files += $$VIODES_BASE/libviodes.dylib
+  FrameFiles.files +=  $$VIODES_BASE/libviogen.dylib
+  FrameFiles.path = Contents/Frameworks
+  QMAKE_BUNDLE_DATA += FrameFiles
   ViopFiles.files +=  $$VIODES_BASE/libviohio.dylib
   ViopFiles.files +=  $$VIODES_BASE/libviomtc.dylib
   ViopFiles.files +=  $$VIODES_BASE/libviodiag.dylib
@@ -124,13 +125,13 @@ macx {
   QMAKE_EXTRA_TARGETS += macfix
   macfix.target = macfix
   macfix.commands += \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/VIOEdit && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/libviodes.dylib && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviogen.dylib && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviohio.dylib && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviomtc.dylib && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib && \
-    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviosim.dylib && \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/VIOEdit ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/MacOS/libviodes.dylib ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviogen.dylib ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviohio.dylib ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviomtc.dylib ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviodiag.dylib ; \
+    install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviosim.dylib ; \
     install_name_tool $$ITF_ALL VIOEdit.app/Contents/plugins/viotypes/libviolua.dylib
   #QMAKE_POST_LINK += make macfix  ## (disabled)
 }

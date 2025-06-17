@@ -3,13 +3,12 @@
 /*
    Graphical  IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 - 2024 Thomas Moor;
-
+   Copyright (C) 2009 - 2025 Thomas Moor;
 
 */
 
 // local debugging
-#define FAUDES_DEBUG_VIO
+//#define FAUDES_DEBUG_VIO
 
 
 #include "gioview.h"
