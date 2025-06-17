@@ -21,7 +21,7 @@
 ! include( VERSION ) {
   error("vio.pri: VERSION not found")
 }
-VERSION = $${VIODES_VERSION_MAJOR}.$${VIODES_VERSION_MINOR}
+VIODES_VERSION = $${VIODES_VERSION_MAJOR}.$${VIODES_VERSION_MINOR}
 
 # say hello
 message("=== libVIODES component" $${VIODES_TARGET})
@@ -91,6 +91,6 @@ MOC_DIR = ./obj
 
 
 # pass on config to compiler
-DEFINES += VIODES_VERSION='\\"$${VERSION}\\"'
+DEFINES += VIODES_VERSION='\\"$${VIODES_VERSION}\\"'
 DEFINES += VIODES_TARGET='\\"$${VIODES_TARGET}\\"'
 

@@ -105,6 +105,6 @@ qmake -set VIODES_VERSION_MINOR $VIODES_VERSION_MINOR
 
 
 echo "===== verify versions for qt by \"qmake -query\""
-echo "===== you may proceed with \"qmake viodes.pro\""
+echo "===== you may proceed with \"qmake libviodes.pro\""
 echo "===== copy/configure/compile libFAUDES done"
 

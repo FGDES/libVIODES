@@ -130,7 +130,7 @@ have a system wide C runtime). For MS Windows we most of the time use an MSYS2 e
 and occasionally test with MS Visual C.
 
 Once you are set, compiling libVIODES is controlled by the main Qt project file
-`./libviodes/viodes.pro`, which in turn activates further `.pro' files.
+`./libviodes.pro`, which in turn activates further `.pro' files.
 To compile use
 
     ./libVIODES> qmake libviodes.pro
