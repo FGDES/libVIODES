@@ -91,6 +91,7 @@ void VioFaudesLogger::DoWrite(const std::string& message,long int cntnow, long i
   else if(qmessage.startsWith("FAUDES_EXCEPTION")) in=true;
   else if(qmessage.startsWith("FAUDES_PROGRESS")) in=true;
   else if(qmessage.startsWith("FAUDES_LUAPRINT")) in=true;
+  else if(qmessage.startsWith("FAUDES_PRINT")) in=true;
   if(!in) return;
 
   // note: we must ensure to filter out stuff from non-qt threads
