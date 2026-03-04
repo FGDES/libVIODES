@@ -675,7 +675,7 @@ bool VioNameSetModel::BooleanProperty(const QString& name,int prop) const {
 void VioNameSetModel::BooleanProperty(const QString& name, int prop, bool val) {
   const QList<VioBooleanProperty>& props= BooleanProperties();
   if(prop<0 || prop>=props.size()) return;
-  faudes::AttributeFlags* attr=Attribute(name).Copy();
+  faudes::AttributeFlags* attr=Attribute(name).NewCpy();
   if(val) props.at(prop).Set(attr->mFlags);
   else props.at(prop).Clr(attr->mFlags);
   Attribute(name,*attr);
@@ -729,7 +729,7 @@ VioData* VioNameSetModel::Data(void) {
   FD_DQN("VioNameSetModel::Data(): get");
   VioNameSetData* ndat= new VioNameSetData();
   // copy faudes object
-  ndat->FaudesObject(mpFaudesNameSet->Copy());
+  ndat->FaudesObject(mpFaudesNameSet->NewCpy());
   // get all data
   ndat->mList=mpNameSetData->mList;
   // done

@@ -101,7 +101,7 @@ or, back to Ubuntu 18.04LTS,
     sudo apt install libqt5printsupport5
 
 
-For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.6.2,
+For Mac OS X we use the online installer provided by the Qt Project. Here we use Qt 6.10.2,
 as this happend to be the most recent version at the time we migrated to series 6. For
 Windows, we are currently using the MSYS2 environment, however, we borrow the actual
 toolchain from Qt.

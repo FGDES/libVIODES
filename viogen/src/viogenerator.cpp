@@ -4,7 +4,7 @@
 /*
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
-   Copyright (C) 2009 - 2024 Thomas Moor;
+   Copyright (C) 2009 - 2026 Thomas Moor;
 
 */
 
@@ -903,7 +903,7 @@ VioElement VioGeneratorModel::ElementAttr(const VioElement& elem, const faudes::
     else mpFaudesGenerator->ClrMarkedState(elem.State());
     if(init || marked) {
       // need a copy
-      cattr = static_cast<faudes::AttributeFlags*>(pattr->Copy());
+      cattr = static_cast<faudes::AttributeFlags*>(pattr->NewCpy());
       cattr->mFlags &= 0x3fffffff;
       pattr=cattr;
     }
@@ -954,7 +954,7 @@ faudes::AttributeFlags* VioGeneratorModel::ElementAttr(const VioElement& elem) c
   // if it is derived from flags, allocate and copy
   const faudes::AttributeFlags* fattr=dynamic_cast<const faudes::AttributeFlags*>(attr);
   if(fattr) {
-    res=fattr->Copy();
+    res=fattr->NewCpy();
   }
   // else, pretend flags attribute
   if(!res) {
@@ -1101,7 +1101,7 @@ VioData* VioGeneratorModel::Data(void) {
   FD_DQG("VioGeneratorModel::Data(): get");
   VioGeneratorData* gdat= new VioGeneratorData();
   // copy faudes generator
-  faudes::vGenerator* gen = mpFaudesGenerator->Copy();
+  faudes::vGenerator* gen = mpFaudesGenerator->NewCpy();
   gdat->FaudesObject(gen);
   // get all abstract model data
   for(int i=0; i< mModelList.size(); i++) {

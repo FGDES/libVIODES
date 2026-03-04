@@ -5,7 +5,7 @@
    Graphical IO for FAU Discrete Event Systems Library (libfaudes)
 
    Copyright (C) 2009 Ruediger Berndt, Thomas Moor;
-   Copyright (C) 2010-2024 Thomas Moor.
+   Copyright (C) 2010-2026 Thomas Moor.
 
 */
 
@@ -261,7 +261,7 @@ VioModel& VioModel::DoAssign(const VioModel& rSrc) {
   FD_DQT("VioModel::DoAssign()");
   // use faudes RTI to extract from faudes object
   if(!mFaudesLocked) 
-    mData->FaudesObject()->Assign(*rSrc.FaudesObject());
+    mData->FaudesObject()->Copy(*rSrc.FaudesObject());
   return *this;        
 }
 
@@ -353,7 +353,7 @@ int VioModel::FaudesObject(const faudes::Type* fobject) {
   // bail out on faudes object identity
   if(fobject==mData->FaudesObject()) return 0;
   // have a copy
-  faudes::Type* copy = fobject->Copy();
+  faudes::Type* copy = fobject->NewCpy();
   // base set 
   int res=InsertFaudesObject(copy);
   FD_DQT("VioModel::FaudesObject(" << fobject <<"): by copy: done");
@@ -569,7 +569,7 @@ void VioModel::DoVioRead(faudes::TokenReader& rTr) {
 VioData* VioModel::Data(void) {
   FD_DQT("VioModel::Data(): retrieve all data");
   VioData* vdat= new VioData();
-  vdat->FaudesObject(mData->FaudesObject()->Copy());
+  vdat->FaudesObject(mData->FaudesObject()->NewCpy());
   vdat->mText=VioText();
   return vdat;
 }

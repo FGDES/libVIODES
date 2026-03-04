@@ -1204,7 +1204,7 @@ void PioNameSetView::AttributeToSelection(void) {
     faudes::Idx index=elem.Ev();
     QString sname = pVioModel->SymbolicName(index);
     if(sname=="") continue;
-    faudes::AttributeFlags* attr = pVioModel->Attribute(sname).Copy();
+    faudes::AttributeFlags* attr = pVioModel->Attribute(sname).NewCpy();
     mAttribute->Model()->MergeAssign(attr); 
     //elem2attr[elem]=attr;
     pVioModel->Attribute(sname,*attr);
