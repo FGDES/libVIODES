@@ -1330,7 +1330,7 @@ int VioView::ApplyFaudesFunction(const QString& ffnct) {
     FD_DQT("VioView::ApplyFaudesFunction(" << ffnct << "): not found in faudes registry");
     return 1;
   }
-  faudes::Function* fnct = faudes::NewFaudesFunction(VioStyle::StrFromQStr(ffnct));
+  faudes::Function* fnct = faudes::NewFunction(VioStyle::StrFromQStr(ffnct));
   // lock faudes object, track name
   faudes::Type* fobject=pModel->TakeFaudesObject();
   std::string fname=fobject->Name();
